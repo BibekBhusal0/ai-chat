@@ -2,10 +2,10 @@ import React from "react";
 import { Drawer, DrawerContent, useDisclosure } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
-import Sidebar from "./components/sidebar/Sidebar";
 import ChatContainer from "./components/chat/ChatContainer";
 import { useChatStore } from "./store/chatStore";
 import CommandK from "./components/command-k/CommandK";
+import Sidebar from "./components/sidebar";
 
 export default function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
