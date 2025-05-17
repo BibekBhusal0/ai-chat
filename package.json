@@ -19,8 +19,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "uuid": "^9.0.1",
-    "zustand": "^4.5.2",
-    "source-map-js": "^1.2.1"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/react": "^18.3.18",
