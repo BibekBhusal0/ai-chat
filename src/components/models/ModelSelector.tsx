@@ -14,11 +14,11 @@ export default function ModelSelector({ selectedModelId, onModelChange }: ModelS
   const { models } = useChatStore();
   const [isOpen, setIsOpen] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
-  
-  const selectedModel = models.find(model => model.id === selectedModelId);
-  
+
+  const selectedModel = models.find((model) => model.id === selectedModelId);
+
   if (!selectedModel) return null;
-  
+
   const getAbilityIcon = (ability: string) => {
     switch (ability) {
       case "reasoning":
@@ -33,7 +33,7 @@ export default function ModelSelector({ selectedModelId, onModelChange }: ModelS
         return "lucide:zap";
     }
   };
-  
+
   return (
     <Popover isOpen={isOpen} onOpenChange={setIsOpen} placement="top">
       <PopoverTrigger>
@@ -44,9 +44,7 @@ export default function ModelSelector({ selectedModelId, onModelChange }: ModelS
           onMouseLeave={() => setIsHovered(false)}
         >
           <Icon icon={selectedModel.icon} className="mr-1" width={18} />
-          {isHovered && (
-            <span className="text-sm">{selectedModel.name}</span>
-          )}
+          {isHovered && <span className="text-sm">{selectedModel.name}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent>
@@ -73,7 +71,7 @@ export default function ModelSelector({ selectedModelId, onModelChange }: ModelS
               </Button>
             ))}
           </div>
-          
+
           <div className="mt-3 border-t border-divider pt-2">
             <h4 className="mb-1 text-xs font-medium text-default-500">CAPABILITIES</h4>
             <div className="flex flex-wrap gap-1">

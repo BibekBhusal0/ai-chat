@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import {Button, Tooltip, ScrollShadow} from "@heroui/react";
-import {Icon} from "@iconify/react";
-import {cn} from "@heroui/react";
+import { Button, Tooltip, ScrollShadow } from "@heroui/react";
+import { Icon } from "@iconify/react";
+import { cn } from "@heroui/react";
 
 import PromptInput from "./prompt-input";
 
@@ -33,7 +33,7 @@ export default function Component() {
     <div className="flex w-full flex-col gap-4">
       <ScrollShadow hideScrollBar className="flex flex-nowrap gap-2" orientation="horizontal">
         <div className="flex gap-2">
-          {ideas.map(({title, description}, index) => (
+          {ideas.map(({ title, description }, index) => (
             <Button key={index} className="flex h-14 flex-col items-start gap-0" variant="flat">
               <p>{title}</p>
               <p className="text-default-500">{description}</p>
@@ -62,7 +62,7 @@ export default function Component() {
                   <Icon
                     className={cn(
                       "[&>path]:stroke-[2px]",
-                      !prompt ? "text-default-600" : "text-primary-foreground",
+                      !prompt ? "text-default-600" : "text-primary-foreground"
                     )}
                     icon="solar:arrow-up-linear"
                     width={20}
@@ -77,7 +77,7 @@ export default function Component() {
           variant="flat"
           onValueChange={setPrompt}
         />
-        <div className="flex w-full items-center justify-between  gap-2 overflow-auto px-4 pb-4">
+        <div className="flex w-full items-center justify-between gap-2 overflow-auto px-4 pb-4">
           <div className="flex w-full gap-1 md:gap-3">
             <Button
               size="sm"

@@ -36,23 +36,23 @@ function MessageItem({ message, chatId }: MessageItemProps) {
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedContent, setEditedContent] = React.useState(message.content);
   const { updateMessage } = useChatStore();
-  
+
   const formattedTime = format(parseISO(message.timestamp), "h:mm a");
-  
+
   const handleSaveEdit = () => {
     updateMessage(chatId, message.id, editedContent);
     setIsEditing(false);
   };
-  
+
   const handleCancelEdit = () => {
     setEditedContent(message.content);
     setIsEditing(false);
   };
-  
+
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(message.content);
   };
-  
+
   if (message.role === "user") {
     return (
       <div className="flex flex-col gap-2">
@@ -63,7 +63,7 @@ function MessageItem({ message, chatId }: MessageItemProps) {
           <span className="font-medium">You</span>
           <span className="text-xs text-default-400">{formattedTime}</span>
         </div>
-        
+
         {isEditing ? (
           <Card className="ml-10">
             <Textarea
@@ -84,26 +84,26 @@ function MessageItem({ message, chatId }: MessageItemProps) {
         ) : (
           <div className="group relative ml-10">
             <div className="whitespace-pre-wrap">{message.content}</div>
-            
+
             <div className="absolute -right-2 -top-2 hidden gap-1 group-hover:flex">
               <Tooltip content="Edit">
                 <Button
                   isIconOnly
                   size="sm"
                   variant="flat"
-                  className="min-w-0 h-7 w-7 bg-default-100"
+                  className="h-7 w-7 min-w-0 bg-default-100"
                   onPress={() => setIsEditing(true)}
                 >
                   <Icon icon="lucide:pencil" width={14} />
                 </Button>
               </Tooltip>
-              
+
               <Tooltip content="Regenerate">
                 <Button
                   isIconOnly
                   size="sm"
                   variant="flat"
-                  className="min-w-0 h-7 w-7 bg-default-100"
+                  className="h-7 w-7 min-w-0 bg-default-100"
                 >
                   <Icon icon="lucide:refresh-cw" width={14} />
                 </Button>
@@ -114,7 +114,7 @@ function MessageItem({ message, chatId }: MessageItemProps) {
       </div>
     );
   }
-  
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
@@ -124,52 +124,37 @@ function MessageItem({ message, chatId }: MessageItemProps) {
         <span className="font-medium">AI Assistant</span>
         <span className="text-xs text-default-400">{formattedTime}</span>
       </div>
-      
+
       <div className="group relative ml-10">
         <div className="whitespace-pre-wrap">{message.content}</div>
-        
+
         <div className="absolute -right-2 -top-2 hidden gap-1 group-hover:flex">
           <Tooltip content="Like">
-            <Button
-              isIconOnly
-              size="sm"
-              variant="flat"
-              className="min-w-0 h-7 w-7 bg-default-100"
-            >
+            <Button isIconOnly size="sm" variant="flat" className="h-7 w-7 min-w-0 bg-default-100">
               <Icon icon="lucide:thumbs-up" width={14} />
             </Button>
           </Tooltip>
-          
+
           <Tooltip content="Dislike">
-            <Button
-              isIconOnly
-              size="sm"
-              variant="flat"
-              className="min-w-0 h-7 w-7 bg-default-100"
-            >
+            <Button isIconOnly size="sm" variant="flat" className="h-7 w-7 min-w-0 bg-default-100">
               <Icon icon="lucide:thumbs-down" width={14} />
             </Button>
           </Tooltip>
-          
+
           <Tooltip content="Copy">
             <Button
               isIconOnly
               size="sm"
               variant="flat"
-              className="min-w-0 h-7 w-7 bg-default-100"
+              className="h-7 w-7 min-w-0 bg-default-100"
               onPress={handleCopyToClipboard}
             >
               <Icon icon="lucide:copy" width={14} />
             </Button>
           </Tooltip>
-          
+
           <Tooltip content="Read aloud">
-            <Button
-              isIconOnly
-              size="sm"
-              variant="flat"
-              className="min-w-0 h-7 w-7 bg-default-100"
-            >
+            <Button isIconOnly size="sm" variant="flat" className="h-7 w-7 min-w-0 bg-default-100">
               <Icon icon="lucide:volume-2" width={14} />
             </Button>
           </Tooltip>

@@ -25,7 +25,6 @@ export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
     if (mobile && onClose) onClose();
   };
 
-
   const handleChatSelect = (id: string) => {
     setActiveChat(id);
     if (mobile && onClose) onClose();
@@ -38,11 +37,11 @@ export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
   // Group chats by date category
   const groupedChats = React.useMemo(() => {
     // Filter chats based on pinned status if needed
-    const filteredChats = showPinnedOnly ? chats.filter(chat => chat.pinned) : chats;
+    const filteredChats = showPinnedOnly ? chats.filter((chat) => chat.pinned) : chats;
 
     // First separate pinned chats
-    const pinnedChats = filteredChats.filter(chat => chat.pinned);
-    const unpinnedChats = filteredChats.filter(chat => !chat.pinned);
+    const pinnedChats = filteredChats.filter((chat) => chat.pinned);
+    const unpinnedChats = filteredChats.filter((chat) => !chat.pinned);
 
     // Group unpinned chats by date
     const grouped = {
@@ -54,7 +53,7 @@ export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
       older: [] as typeof chats,
     };
 
-    unpinnedChats.forEach(chat => {
+    unpinnedChats.forEach((chat) => {
       const date = parseISO(chat.date);
 
       if (isToday(date)) {
@@ -73,7 +72,6 @@ export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
     return grouped;
   }, [chats, showPinnedOnly]);
 
-
   if (collapsed) {
     return (
       <div className="flex h-full w-16 flex-col items-center border-r border-divider bg-content1 py-4">
@@ -83,8 +81,7 @@ export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
           </Button>
         </div>
 
-
-        <Tooltip content="New Chat" color='primary' placement="right">
+        <Tooltip content="New Chat" color="primary" placement="right">
           <Button isIconOnly color="primary" className="mb-4" onPress={handleNewChat}>
             <Icon icon="lucide:plus" width={24} />
           </Button>
@@ -116,8 +113,13 @@ export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
         </Button>
       </div>
 
-      <div className="flex items-center justify-between px-4 pb-2 gap-4">
-        <Button color="primary" startContent={<Icon icon="lucide:plus" width={20} />} className='w-full' onPress={handleNewChat}>
+      <div className="flex items-center justify-between gap-4 px-4 pb-2">
+        <Button
+          color="primary"
+          startContent={<Icon icon="lucide:plus" width={20} />}
+          className="w-full"
+          onPress={handleNewChat}
+        >
           New Chat
         </Button>
 
@@ -132,19 +134,20 @@ export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
 
       <div className="flex items-center justify-between px-4 py-2">
         <span className="text-sm text-default-600">Show pinned only</span>
-        <Switch
-          size="sm"
-          isSelected={showPinnedOnly}
-          onValueChange={setShowPinnedOnly}
-        />
+        <Switch size="sm" isSelected={showPinnedOnly} onValueChange={setShowPinnedOnly} />
       </div>
 
       <Divider />
 
       <div className="flex-1 overflow-y-auto p-2">
-
-        {Object.entries(groupedChats).map(([groupName, chats]) => <ChatGroup title={groupName} key={groupName} chats={chats} handleChatSelect={handleChatSelect} />)}
-
+        {Object.entries(groupedChats).map(([groupName, chats]) => (
+          <ChatGroup
+            title={groupName}
+            key={groupName}
+            chats={chats}
+            handleChatSelect={handleChatSelect}
+          />
+        ))}
 
         {Object.values(groupedChats).flat().length === 0 && (
           <div className="flex h-32 items-center justify-center">

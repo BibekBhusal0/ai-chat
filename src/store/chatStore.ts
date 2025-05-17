@@ -8,7 +8,7 @@ interface ChatState {
   activeChatId: string | null;
   models: AiModel[];
   isLoading: boolean;
-  
+
   // Actions
   setActiveChat: (id: string) => void;
   createNewChat: (modelId: string) => string;
@@ -24,11 +24,11 @@ export const useChatStore = create<ChatState>((set, get) => ({
   activeChatId: null,
   models: [...aiModels],
   isLoading: false,
-  
+
   setActiveChat: (id) => {
     set({ activeChatId: id });
   },
-  
+
   createNewChat: (modelId) => {
     const newChatId = uuidv4();
     const newChat: ChatSession = {
@@ -38,15 +38,15 @@ export const useChatStore = create<ChatState>((set, get) => ({
       messages: [],
       modelId,
     };
-    
+
     set((state) => ({
       chats: [newChat, ...state.chats],
       activeChatId: newChatId,
     }));
-    
+
     return newChatId;
   },
-  
+
   addMessage: (chatId, content, role) => {
     const message: Message = {
       id: uuidv4(),
@@ -54,14 +54,16 @@ export const useChatStore = create<ChatState>((set, get) => ({
       content,
       timestamp: new Date().toISOString(),
     };
-    
+
     set((state) => ({
       chats: state.chats.map((chat) => {
         if (chat.id === chatId) {
           // Update chat title if it's the first user message
           const isFirstMessage = chat.messages.length === 0 && role === "user";
-          const title = isFirstMessage ? content.slice(0, 30) + (content.length > 30 ? "..." : "") : chat.title;
-          
+          const title = isFirstMessage
+            ? content.slice(0, 30) + (content.length > 30 ? "..." : "")
+            : chat.title;
+
           return {
             ...chat,
             title,
@@ -73,19 +75,20 @@ export const useChatStore = create<ChatState>((set, get) => ({
       }),
     }));
   },
-  
+
   deleteChat: (id) => {
     set((state) => {
       const newChats = state.chats.filter((chat) => chat.id !== id);
-      const newActiveChatId = state.activeChatId === id ? (newChats[0]?.id || null) : state.activeChatId;
-      
+      const newActiveChatId =
+        state.activeChatId === id ? newChats[0]?.id || null : state.activeChatId;
+
       return {
         chats: newChats,
         activeChatId: newActiveChatId,
       };
     });
   },
-  
+
   togglePinChat: (id) => {
     set((state) => ({
       chats: state.chats.map((chat) => {
@@ -96,7 +99,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       }),
     }));
   },
-  
+
   updateMessage: (chatId, messageId, content) => {
     set((state) => ({
       chats: state.chats.map((chat) => {
@@ -115,31 +118,33 @@ export const useChatStore = create<ChatState>((set, get) => ({
       }),
     }));
   },
-  
+
   simulateResponse: async (chatId, prompt) => {
     // First add the user message
     get().addMessage(chatId, prompt, "user");
-    
+
     // Set loading state
     set({ isLoading: true });
-    
+
     // Find the current chat to get the model
     const chat = get().chats.find((c) => c.id === chatId);
     if (!chat) {
       set({ isLoading: false });
       return;
     }
-    
+
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    
+
     // Generate a response based on the model
     const model = get().models.find((m) => m.id === chat.modelId);
     let response = "I'm sorry, I don't understand your question.";
-    
+
     if (model) {
-      if (model.abilities.includes("image-generation") && 
-          (prompt.toLowerCase().includes("image") || prompt.toLowerCase().includes("picture"))) {
+      if (
+        model.abilities.includes("image-generation") &&
+        (prompt.toLowerCase().includes("image") || prompt.toLowerCase().includes("picture"))
+      ) {
         response = "I've generated an image based on your request. [Image would be displayed here]";
       } else if (model.abilities.includes("reasoning")) {
         response = `Based on careful reasoning: ${prompt} is an interesting question. Let me think through this step by step and provide a comprehensive answer...`;
@@ -149,10 +154,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
         response = `Thank you for your message about "${prompt}". I'm processing your request and will provide the best possible answer based on my training.`;
       }
     }
-    
+
     // Add the assistant's response
     get().addMessage(chatId, response, "assistant");
-    
+
     // Clear loading state
     set({ isLoading: false });
   },

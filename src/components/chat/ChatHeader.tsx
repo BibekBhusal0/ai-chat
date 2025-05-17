@@ -11,9 +11,9 @@ interface ChatHeaderProps {
 
 export default function ChatHeader({ chat }: ChatHeaderProps) {
   const { models } = useChatStore();
-  
+
   const model = models.find((m) => m.id === chat.modelId);
-  
+
   return (
     <div className="flex items-center justify-between border-b border-divider p-4">
       <div className="flex items-center">
@@ -25,14 +25,14 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
           <p className="text-xs text-default-500">{model?.name || "AI Model"}</p>
         </div>
       </div>
-      
+
       <div className="flex items-center gap-2">
         <Tooltip content="Share">
           <Button isIconOnly variant="light">
             <Icon icon="lucide:share" width={18} />
           </Button>
         </Tooltip>
-        
+
         <Tooltip content="Export">
           <Button isIconOnly variant="light">
             <Icon icon="lucide:download" width={18} />

@@ -1,5 +1,14 @@
 import React from "react";
-import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, cn } from "@heroui/react";
+import {
+  Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  cn,
+} from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 import { useChatStore } from "../../store/chatStore";
@@ -16,7 +25,7 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
   const [isHovered, setIsHovered] = React.useState(false);
   const { togglePinChat, deleteChat, models } = useChatStore();
 
-  const model = models.find(m => m.id === chat.modelId);
+  const model = models.find((m) => m.id === chat.modelId);
 
   const handleDelete = () => {
     onOpen();
@@ -33,7 +42,10 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
   return (
     <>
       <div
-        className={cn(`group relative mb-1 flex cursor-pointer items-center rounded-md p-2`, isActive ? "bg-default-100" : "hover:bg-default-50")}
+        className={cn(
+          `group relative mb-1 flex cursor-pointer items-center rounded-md p-2`,
+          isActive ? "bg-default-100" : "hover:bg-default-50"
+        )}
         onClick={onClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -52,13 +64,13 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
           </p>
         </div>
 
-        {(isHovered) && (
+        {isHovered && (
           <div className="absolute right-2 top-2 flex gap-1">
             <Button
               isIconOnly
               size="sm"
               variant="light"
-              className="min-w-0 h-6 w-6 bg-default-100"
+              className="h-6 w-6 min-w-0 bg-default-100"
               onPress={handlePin}
             >
               <Icon
@@ -72,7 +84,7 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
               isIconOnly
               size="sm"
               variant="light"
-              className="min-w-0 h-6 w-6 bg-default-100"
+              className="h-6 w-6 min-w-0 bg-default-100"
               onPress={handleDelete}
             >
               <Icon icon="lucide:trash-2" width={14} />
@@ -94,10 +106,13 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
                 <Button variant="flat" onPress={onClose}>
                   Cancel
                 </Button>
-                <Button color="danger" onPress={() => {
-                  confirmDelete();
-                  onClose();
-                }}>
+                <Button
+                  color="danger"
+                  onPress={() => {
+                    confirmDelete();
+                    onClose();
+                  }}
+                >
                   Delete
                 </Button>
               </ModalFooter>

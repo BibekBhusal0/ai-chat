@@ -79,7 +79,8 @@ export const chatHistory: ChatSession[] = [
       {
         id: "msg-2",
         role: "assistant",
-        content: "I've created an image of a futuristic cityscape with sleek flying vehicles moving between towering skyscrapers. The city features advanced architecture with curved glass buildings, suspended gardens, and holographic advertisements. The scene is set during sunset, giving the city a warm golden glow contrasted with cool blue lighting from the buildings.",
+        content:
+          "I've created an image of a futuristic cityscape with sleek flying vehicles moving between towering skyscrapers. The city features advanced architecture with curved glass buildings, suspended gardens, and holographic advertisements. The scene is set during sunset, giving the city a warm golden glow contrasted with cool blue lighting from the buildings.",
         timestamp: "2025-05-01T09:30:10Z",
       },
     ],
@@ -99,7 +100,8 @@ export const chatHistory: ChatSession[] = [
       {
         id: "msg-2",
         role: "assistant",
-        content: "Quantum computing is based on quantum bits or 'qubits' that can exist in multiple states simultaneously, unlike classical bits that are either 0 or 1. This property, called superposition, allows quantum computers to process vast amounts of information in parallel. Another key principle is entanglement, where qubits become linked and the state of one instantly affects the other, regardless of distance. These properties enable quantum computers to solve certain complex problems much faster than classical computers, particularly in areas like cryptography, optimization, and simulating quantum systems.",
+        content:
+          "Quantum computing is based on quantum bits or 'qubits' that can exist in multiple states simultaneously, unlike classical bits that are either 0 or 1. This property, called superposition, allows quantum computers to process vast amounts of information in parallel. Another key principle is entanglement, where qubits become linked and the state of one instantly affects the other, regardless of distance. These properties enable quantum computers to solve certain complex problems much faster than classical computers, particularly in areas like cryptography, optimization, and simulating quantum systems.",
         timestamp: "2025-04-20T14:25:15Z",
       },
     ],

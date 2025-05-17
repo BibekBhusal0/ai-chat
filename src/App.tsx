@@ -37,9 +37,7 @@ export default function App() {
 
       {/* Mobile drawer for sidebar */}
       <Drawer isOpen={isOpen} onOpenChange={onOpenChange} placement="left">
-        <DrawerContent>
-          {(onClose) => <Sidebar mobile onClose={onClose} />}
-        </DrawerContent>
+        <DrawerContent>{(onClose) => <Sidebar mobile onClose={onClose} />}</DrawerContent>
       </Drawer>
 
       {/* Desktop sidebar */}

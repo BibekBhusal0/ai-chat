@@ -11,5 +11,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <ToastProvider />
       <App />
     </HeroUIProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

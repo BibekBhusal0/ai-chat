@@ -14,7 +14,7 @@ interface CommandKProps {
 export default function CommandK({ open, onOpenChange }: CommandKProps) {
   const { chats, setActiveChat } = useChatStore();
   const [search, setSearch] = React.useState("");
-  
+
   // Close with escape key
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -22,43 +22,47 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
         onOpenChange(false);
       }
     };
-    
+
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onOpenChange]);
-  
+
   // Flatten all messages from all chats for searching
   const allMessages = React.useMemo(() => {
-    return chats.flatMap(chat => 
-      chat.messages.map(message => ({
+    return chats.flatMap((chat) =>
+      chat.messages.map((message) => ({
         chatId: chat.id,
         chatTitle: chat.title,
         message,
       }))
     );
   }, [chats]);
-  
+
   // Filter messages based on search
   const filteredMessages = React.useMemo(() => {
     if (!search) return [];
-    
-    return allMessages.filter(item => 
-      item.message.content.toLowerCase().includes(search.toLowerCase()) ||
-      item.chatTitle.toLowerCase().includes(search.toLowerCase())
+
+    return allMessages.filter(
+      (item) =>
+        item.message.content.toLowerCase().includes(search.toLowerCase()) ||
+        item.chatTitle.toLowerCase().includes(search.toLowerCase())
     );
   }, [allMessages, search]);
-  
+
   if (!open) return null;
-  
+
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 bg-black/50">
+    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 pt-16">
       <div className="w-full max-w-2xl rounded-lg bg-content1 shadow-lg">
-        <Command className="command-k" onKeyDown={(e) => {
-          if (e.key === "Escape") {
-            onOpenChange(false);
-            e.preventDefault();
-          }
-        }}>
+        <Command
+          className="command-k"
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              onOpenChange(false);
+              e.preventDefault();
+            }
+          }}
+        >
           <div className="flex items-center border-b border-divider p-2">
             <Icon icon="lucide:search" className="ml-2 text-default-400" width={16} />
             <Command.Input
@@ -72,7 +76,7 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
               ESC
             </div>
           </div>
-          
+
           <Command.List className="max-h-96 overflow-y-auto p-2">
             {search === "" ? (
               <div className="py-6 text-center text-sm text-default-400">
