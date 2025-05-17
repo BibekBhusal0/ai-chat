@@ -1,0 +1,32 @@
+.command-k {
+  width: 100%;
+  background: transparent;
+}
+
+.command-k [cmdk-list] {
+  height: auto;
+  min-height: 300px;
+  max-height: 500px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  transition: 100ms ease;
+  transition-property: height;
+}
+
+.command-k [cmdk-item] {
+  cursor: pointer;
+  content-visibility: auto;
+  border-radius: 8px;
+}
+
+.command-k [cmdk-item][aria-selected="true"] {
+  background: hsl(var(--heroui-default-100));
+}
+
+.command-k [cmdk-group-heading] {
+  padding: 8px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: hsl(var(--heroui-default-500));
+  user-select: none;
+}
