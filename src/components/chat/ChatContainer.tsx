@@ -1,14 +1,15 @@
-import React from "react";
-import { Spinner } from "@heroui/react";
+import React, { useState } from "react";
 
 import { useChatStore } from "../../store/chatStore";
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
+import ChatMessageEmpty from "./ChatMessageEmpty";
 
 export default function ChatContainer() {
-  const { activeChatId, chats, isLoading } = useChatStore();
+  const { activeChatId, simulateResponse, chats, createNewChat, changeModel, setActiveChat, isLoading } = useChatStore();
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const [tempModel, setTempModel] = useState('gpt-4')
 
   const activeChat = chats.find((chat) => chat.id === activeChatId);
 
@@ -19,35 +20,37 @@ export default function ChatContainer() {
     }
   }, [activeChat?.messages, isLoading]);
 
-  if (!activeChat) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <p>No chat selected</p>
-      </div>
-    );
+  const handleSubmit = (message: string) => {
+    if (activeChat?.id) simulateResponse(activeChat.id, message);
+    else {
+      const newChatId = createNewChat(tempModel);
+      setActiveChat(newChatId);
+      simulateResponse(newChatId, message);
+    }
   }
 
   return (
     <div className="flex h-full flex-col">
-      <ChatHeader chat={activeChat} />
+      {activeChat && <ChatHeader chat={activeChat} />}
 
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-3xl">
-          <ChatMessages messages={activeChat.messages} chatId={activeChat.id} />
-
-          {isLoading && (
-            <div className="flex justify-center py-4">
-              <Spinner size="md" />
-            </div>
-          )}
-
+        <div className="mx-auto max-w-3xl h-full">
+          {activeChat !== undefined ?
+            <ChatMessages onSubmit={handleSubmit} messages={activeChat.messages} chatId={activeChat.id} /> :
+            <div className="h-full"><ChatMessageEmpty onSubmit={handleSubmit} /></div>
+          }
           <div ref={messagesEndRef} />
         </div>
       </div>
 
-      <div className="pb-2">
+      <div className="py-2">
         <div className="mx-auto max-w-3xl">
-          <ChatInput chatId={activeChat.id} modelId={activeChat.modelId} />
+          <ChatInput onSubmit={handleSubmit} modelId={activeChat?.modelId || tempModel}
+            onModelChange={(model_id) => {
+              if (!activeChat?.modelId) { setTempModel(model_id); console.log(model_id) }
+              else changeModel(activeChat.id, model_id)
+            }}
+          />
         </div>
       </div>
     </div>

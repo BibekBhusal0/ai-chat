@@ -25,17 +25,11 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
 
   const model = models.find((m) => m.id === chat.modelId);
 
-  const handlePin = () => {
-    togglePinChat(chat.id);
-  };
+  const handlePin = () => togglePinChat(chat.id);
 
-  const handleDelete = () => {
-    onOpen();
-  };
+  const handleDelete = () => onOpen();
 
-  const confirmDelete = () => {
-    deleteChat(chat.id);
-  };
+  const confirmDelete = () => deleteChat(chat.id);
 
   interface TooltipButtonProps extends ButtonProps {
     tooltip: string;
@@ -51,12 +45,12 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
     {
       tooltip: "Share",
       icon: "lucide:share",
-      onPress: () => {},
+      onPress: () => { },
     },
     {
       tooltip: "Export",
       icon: "lucide:download",
-      onPress: () => {},
+      onPress: () => { },
     },
     {
       tooltip: "Delete",

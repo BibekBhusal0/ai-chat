@@ -6,22 +6,22 @@ import { useChatStore } from "../../store/chatStore";
 import ModelSelector from "../models/ModelSelector";
 
 interface ChatInputProps {
-  chatId: string;
+  onSubmit: (message: string) => void;
+  onModelChange: (modelId: string) => void;
   modelId: string;
 }
 
-export default function ChatInput({ chatId, modelId }: ChatInputProps) {
+export default function ChatInput({ onSubmit, onModelChange, modelId }: ChatInputProps) {
   const [prompt, setPrompt] = React.useState("");
-  const { simulateResponse, activeChatId, isLoading, changeModel } = useChatStore();
+  const { isLoading } = useChatStore();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!prompt.trim() || isLoading) return;
 
-    simulateResponse(chatId, prompt);
+    onSubmit(prompt)
     setPrompt("");
-
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -30,11 +30,6 @@ export default function ChatInput({ chatId, modelId }: ChatInputProps) {
       e.preventDefault();
       handleSubmit(e);
     }
-  };
-
-  const handleModelChange = (newModelId: string) => {
-    if (!activeChatId) return null;
-    changeModel(activeChatId, newModelId);
   };
 
   return (
@@ -60,7 +55,7 @@ export default function ChatInput({ chatId, modelId }: ChatInputProps) {
 
       <div className="flex w-full items-center justify-between px-3 pb-3">
         <div className="flex items-center gap-2">
-          <ModelSelector selectedModelId={modelId} onModelChange={handleModelChange} />
+          <ModelSelector selectedModelId={modelId} onModelChange={onModelChange} />
 
           <Tooltip content="Upload file">
             <Button isIconOnly variant="flat" size="sm">

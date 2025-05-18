@@ -1,18 +1,21 @@
 import React from "react";
-import { Button, Tooltip, Textarea, Card, cn } from "@heroui/react";
+import { Button, Tooltip, Textarea, Card, cn, Spinner } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { format, parseISO } from "date-fns";
 
 import { useChatStore } from "../../store/chatStore";
 import type { Message } from "../../types";
 import TypingText from "../typing-text";
+import ChatMessageEmpty from "./ChatMessageEmpty.tsx";
 
 interface ChatMessagesProps {
   messages: Message[];
   chatId: string;
+  onSubmit: (message: string) => void
 }
 
-export default function ChatMessages({ messages, chatId }: ChatMessagesProps) {
+export default function ChatMessages({ messages, chatId, onSubmit }: ChatMessagesProps) {
+  const { isLoading } = useChatStore();
   const isRecentMessage = (timestamp: string) => {
     const messageTime = new Date(timestamp).getTime();
     const now = Date.now();
@@ -21,11 +24,9 @@ export default function ChatMessages({ messages, chatId }: ChatMessagesProps) {
   };
 
   return (
-    <div className="flex flex-col gap-6 py-4">
+    <div className="flex flex-col gap-6 h-full">
       {messages.length === 0 ? (
-        <div className="flex h-32 items-center justify-center">
-          <p className="text-center text-default-400">No messages yet. Start a conversation!</p>
-        </div>
+        <ChatMessageEmpty onSubmit={onSubmit} />
       ) : (
         messages.map((message) =>
           message.role === "user" ? (
@@ -39,6 +40,12 @@ export default function ChatMessages({ messages, chatId }: ChatMessagesProps) {
           )
         )
       )}
+      {isLoading && (
+        <div className="flex justify-center py-4">
+          <Spinner size="md" />
+        </div>
+      )}
+
     </div>
   );
 }

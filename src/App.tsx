@@ -10,7 +10,7 @@ import Sidebar from "./components/sidebar";
 export default function App() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [commandKOpen, setCommandKOpen] = React.useState(false);
-  const { activeChatId, createNewChat, setActiveChat } = useChatStore();
+  const { createNewChat, setActiveChat } = useChatStore();
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -51,16 +51,9 @@ export default function App() {
 
       {/* Main chat area */}
       <div className="flex h-full w-full flex-col">
-        {activeChatId ? (
-          <ChatContainer />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <div className="text-center">
-              <h2 className="text-xl font-medium">Select a chat or start a new one</h2>
-              <p className="mt-2 text-default-500">Choose from the sidebar or create a new chat</p>
-            </div>
-          </div>
-        )}
+
+        <ChatContainer />
+
       </div>
 
       {/* Command K search */}
