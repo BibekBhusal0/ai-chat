@@ -169,7 +169,7 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
   return (
     <div className="flex w-full flex-col items-start">
       <span className="ml-10 text-xs text-default-400">{formattedTime}</span>
-      <div className="group relative ml-10 rounded-xl max-w-[80%] bg-default-100 p-4 text-left">
+      <div className="group relative ml-10 rounded-xl max-w-[80%] w-full bg-default-100 p-4 text-left">
         {message.role === "assistant" && isRecent ? (
           <TypingText className='bg-default-100' delay={50} smooth waitTime={500} text={message.content} repeat={false} />
         ) : (
