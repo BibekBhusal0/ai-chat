@@ -27,26 +27,32 @@ export default function ChatMessages({ messages, chatId }: ChatMessagesProps) {
           <p className="text-center text-default-400">No messages yet. Start a conversation!</p>
         </div>
       ) : (
-        messages.map((message) => (
-          <MessageItem
-            key={message.id}
-            message={message}
-            chatId={chatId}
-            isRecent={isRecentMessage(message.timestamp)}
-          />
-        ))
+        messages.map((message) =>
+          message.role === "user" ? (
+            <UserMessageItem
+              key={message.id}
+              message={message}
+              chatId={chatId}
+            />
+          ) : (
+            <AssistantMessageItem
+              key={message.id}
+              message={message}
+              isRecent={isRecentMessage(message.timestamp)}
+            />
+          )
+        )
       )}
     </div>
   );
 }
 
-interface MessageItemProps {
+interface UserMessageItemProps {
   message: Message;
   chatId: string;
-  isRecent: boolean;
 }
 
-function MessageItem({ message, chatId, isRecent }: MessageItemProps) {
+function UserMessageItem({ message, chatId }: UserMessageItemProps) {
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedContent, setEditedContent] = React.useState(message.content);
   const { updateMessage } = useChatStore();
@@ -63,71 +69,90 @@ function MessageItem({ message, chatId, isRecent }: MessageItemProps) {
     setIsEditing(false);
   };
 
+  const userButtons = [
+    {
+      content: "Edit",
+      icon: "lucide:pencil",
+      onClick: () => setIsEditing(true),
+    },
+    {
+      content: "Regenerate",
+      icon: "lucide:refresh-cw",
+      onClick: () => console.log("Regenerate"),
+    },
+  ];
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white">
+          <Icon icon="lucide:user" width={16} />
+        </div>
+        <span className="font-medium">You</span>
+        <span className="text-xs text-default-400">{formattedTime}</span>
+      </div>
+
+      {isEditing ? (
+        <Card className="ml-10">
+          <Textarea
+            value={editedContent}
+            onValueChange={setEditedContent}
+            minRows={3}
+            className="w-full"
+          />
+          <div className="flex justify-end gap-2 p-2">
+            <Button size="sm" variant="flat" onPress={handleCancelEdit}>
+              Cancel
+            </Button>
+            <Button size="sm" color="primary" onPress={handleSaveEdit}>
+              Save
+            </Button>
+          </div>
+        </Card>
+      ) : (
+        <div className="group relative ml-10">
+          <div className="whitespace-pre-wrap">{message.content}</div>
+          <MessageItemButtons buttons={userButtons} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface AssistantMessageItemProps {
+  message: Message;
+  isRecent: boolean;
+}
+
+function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) {
+  const formattedTime = format(parseISO(message.timestamp), "h:mm a");
+
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(message.content);
   };
 
-  if (message.role === "user") {
-    return (
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white">
-            <Icon icon="lucide:user" width={16} />
-          </div>
-          <span className="font-medium">You</span>
-          <span className="text-xs text-default-400">{formattedTime}</span>
-        </div>
-
-        {isEditing ? (
-          <Card className="ml-10">
-            <Textarea
-              value={editedContent}
-              onValueChange={setEditedContent}
-              minRows={3}
-              className="w-full"
-            />
-            <div className="flex justify-end gap-2 p-2">
-              <Button size="sm" variant="flat" onPress={handleCancelEdit}>
-                Cancel
-              </Button>
-              <Button size="sm" color="primary" onPress={handleSaveEdit}>
-                Save
-              </Button>
-            </div>
-          </Card>
-        ) : (
-          <div className="group relative ml-10">
-            <div className="whitespace-pre-wrap">{message.content}</div>
-
-            <div className="absolute -right-2 -top-2 hidden gap-1 group-hover:flex">
-              <Tooltip content="Edit">
-                <Button
-                  isIconOnly
-                  size="sm"
-                  variant="flat"
-                  className="h-7 w-7 min-w-0 bg-default-100"
-                  onPress={() => setIsEditing(true)}
-                >
-                  <Icon icon="lucide:pencil" width={14} />
-                </Button>
-              </Tooltip>
-
-              <Tooltip content="Regenerate">
-                <Button
-                  isIconOnly
-                  size="sm"
-                  variant="flat"
-                  className="h-7 w-7 min-w-0 bg-default-100"
-                >
-                  <Icon icon="lucide:refresh-cw" width={14} />
-                </Button>
-              </Tooltip>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
+  const assistantButtons = [
+    {
+      content: "Like",
+      icon: "lucide:thumbs-up",
+      onClick: () => console.log("Like"),
+    },
+    {
+      content: "Dislike",
+      icon: "lucide:thumbs-down",
+      onClick: () => console.log("Dislike"),
+    },
+    {
+      content: "Copy",
+      icon: "lucide:copy",
+      onClick: handleCopyToClipboard,
+    },
+    {
+      content: "Read aloud",
+      icon: "lucide:volume-2",
+      onClick: () => console.log("Read aloud"),
+    },
+  ];
 
   return (
     <div className="flex flex-col gap-2">
@@ -145,39 +170,36 @@ function MessageItem({ message, chatId, isRecent }: MessageItemProps) {
         ) : (
           <div className="whitespace-pre-wrap">{message.content}</div>
         )}
-
-        <div className="absolute -right-2 -top-2 hidden gap-1 group-hover:flex">
-          <Tooltip content="Like">
-            <Button isIconOnly size="sm" variant="flat" className="h-7 w-7 min-w-0 bg-default-100">
-              <Icon icon="lucide:thumbs-up" width={14} />
-            </Button>
-          </Tooltip>
-
-          <Tooltip content="Dislike">
-            <Button isIconOnly size="sm" variant="flat" className="h-7 w-7 min-w-0 bg-default-100">
-              <Icon icon="lucide:thumbs-down" width={14} />
-            </Button>
-          </Tooltip>
-
-          <Tooltip content="Copy">
-            <Button
-              isIconOnly
-              size="sm"
-              variant="flat"
-              className="h-7 w-7 min-w-0 bg-default-100"
-              onPress={handleCopyToClipboard}
-            >
-              <Icon icon="lucide:copy" width={14} />
-            </Button>
-          </Tooltip>
-
-          <Tooltip content="Read aloud">
-            <Button isIconOnly size="sm" variant="flat" className="h-7 w-7 min-w-0 bg-default-100">
-              <Icon icon="lucide:volume-2" width={14} />
-            </Button>
-          </Tooltip>
-        </div>
+        <MessageItemButtons buttons={assistantButtons} />
       </div>
+    </div>
+  );
+}
+
+interface MessageItemButtonsProps {
+  buttons: {
+    content: string;
+    icon: string;
+    onClick: () => void;
+  }[];
+}
+
+function MessageItemButtons({ buttons }: MessageItemButtonsProps) {
+  return (
+    <div className="absolute -right-2 -top-2 hidden gap-1 group-hover:flex">
+      {buttons.map((button, index) => (
+        <Tooltip key={index} content={button.content}>
+          <Button
+            isIconOnly
+            size="sm"
+            variant="flat"
+            className="h-7 w-7 min-w-0 bg-default-100"
+            onPress={button.onClick}
+          >
+            <Icon icon={button.icon} width={14} />
+          </Button>
+        </Tooltip>
+      ))}
     </div>
   );
 }
