@@ -11,8 +11,9 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Listbox, ListboxItemProps,
-  ListboxItem
+  Listbox,
+  ListboxItemProps,
+  ListboxItem,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
@@ -26,7 +27,11 @@ interface ChatItemProps {
 }
 
 export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
-  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalOpenChange } = useDisclosure();
+  const {
+    isOpen: isDeleteModalOpen,
+    onOpen: onDeleteModalOpen,
+    onOpenChange: onDeleteModalOpenChange,
+  } = useDisclosure();
   const { togglePinChat, deleteChat, models } = useChatStore();
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
@@ -34,7 +39,7 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
 
   const handleDelete = () => {
     onDeleteModalOpen();
-    setIsPopoverOpen(false)
+    setIsPopoverOpen(false);
   };
 
   const confirmDelete = () => {
@@ -45,8 +50,10 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
     togglePinChat(chat.id);
   };
 
-
-  const buttonConfigs: (Omit<ListboxItemProps, 'startContent'> & { startContent: string, onPress: any })[] = [
+  const buttonConfigs: (Omit<ListboxItemProps, "startContent"> & {
+    startContent: string;
+    onPress: any;
+  })[] = [
     {
       children: chat.pinned ? "Unpin" : "Pin",
       startContent: chat.pinned ? "lucide:pin-off" : "lucide:pin",
@@ -66,20 +73,17 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
       children: "Delete",
       startContent: "lucide:trash-2",
       onPress: handleDelete,
-      className: 'text-danger',
-      color: 'danger'
+      className: "text-danger",
+      color: "danger",
     },
   ];
   const commonProps: ListboxItemProps = {
-    classNames: { title: 'text-md', }
-  }
+    classNames: { title: "text-md" },
+  };
 
   return (
     <>
-
-      <div
-        className='relative group'
-      >
+      <div className="group relative">
         <div
           className={cn(
             `relative mb-1 flex cursor-pointer items-center rounded-md p-2`,
@@ -105,7 +109,7 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
           <PopoverTrigger asChild>
             <Button
               isIconOnly
-              className='absolute right-2  top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200'
+              className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
               size="sm"
               variant="light"
               aria-label="More actions"
@@ -121,7 +125,7 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
                   key={index}
                   {...commonProps}
                   {...buttonConfig}
-                  className={cn(commonProps.className, buttonConfig.className,)}
+                  className={cn(commonProps.className, buttonConfig.className)}
                   startContent={<Icon width={16} icon={buttonConfig.startContent} />}
                 />
               ))}

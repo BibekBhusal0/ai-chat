@@ -1,5 +1,13 @@
 import React from "react";
-import { Button, Popover, PopoverTrigger, PopoverContent, cn, Listbox, ListboxItem } from "@heroui/react";
+import {
+  Button,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  cn,
+  Listbox,
+  ListboxItem,
+} from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 import { useChatStore } from "../../store/chatStore";
@@ -39,13 +47,23 @@ export default function ModelSelector({ selectedModelId, onModelChange }: ModelS
         <Button
           variant="flat"
           className="min-w-0 px-2"
-          size='sm'
+          size="sm"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <Icon icon={selectedModel.icon} className='-mr-2' width={18} />
-          <span className={cn("w-fit max-w-0 transform-gpu overflow-hidden transition-all duration-500", (isHovered || isOpen) && 'max-w-44')}>
-            <span className={cn("transform-gpu whitespace-nowrap text-default-500 text-sm opacity-0 transition-all pl-0 duration-500", (isHovered || isOpen) && 'opacity-100 pl-1')}>
+          <Icon icon={selectedModel.icon} className="-mr-2" width={18} />
+          <span
+            className={cn(
+              "w-fit max-w-0 transform-gpu overflow-hidden transition-all duration-500",
+              (isHovered || isOpen) && "max-w-44"
+            )}
+          >
+            <span
+              className={cn(
+                "transform-gpu whitespace-nowrap pl-0 text-sm text-default-500 opacity-0 transition-all duration-500",
+                (isHovered || isOpen) && "pl-1 opacity-100"
+              )}
+            >
               {(isHovered || isOpen) && <span className="text-sm">{selectedModel.name}</span>}
             </span>
           </span>
@@ -54,7 +72,7 @@ export default function ModelSelector({ selectedModelId, onModelChange }: ModelS
       <PopoverContent>
         <div className="w-72 p-2">
           <h3 className="mb-2 text-sm font-medium">Select a model</h3>
-          <Listbox selectionMode='single' selectedKeys={[selectedModel.id]}>
+          <Listbox selectionMode="single" selectedKeys={[selectedModel.id]}>
             {models.map((model) => (
               <ListboxItem
                 key={model.id}
@@ -63,10 +81,7 @@ export default function ModelSelector({ selectedModelId, onModelChange }: ModelS
                   onModelChange(model.id);
                   setIsOpen(false);
                 }}
-                startContent={
-                  <Icon icon={model.icon} className = {model.icon} width={18} />
-
-                }
+                startContent={<Icon icon={model.icon} className={model.icon} width={18} />}
                 description={model.description}
               >
                 {model.name}

@@ -40,15 +40,18 @@ export default function ChatInput({ chatId, modelId }: ChatInputProps) {
   };
 
   const handleModelChange = (newModelId: string) => {
-    if (!activeChatId) return null
-    changeModel(activeChatId, newModelId)
+    if (!activeChatId) return null;
+    changeModel(activeChatId, newModelId);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full flex-col items-start rounded-medium bg-default-100 transition-colors hover:bg-default-200/70 relative">
+    <form
+      onSubmit={handleSubmit}
+      className="relative flex w-full flex-col items-start rounded-medium bg-default-100 transition-colors hover:bg-default-200/70"
+    >
       <Textarea
-        placeholder='Ask me anything ...'
-        variant='flat'
+        placeholder="Ask me anything ..."
+        variant="flat"
         ref={textareaRef}
         value={prompt}
         onValueChange={setPrompt}
@@ -64,37 +67,36 @@ export default function ChatInput({ chatId, modelId }: ChatInputProps) {
         disabled={isLoading}
       />
 
-      <div className="flex w-full px-3 pb-3 items-center justify-between">
+      <div className="flex w-full items-center justify-between px-3 pb-3">
         <div className="flex items-center gap-2">
           <ModelSelector selectedModelId={modelId} onModelChange={handleModelChange} />
 
           <Tooltip content="Upload file">
-            <Button isIconOnly variant="flat" size='sm'>
+            <Button isIconOnly variant="flat" size="sm">
               <Icon icon="lucide:paperclip" width={18} />
             </Button>
           </Tooltip>
 
           <Tooltip content="Voice input">
-            <Button isIconOnly variant="flat" size='sm'>
+            <Button isIconOnly variant="flat" size="sm">
               <Icon icon="lucide:mic" width={18} />
             </Button>
           </Tooltip>
         </div>
 
         <div className="flex items-center gap-2">
-        <div className="text-xs text-default-400">
-
-          {prompt.length > 0 ? `${prompt.length} characters` : ""}
+          <div className="text-xs text-default-400">
+            {prompt.length > 0 ? `${prompt.length} characters` : ""}
           </div>
-<Button
-          isIconOnly
-          type="submit"
-          color={prompt.trim() ? "primary" : "default"}
-          isDisabled={!prompt.trim() || isLoading}
-          size="sm"
-        >
-          <Icon icon="lucide:send" width={16} />
-        </Button>
+          <Button
+            isIconOnly
+            type="submit"
+            color={prompt.trim() ? "primary" : "default"}
+            isDisabled={!prompt.trim() || isLoading}
+            size="sm"
+          >
+            <Icon icon="lucide:send" width={16} />
+          </Button>
         </div>
       </div>
     </form>

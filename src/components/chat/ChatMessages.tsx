@@ -141,14 +141,7 @@ function MessageItem({ message, chatId, isRecent }: MessageItemProps) {
 
       <div className="group relative ml-10">
         {message.role === "assistant" && isRecent ? (
-          <TypingText
-            delay={50}
-            grow
-            smooth
-            waitTime={500}
-            text={message.content}
-            repeat={false}
-          />
+          <TypingText delay={50} grow smooth waitTime={500} text={message.content} repeat={false} />
         ) : (
           <div className="whitespace-pre-wrap">{message.content}</div>
         )}
