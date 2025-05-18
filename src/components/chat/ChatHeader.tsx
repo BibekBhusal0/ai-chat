@@ -94,7 +94,6 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
                 {...commonButonProps}
                 {...buttonConfig}
                 className={cn(commonButonProps.className, buttonConfig.className)}
-
                 iconSize={18} icon={buttonConfig.icon} />
             }
           </Tooltip>

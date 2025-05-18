@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   Button,
   Modal,
@@ -19,6 +19,11 @@ import { Icon } from "@iconify/react";
 
 import { useChatStore } from "../../store/chatStore";
 import type { ChatSession } from "../../types";
+import { UploadIcon } from "../icon/upload";
+import { DownloadIcon } from "../icon/donwload";
+import { DeleteIcon } from "../icon/delete";
+import { AnimatedDiv } from "../animatedDiv";
+
 
 interface ChatItemProps {
   chat: ChatSession;
@@ -35,6 +40,7 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
   const { togglePinChat, deleteChat, models } = useChatStore();
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
+
   const model = models.find((m) => m.id === chat.modelId);
 
   const handleDelete = () => {
@@ -50,28 +56,29 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
     togglePinChat(chat.id);
   };
 
-  const buttonConfigs: (Omit<ListboxItemProps, "startContent"> & {
-    startContent: string;
-    onPress: any;
-  })[] = [
+  interface MoreListProps extends ListboxItemProps {
+    icon: string | ReactNode;
+  }
+
+  const buttonConfigs: MoreListProps[] = [
     {
       children: chat.pinned ? "Unpin" : "Pin",
-      startContent: chat.pinned ? "lucide:pin-off" : "lucide:pin",
+      icon: chat.pinned ? "lucide:pin-off" : "lucide:pin",
       onPress: handlePin,
     },
     {
       children: "Share",
-      startContent: "lucide:share",
-      onPress: null,
+      icon: <UploadIcon />,
+      onPress: () => { },
     },
     {
       children: "Export",
-      startContent: "lucide:download",
-      onPress: null,
+      icon: <DownloadIcon />,
+      onPress: () => { },
     },
     {
       children: "Delete",
-      startContent: "lucide:trash-2",
+      icon: <DeleteIcon />,
       onPress: handleDelete,
       className: "text-danger",
       color: "danger",
@@ -80,6 +87,7 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
   const commonProps: ListboxItemProps = {
     classNames: { title: "text-md" },
   };
+  const cls = 'flex items-center gap-2'
 
   return (
     <>
@@ -131,8 +139,12 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
                   {...commonProps}
                   {...buttonConfig}
                   className={cn(commonProps.className, buttonConfig.className)}
-                  startContent={<Icon width={16} icon={buttonConfig.startContent} />}
-                />
+                >
+                  {typeof buttonConfig.icon === 'string' ?
+                    <div className={cls}><Icon width={16} icon={buttonConfig.icon} />{buttonConfig.children}</div> :
+                    <AnimatedDiv className={cls} iconSize={16} icon={buttonConfig.icon} >{buttonConfig.children}</AnimatedDiv>
+                  }
+                </ListboxItem>
               ))}
             </Listbox>
           </PopoverContent>

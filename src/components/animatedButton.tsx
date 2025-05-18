@@ -27,7 +27,6 @@ const AnimatedIconButton = forwardRef<HTMLButtonElement, AnimatedIconButtonProps
   );
 });
 
-AnimatedIconButton.displayName = 'AnimatedIconButton';
 
 export { AnimatedIconButton };
 
