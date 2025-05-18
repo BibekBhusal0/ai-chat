@@ -2,6 +2,9 @@ import React from "react";
 import { Button, cn, Textarea, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import ModelSelector from "../models/ModelSelector";
+import { AnimatedIconButton } from "../animatedButton";
+import { FileTextIcon } from "../icon/file";
+import { AudioLinesIcon } from "../icon/audio";
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
@@ -20,6 +23,7 @@ export default function ChatInput({ onSubmit, onModelChange, modelId }: ChatInpu
     onSubmit(prompt);
     setPrompt("");
   };
+
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Submit on Enter (without shift)
@@ -58,16 +62,13 @@ export default function ChatInput({ onSubmit, onModelChange, modelId }: ChatInpu
           <ModelSelector selectedModelId={modelId} onModelChange={onModelChange} />
 
           <Tooltip content="Upload file">
-            <Button isIconOnly variant="flat" size="sm">
-              <Icon icon="lucide:paperclip" width={18} />
-            </Button>
+            <AnimatedIconButton icon={<FileTextIcon />} variant="flat" iconSize={18} size="sm" />
           </Tooltip>
 
           <Tooltip content="Voice input">
-            <Button isIconOnly variant="flat" size="sm">
-              <Icon icon="lucide:mic" width={18} />
-            </Button>
+            <AnimatedIconButton icon={<AudioLinesIcon />} variant="flat" iconSize={18} size="sm" />
           </Tooltip>
+
         </div>
 
         <div className="flex items-center gap-2">

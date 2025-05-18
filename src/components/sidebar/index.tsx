@@ -5,6 +5,9 @@ import { useTheme } from "@heroui/use-theme";
 import { isToday, isYesterday, isThisWeek, isThisMonth, parseISO } from "date-fns";
 import { useChatStore } from "../../store/chatStore";
 import { ChatGroup } from "./chatGroup";
+import { AnimatedIconButton } from "../animatedButton";
+import { SearchIcon } from "../icon/search";
+import { SettingsGearIcon } from "../icon/settings";
 
 interface SidebarProps {
   mobile?: boolean;
@@ -97,9 +100,7 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
 
           <div className="flex items-center gap-2">
             <Tooltip content="Search chats (Cmd+K)">
-              <Button isIconOnly variant="light" onPress={onCommandKOpen}>
-                <Icon icon="lucide:search" width={20} />
-              </Button>
+              <AnimatedIconButton icon={<SearchIcon />} isIconOnly variant="light" onPress={onCommandKOpen} />
             </Tooltip>
           </div>
         </div>
@@ -143,9 +144,7 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
             </Tooltip>
 
             <Tooltip content="Settings">
-              <Button isIconOnly variant="light">
-                <Icon icon="lucide:settings" width={20} />
-              </Button>
+              <AnimatedIconButton icon={<SettingsGearIcon />} variant="light" />
             </Tooltip>
           </div>
         </div>

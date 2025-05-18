@@ -14,6 +14,11 @@ import { Icon } from "@iconify/react";
 
 import { useChatStore } from "../../store/chatStore";
 import type { ChatSession } from "../../types";
+import { AnimatedIconButton } from "../animatedButton";
+import { DownloadIcon } from "../icon/donwload";
+import { UploadIcon } from "../icon/upload";
+import { DeleteIcon } from "../icon/delete";
+import { ReactNode } from "react";
 
 interface ChatHeaderProps {
   chat: ChatSession;
@@ -24,16 +29,12 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const model = models.find((m) => m.id === chat.modelId);
-
   const handlePin = () => togglePinChat(chat.id);
-
   const handleDelete = () => onOpen();
-
   const confirmDelete = () => deleteChat(chat.id);
-
   interface TooltipButtonProps extends ButtonProps {
     tooltip: string;
-    icon: string;
+    icon: string | ReactNode;
   }
 
   const buttonConfigs: TooltipButtonProps[] = [
@@ -44,17 +45,17 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
     },
     {
       tooltip: "Share",
-      icon: "lucide:share",
-      onPress: () => {},
+      icon: <UploadIcon />,
+      onPress: () => { },
     },
     {
       tooltip: "Export",
-      icon: "lucide:download",
-      onPress: () => {},
+      icon: <DownloadIcon />,
+      onPress: () => { },
     },
     {
       tooltip: "Delete",
-      icon: "lucide:trash-2",
+      icon: <DeleteIcon />,
       onPress: handleDelete,
       color: "danger",
     },
@@ -81,13 +82,21 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
       <div className="flex items-center gap-2">
         {buttonConfigs.map((buttonConfig, index) => (
           <Tooltip key={index} content={buttonConfig.tooltip}>
-            <Button
-              {...commonButonProps}
-              {...buttonConfig}
-              className={cn(commonButonProps.className, buttonConfig.className)}
-            >
-              <Icon icon={buttonConfig.icon} />
-            </Button>
+            {typeof buttonConfig.icon === 'string' ?
+              <Button
+                {...commonButonProps}
+                {...buttonConfig}
+                className={cn(commonButonProps.className, buttonConfig.className)}
+              >
+                <Icon icon={buttonConfig.icon} />
+              </Button>
+              : <AnimatedIconButton
+                {...commonButonProps}
+                {...buttonConfig}
+                className={cn(commonButonProps.className, buttonConfig.className)}
+
+                iconSize={18} icon={buttonConfig.icon} />
+            }
           </Tooltip>
         ))}
       </div>
