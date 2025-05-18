@@ -9,7 +9,7 @@ Includes rich interactions, shortcut support, command palette, chat history, and
 - 💬 Saved chat sessions with timestamps
 - ⌨️ Command palette (Cmd + K) to quickly search and start actions
 - ➕ New chat button & keyboard shortcut (`Alt + N`)
-- 🎨 Smooth animations 
+- 🎨 Smooth animations
 - 🌗 Dark/Light mode toggle
 - 🧠 Zustand for state management
 
@@ -22,14 +22,12 @@ Includes rich interactions, shortcut support, command palette, chat history, and
 - Zustand
 - Cmdk
 
-
 ## ⌨️ Keyboard Shortcuts
 
 - `Cmd/Ctrl + K` → Open command palette
 - `Alt/Option + N` → Start a new chat
 
 ## 📸 Screenshots
-
 
 ## 🚀 Run Locally
 
