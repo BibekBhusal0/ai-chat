@@ -17,6 +17,7 @@ interface ChatState {
   togglePinChat: (id: string) => void;
   updateMessage: (chatId: string, messageId: string, content: string) => void;
   simulateResponse: (chatId: string, prompt: string) => Promise<void>;
+  changeModel: (chatId: string, modelId: string) => void;
 }
 
 export const useChatStore = create<ChatState>((set, get) => ({
@@ -38,12 +39,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
       messages: [],
       modelId,
     };
-
     set((state) => ({
       chats: [newChat, ...state.chats],
       activeChatId: newChatId,
     }));
-
     return newChatId;
   },
 
@@ -160,5 +159,16 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
     // Clear loading state
     set({ isLoading: false });
+  },
+
+  changeModel: (chatId, modelId) => {
+    set((state) => ({
+      chats: state.chats.map((chat) => {
+        if (chat.id === chatId) {
+          return { ...chat, modelId: modelId };
+        }
+        return chat;
+      }),
+    }));
   },
 }));

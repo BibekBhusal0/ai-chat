@@ -12,7 +12,7 @@ interface ChatInputProps {
 
 export default function ChatInput({ chatId, modelId }: ChatInputProps) {
   const [prompt, setPrompt] = React.useState("");
-  const { simulateResponse, isLoading } = useChatStore();
+  const { simulateResponse, activeChatId, isLoading, changeModel } = useChatStore();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -40,8 +40,8 @@ export default function ChatInput({ chatId, modelId }: ChatInputProps) {
   };
 
   const handleModelChange = (newModelId: string) => {
-    // In a real app, you would update the model for the current chat
-    console.log("Model changed to:", newModelId);
+    if (!activeChatId) return null
+    changeModel(activeChatId, newModelId)
   };
 
   return (

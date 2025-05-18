@@ -114,14 +114,14 @@ export const aiModels: AiModel[] = [
     id: "gpt-4",
     name: "GPT-4",
     icon: "ri:openai-fill",
-    description: "Advanced reasoning and language generation model.",
+    description: "Advanced reasoning, text generation",
     abilities: ["reasoning"],
   },
   {
     id: "gemini-2.0-flash",
     name: "Gemini 2.0 Flash",
     icon: "ri:gemini-fill",
-    description: "Google's flagship model, known for speed and accuracy (and also web search!).",
+    description: "Google's flagship model",
     abilities: ["search", "files"],
   },
   {
@@ -144,12 +144,5 @@ export const aiModels: AiModel[] = [
     icon: "ri:claude-fill",
     description: "Smart model for complex problems",
     abilities: ["files"],
-  },
-  {
-    id: "deepseek-r1",
-    name: "DeepSeek R1",
-    icon: "arcticons:deepseek",
-    description: "Chinese model capable of reasoning",
-    abilities: ["reasoning"],
   },
 ];

@@ -1,9 +1,8 @@
 import React from "react";
-import { Button, Popover, PopoverTrigger, PopoverContent } from "@heroui/react";
+import { Button, Popover, PopoverTrigger, PopoverContent, cn, Listbox, ListboxItem } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 import { useChatStore } from "../../store/chatStore";
-import type { AiModel } from "../../types";
 
 interface ModelSelectorProps {
   selectedModelId: string;
@@ -39,38 +38,41 @@ export default function ModelSelector({ selectedModelId, onModelChange }: ModelS
       <PopoverTrigger>
         <Button
           variant="flat"
-          className="h-9 min-w-0 px-2"
+          className="min-w-0 px-2"
+          size='sm'
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <Icon icon={selectedModel.icon} className="mr-1" width={18} />
-          {isHovered && <span className="text-sm">{selectedModel.name}</span>}
+          <Icon icon={selectedModel.icon} className='-mr-2' width={18} />
+          <span className={cn("w-fit max-w-0 transform-gpu overflow-hidden transition-all duration-500", (isHovered || isOpen) && 'max-w-44')}>
+            <span className={cn("transform-gpu whitespace-nowrap text-default-500 text-sm opacity-0 transition-all pl-0 duration-500", (isHovered || isOpen) && 'opacity-100 pl-1')}>
+              {(isHovered || isOpen) && <span className="text-sm">{selectedModel.name}</span>}
+            </span>
+          </span>
         </Button>
       </PopoverTrigger>
       <PopoverContent>
         <div className="w-72 p-2">
           <h3 className="mb-2 text-sm font-medium">Select a model</h3>
-          <div className="flex flex-col gap-1">
+          <Listbox selectionMode='single' selectedKeys={[selectedModel.id]}>
             {models.map((model) => (
-              <Button
+              <ListboxItem
                 key={model.id}
                 variant="flat"
-                className={`justify-start ${model.id === selectedModelId ? "bg-default-100" : ""}`}
                 onPress={() => {
                   onModelChange(model.id);
                   setIsOpen(false);
                 }}
+                startContent={
+                  <Icon icon={model.icon} className = {model.icon} width={18} />
+
+                }
+                description={model.description}
               >
-                <div className="flex w-full items-center">
-                  <Icon icon={model.icon} className="mr-2" width={18} />
-                  <div className="flex-1 text-left">
-                    <div className="text-sm font-medium">{model.name}</div>
-                    <div className="text-xs text-default-500">{model.description}</div>
-                  </div>
-                </div>
-              </Button>
+                {model.name}
+              </ListboxItem>
             ))}
-          </div>
+          </Listbox>
 
           <div className="mt-3 border-t border-divider pt-2">
             <h4 className="mb-1 text-xs font-medium text-default-500">CAPABILITIES</h4>
