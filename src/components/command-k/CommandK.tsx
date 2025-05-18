@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 
 import { useChatStore } from "../../store/chatStore";
 import "./command-k.css";
+import { Button } from "@heroui/react";
 
 interface CommandKProps {
   open: boolean;
@@ -66,7 +67,7 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
               className="flex-1 border-none bg-transparent px-2 py-2 text-sm outline-none"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && filteredChats.length === 0 && search !== "") {
-                  const newChatId = createNewChat("gpt-3.5");
+                  const newChatId = createNewChat("gpt-4");
                   setActiveChat(newChatId);
                   simulateResponse(newChatId, search);
                   handleOpenChange(false);
@@ -80,13 +81,14 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
 
           <Command.List className="max-h-96 overflow-y-auto p-2">
             {chats.length === 0 ? (
-              <div className="py-6 text-center text-sm text-default-400">
-                No chats available.{" "}
-                <button onClick={() => createNewChat("gpt-3.5")}>Create new chat</button>
+              <div className="py-6 text-center text-sm text-default-400 ">
+                <div className='mb-4' >No chats available</div>
+                <Button onPress={() => { createNewChat("gpt-4"); handleOpenChange(false) }}>Create new chat</Button>
               </div>
             ) : filteredChats.length === 0 ? (
               <div className="py-6 text-center text-sm text-default-400">
-                No results found for "{search}" (Press Enter to create a new chat)
+                <div>No results found for "{search}"</div>
+                <div>Press Enter to create a new chat</div>
               </div>
             ) : (
               filteredChats.map((chat) => (
