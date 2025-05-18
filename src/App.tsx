@@ -8,22 +8,26 @@ import CommandK from "./components/command-k/CommandK";
 import Sidebar from "./components/sidebar";
 
 export default function App() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [commandKOpen, setCommandKOpen] = React.useState(false);
-  const { activeChatId } = useChatStore();
+  const { activeChatId, createNewChat, setActiveChat } = useChatStore();
 
-  // Handle Cmd+K keyboard shortcut
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setCommandKOpen(true);
+      } else if (e.altKey && e.key === "n") {
+        // Create new chat
+        e.preventDefault();
+        const newChatId = createNewChat("gpt-4");
+        setActiveChat(newChatId);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [isOpen, onClose, onOpen, createNewChat, setActiveChat]);
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
