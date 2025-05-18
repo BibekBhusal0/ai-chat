@@ -5,6 +5,7 @@ import { format, parseISO } from "date-fns";
 
 import { useChatStore } from "../../store/chatStore";
 import type { Message } from "../../types";
+import TypingText from "../typing-text";
 
 interface ChatMessagesProps {
   messages: Message[];
@@ -12,6 +13,13 @@ interface ChatMessagesProps {
 }
 
 export default function ChatMessages({ messages, chatId }: ChatMessagesProps) {
+  const isRecentMessage = (timestamp: string) => {
+    const messageTime = new Date(timestamp).getTime();
+    const now = Date.now();
+    const difference = now - messageTime;
+    return difference <= 1000;
+  };
+
   return (
     <div className="flex flex-col gap-6 py-4">
       {messages.length === 0 ? (
@@ -20,7 +28,12 @@ export default function ChatMessages({ messages, chatId }: ChatMessagesProps) {
         </div>
       ) : (
         messages.map((message) => (
-          <MessageItem key={message.id} message={message} chatId={chatId} />
+          <MessageItem
+            key={message.id}
+            message={message}
+            chatId={chatId}
+            isRecent={isRecentMessage(message.timestamp)}
+          />
         ))
       )}
     </div>
@@ -30,9 +43,10 @@ export default function ChatMessages({ messages, chatId }: ChatMessagesProps) {
 interface MessageItemProps {
   message: Message;
   chatId: string;
+  isRecent: boolean;
 }
 
-function MessageItem({ message, chatId }: MessageItemProps) {
+function MessageItem({ message, chatId, isRecent }: MessageItemProps) {
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedContent, setEditedContent] = React.useState(message.content);
   const { updateMessage } = useChatStore();
@@ -126,7 +140,18 @@ function MessageItem({ message, chatId }: MessageItemProps) {
       </div>
 
       <div className="group relative ml-10">
-        <div className="whitespace-pre-wrap">{message.content}</div>
+        {message.role === "assistant" && isRecent ? (
+          <TypingText
+            delay={50}
+            grow
+            smooth
+            waitTime={500}
+            text={message.content}
+            repeat={false}
+          />
+        ) : (
+          <div className="whitespace-pre-wrap">{message.content}</div>
+        )}
 
         <div className="absolute -right-2 -top-2 hidden gap-1 group-hover:flex">
           <Tooltip content="Like">
