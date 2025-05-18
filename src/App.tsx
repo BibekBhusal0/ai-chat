@@ -1,5 +1,5 @@
 import React from "react";
-import { Drawer, DrawerContent, useDisclosure } from "@heroui/react";
+import { Button, Drawer, DrawerContent, useDisclosure } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 import ChatContainer from "./components/chat/ChatContainer";
@@ -32,16 +32,18 @@ export default function App() {
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
       {/* Mobile sidebar toggle */}
-      <button
-        className="fixed left-4 top-4 z-30 rounded-full p-2 text-foreground md:hidden"
-        onClick={onOpen}
+      <Button
+        className="fixed left-4 top-2 z-30 rounded-full p-2 text-foreground md:hidden"
+        onPress={onOpen}
+        variant='flat'
+        isIconOnly
       >
         <Icon icon="lucide:menu" width={24} />
-      </button>
+      </Button>
 
       {/* Mobile drawer for sidebar */}
-      <Drawer isOpen={isOpen} onOpenChange={onOpenChange} placement="left">
-        <DrawerContent>{(onClose) => <Sidebar mobile onClose={onClose} />}</DrawerContent>
+      <Drawer isOpen={isOpen} classNames ={{closeButton: 'hidden', base: 'w-auto'}} onOpenChange={onOpenChange} placement="left">
+        <DrawerContent >{(onClose) => <Sidebar mobile onClose={onClose} />}</DrawerContent>
       </Drawer>
 
       {/* Desktop sidebar */}

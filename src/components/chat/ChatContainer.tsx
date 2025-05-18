@@ -33,7 +33,7 @@ export default function ChatContainer() {
     <div className="flex h-full flex-col">
       {activeChat && <ChatHeader chat={activeChat} />}
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 p-3 md:p-0 overflow-y-auto">
         <div className="mx-auto max-w-3xl h-full">
           {activeChat !== undefined ?
             <ChatMessages onSubmit={handleSubmit} messages={activeChat.messages} chatId={activeChat.id} /> :
@@ -43,7 +43,7 @@ export default function ChatContainer() {
         </div>
       </div>
 
-      <div className="py-2">
+      <div className="py-2 px-4 md:px-0 md:py-4">
         <div className="mx-auto max-w-3xl">
           <ChatInput onSubmit={handleSubmit} modelId={activeChat?.modelId || tempModel}
             onModelChange={(model_id) => {

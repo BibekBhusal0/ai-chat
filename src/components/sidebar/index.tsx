@@ -15,7 +15,7 @@ interface SidebarProps {
 export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: SidebarProps) {
   const { theme, setTheme } = useTheme();
   const [collapsed, setCollapsed] = React.useState(false);
-  const [selectedTab, setSelectedTab] = React.useState("all"); 
+  const [selectedTab, setSelectedTab] = React.useState("all");
 
   const { chats, models, createNewChat, setActiveChat } = useChatStore();
 
@@ -73,110 +73,110 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
     return grouped;
   }, [chats, selectedTab]);
 
-  if (collapsed) {
+  if (!collapsed || mobile) {
     return (
-      <div className="flex h-full w-16 flex-col items-center border-r border-divider bg-content1 py-4">
-        <div className="mb-8 flex justify-center">
-          <Button isIconOnly variant="light" onPress={() => setCollapsed(false)}>
-            <Icon icon="lucide:chevrons-right" width={20} />
-          </Button>
+      <div className="flex h-full w-72 flex-col border-r border-divider bg-content1">
+        <div className="flex items-center justify-between p-4">
+          <h1 className="text-xl font-semibold">AI Chat</h1>
+          {!mobile && <Button isIconOnly variant="light" onPress={() => setCollapsed(true)}>
+            <Icon icon="lucide:chevrons-left" width={20} />
+          </Button>}
         </div>
 
-        <Tooltip content="New Chat" color="primary" placement="right">
-          <Button isIconOnly color="primary" className="mb-4" onPress={handleNewChat}>
-            <Icon icon="lucide:plus" width={24} />
+        <div className="flex items-center justify-between gap-4 px-4 pb-2">
+          <Button
+            color="primary"
+            startContent={<Icon icon="lucide:plus" width={20} />}
+            className="w-full"
+            onPress={handleNewChat}
+          >
+            New Chat
           </Button>
-        </Tooltip>
 
-        <div className="mt-auto flex flex-col gap-2">
-          <Tooltip content="Toggle theme" placement="right">
-            <Button isIconOnly variant="light" onPress={toggleTheme}>
-              <Icon icon={theme === "light" ? "lucide:moon" : "lucide:sun"} width={20} />
-            </Button>
-          </Tooltip>
+          <div className="flex items-center gap-2">
+            <Tooltip content="Search chats (Cmd+K)">
+              <Button isIconOnly variant="light" onPress={onCommandKOpen}>
+                <Icon icon="lucide:search" width={20} />
+              </Button>
+            </Tooltip>
+          </div>
+        </div>
 
-          <Tooltip content="Settings" placement="right">
-            <Button isIconOnly variant="light">
-              <Icon icon="lucide:settings" width={20} />
-            </Button>
-          </Tooltip>
+        <Tabs
+          aria-label="Chat Filter"
+          selectedKey={selectedTab}
+          onSelectionChange={(e) => setSelectedTab(e as string)}
+          className="mx-auto py-1"
+          size='sm'
+        >
+          <Tab key="all" title="All Chats" />
+          <Tab key="pinned" title="Pinned Chats" />
+        </Tabs>
+
+        <Divider />
+
+        <div className="flex-1 overflow-y-auto p-2">
+          {Object.entries(groupedChats).map(([groupName, chats]) => (
+            <ChatGroup
+              title={groupName}
+              key={groupName}
+              chats={chats}
+              handleChatSelect={handleChatSelect}
+            />
+          ))}
+
+          {Object.values(groupedChats).flat().length === 0 && (
+            <div className="flex h-32 items-center justify-center">
+              <p className="text-center text-default-400">No chats found</p>
+            </div>
+          )}
+        </div>
+
+        <div className="border-t border-divider px-4 py-1">
+          <div className="flex items-center justify-between">
+            <Tooltip content="Toggle theme">
+              <Button isIconOnly variant="light" onPress={toggleTheme}>
+                <Icon icon={theme === "light" ? "lucide:moon" : "lucide:sun"} width={20} />
+              </Button>
+            </Tooltip>
+
+            <Tooltip content="Settings">
+              <Button isIconOnly variant="light">
+                <Icon icon="lucide:settings" width={20} />
+              </Button>
+            </Tooltip>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-full w-72 flex-col border-r border-divider bg-content1">
-      <div className="flex items-center justify-between p-4">
-        <h1 className="text-xl font-semibold">AI Chat</h1>
-        <Button isIconOnly variant="light" onPress={() => setCollapsed(true)}>
-          <Icon icon="lucide:chevrons-left" width={20} />
+    <div className="flex h-full w-16 flex-col items-center border-r border-divider bg-content1 py-4">
+      <div className="mb-8 flex justify-center">
+        <Button isIconOnly variant="light" onPress={() => setCollapsed(false)}>
+          <Icon icon="lucide:chevrons-right" width={20} />
         </Button>
       </div>
 
-      <div className="flex items-center justify-between gap-4 px-4 pb-2">
-        <Button
-          color="primary"
-          startContent={<Icon icon="lucide:plus" width={20} />}
-          className="w-full"
-          onPress={handleNewChat}
-        >
-          New Chat
+      <Tooltip content="New Chat" color="primary" placement="right">
+        <Button isIconOnly color="primary" className="mb-4" onPress={handleNewChat}>
+          <Icon icon="lucide:plus" width={24} />
         </Button>
+      </Tooltip>
 
-        <div className="flex items-center gap-2">
-          <Tooltip content="Search chats (Cmd+K)">
-            <Button isIconOnly variant="light" onPress={onCommandKOpen}>
-              <Icon icon="lucide:search" width={20} />
-            </Button>
-          </Tooltip>
-        </div>
-      </div>
+      <div className="mt-auto flex flex-col gap-2">
+        <Tooltip content="Toggle theme" placement="right">
+          <Button isIconOnly variant="light" onPress={toggleTheme}>
+            <Icon icon={theme === "light" ? "lucide:moon" : "lucide:sun"} width={20} />
+          </Button>
+        </Tooltip>
 
-      <Tabs
-        aria-label="Chat Filter"
-        selectedKey={selectedTab}
-        onSelectionChange ={(e)=>setSelectedTab(e as string)}
-        className="mx-auto py-1"
-        size = 'sm'
-      >
-        <Tab key="all" title="All Chats" />
-        <Tab key="pinned" title="Pinned Chats" />
-      </Tabs>
-
-      <Divider />
-
-      <div className="flex-1 overflow-y-auto p-2">
-        {Object.entries(groupedChats).map(([groupName, chats]) => (
-          <ChatGroup
-            title={groupName}
-            key={groupName}
-            chats={chats}
-            handleChatSelect={handleChatSelect}
-          />
-        ))}
-
-        {Object.values(groupedChats).flat().length === 0 && (
-          <div className="flex h-32 items-center justify-center">
-            <p className="text-center text-default-400">No chats found</p>
-          </div>
-        )}
-      </div>
-
-      <div className="border-t border-divider px-4 py-1">
-        <div className="flex items-center justify-between">
-          <Tooltip content="Toggle theme">
-            <Button isIconOnly variant="light" onPress={toggleTheme}>
-              <Icon icon={theme === "light" ? "lucide:moon" : "lucide:sun"} width={20} />
-            </Button>
-          </Tooltip>
-
-          <Tooltip content="Settings">
-            <Button isIconOnly variant="light">
-              <Icon icon="lucide:settings" width={20} />
-            </Button>
-          </Tooltip>
-        </div>
+        <Tooltip content="Settings" placement="right">
+          <Button isIconOnly variant="light">
+            <Icon icon="lucide:settings" width={20} />
+          </Button>
+        </Tooltip>
       </div>
     </div>
   );
