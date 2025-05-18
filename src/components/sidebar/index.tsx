@@ -75,7 +75,7 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
 
   if (!collapsed || mobile) {
     return (
-      <div className="flex h-full w-72 flex-col border-r border-divider bg-content1">
+      <div className="flex h-full w-72 flex-col border-r border-divider bg-default-50">
         <div className="flex items-center justify-between p-4">
           <h1 className="text-xl font-semibold">AI Chat</h1>
           {!mobile && (

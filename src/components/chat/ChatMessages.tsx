@@ -119,7 +119,7 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
           </div>
         </Card>
       ) : (
-        <div className="group relative mr-10 max-w-[80%] rounded-xl bg-primary-50 p-4 text-right">
+        <div className="group relative mr-10 max-w-[80%] rounded-xl bg-primary-400 px-4 py-2 text-right">
           <div className="whitespace-pre-wrap">{message.content}</div>
           <MessageItemButtons buttons={userButtons} align="right" />
         </div>
@@ -171,10 +171,9 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
   return (
     <div className="flex w-full flex-col items-start">
       <span className="ml-10 text-xs text-default-400">{formattedTime}</span>
-      <div className="group relative ml-10 w-full max-w-[80%] rounded-xl bg-default-100 p-4 text-left">
+      <div className="group relative ml-10 w-full max-w-[80%] rounded-xl bg-default-200 px-4 py-2 text-left">
         {message.role === "assistant" && isRecent ? (
           <TypingText
-            className="bg-default-100"
             delay={50}
             smooth
             waitTime={500}
@@ -200,11 +199,11 @@ interface MessageItemButtonsProps {
 }
 
 function MessageItemButtons({ buttons, align }: MessageItemButtonsProps) {
-  const alignmentClass = align === "left" ? "justify-start -ml-4" : "justify-end pr-4";
+  const alignmentClass = align === "left" ? "left-2" : "-right-1";
   return (
     <div
       className={cn(
-        "absolute -bottom-8 flex w-full gap-1 opacity-0 transition-opacity group-hover:opacity-100",
+        "absolute -bottom-8 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100",
         alignmentClass
       )}
     >
@@ -213,8 +212,8 @@ function MessageItemButtons({ buttons, align }: MessageItemButtonsProps) {
           <Button
             isIconOnly
             size="sm"
-            variant="flat"
-            className="h-7 w-7 min-w-0 bg-default-100"
+            variant="shadow"
+            className="h-7 w-7 min-w-0"
             onPress={button.onClick}
           >
             <Icon icon={button.icon} width={14} />

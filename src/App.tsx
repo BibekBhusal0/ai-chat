@@ -30,7 +30,7 @@ export default function App() {
   }, [isOpen, onClose, onOpen, createNewChat, setActiveChat]);
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-background">
+    <div className="flex h-screen w-full overflow-hidden bg-default-100">
       {/* Mobile sidebar toggle */}
       <Button
         className="fixed left-4 top-2 z-30 rounded-full p-2 text-foreground md:hidden"

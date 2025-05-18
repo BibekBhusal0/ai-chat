@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Textarea, Tooltip } from "@heroui/react";
+import { Button, cn, Textarea, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 import { useChatStore } from "../../store/chatStore";
@@ -35,7 +35,8 @@ export default function ChatInput({ onSubmit, onModelChange, modelId }: ChatInpu
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative flex w-full flex-col items-start rounded-medium bg-default-100 transition-colors hover:bg-default-200/70"
+      className={cn("relative w-full rounded-medium bg-default-100",
+        "flex flex-col items-start", 'border-2 border-default-300 focus-within:border-default-600 transition-border')}
     >
       <Textarea
         placeholder="Ask me anything ..."

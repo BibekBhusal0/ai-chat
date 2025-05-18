@@ -20,7 +20,7 @@
 }
 
 .command-k [cmdk-item][aria-selected="true"] {
-  background: hsl(var(--heroui-default-100));
+  background: hsl(var(--heroui-primary-400));
 }
 
 .command-k [cmdk-group-heading] {
