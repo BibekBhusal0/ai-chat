@@ -8,6 +8,11 @@ import {
   ModalFooter,
   useDisclosure,
   cn,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Listbox, ListboxItemProps,
+  ListboxItem
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
@@ -21,14 +26,15 @@ interface ChatItemProps {
 }
 
 export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [isHovered, setIsHovered] = React.useState(false);
+  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalOpenChange } = useDisclosure();
   const { togglePinChat, deleteChat, models } = useChatStore();
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
   const model = models.find((m) => m.id === chat.modelId);
 
   const handleDelete = () => {
-    onOpen();
+    onDeleteModalOpen();
+    setIsPopoverOpen(false)
   };
 
   const confirmDelete = () => {
@@ -39,61 +45,92 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
     togglePinChat(chat.id);
   };
 
+
+  const buttonConfigs: (Omit<ListboxItemProps, 'startContent'> & { startContent: string, onPress: any })[] = [
+    {
+      children: chat.pinned ? "Unpin" : "Pin",
+      startContent: chat.pinned ? "lucide:pin-off" : "lucide:pin",
+      onPress: handlePin,
+    },
+    {
+      children: "Share",
+      startContent: "lucide:share",
+      onPress: null,
+    },
+    {
+      children: "Export",
+      startContent: "lucide:download",
+      onPress: null,
+    },
+    {
+      children: "Delete",
+      startContent: "lucide:trash-2",
+      onPress: handleDelete,
+      className: 'text-danger',
+      color: 'danger'
+    },
+  ];
+  const commonProps: ListboxItemProps = {
+    classNames: { title: 'text-md', }
+  }
+
   return (
     <>
+
       <div
-        className={cn(
-          `group relative mb-1 flex cursor-pointer items-center rounded-md p-2`,
-          isActive ? "bg-default-100" : "hover:bg-default-50"
-        )}
-        onClick={onClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className='relative group'
       >
-        <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-default-100">
-          <Icon icon={model?.icon || "lucide:message-square"} width={16} />
+        <div
+          className={cn(
+            `relative mb-1 flex cursor-pointer items-center rounded-md p-2`,
+            isActive ? "bg-default-100" : "hover:bg-default-50"
+          )}
+          onClick={onClick}
+        >
+          <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-default-100">
+            <Icon icon={model?.icon || "lucide:message-square"} width={16} />
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <div className="flex items-center justify-between">
+              <p className="truncate text-sm font-medium">{chat.title}</p>
+            </div>
+            <p className="truncate text-xs text-default-500">
+              {chat.messages[chat.messages.length - 1]?.content.substring(0, 30) || "New chat"}
+              {chat.messages[chat.messages.length - 1]?.content.length > 30 ? "..." : ""}
+            </p>
+          </div>
         </div>
 
-        <div className="flex-1 overflow-hidden">
-          <div className="flex items-center justify-between">
-            <p className="truncate text-sm font-medium">{chat.title}</p>
-          </div>
-          <p className="truncate text-xs text-default-500">
-            {chat.messages[chat.messages.length - 1]?.content.substring(0, 30) || "New chat"}
-            {chat.messages[chat.messages.length - 1]?.content.length > 30 ? "..." : ""}
-          </p>
-        </div>
-
-        {isHovered && (
-          <div className="absolute right-2 top-2 flex gap-1">
+        <Popover isOpen={isPopoverOpen} onOpenChange={setIsPopoverOpen} placement="right-start">
+          <PopoverTrigger asChild>
             <Button
               isIconOnly
+              className='absolute right-2  top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200'
               size="sm"
               variant="light"
-              className="h-6 w-6 min-w-0 bg-default-100"
-              onPress={handlePin}
+              aria-label="More actions"
+              onPress={() => setIsPopoverOpen(!isPopoverOpen)}
             >
-              <Icon
-                icon={chat.pinned ? "lucide:pin-off" : "lucide:pin"}
-                className={chat.pinned ? "text-primary" : ""}
-                width={14}
-              />
+              <Icon width={17} icon="lucide:more-vertical" />
             </Button>
-
-            <Button
-              isIconOnly
-              size="sm"
-              variant="light"
-              className="h-6 w-6 min-w-0 bg-default-100"
-              onPress={handleDelete}
-            >
-              <Icon icon="lucide:trash-2" width={14} />
-            </Button>
-          </div>
-        )}
+          </PopoverTrigger>
+          <PopoverContent className="p-0">
+            <Listbox className="">
+              {buttonConfigs.map((buttonConfig, index) => (
+                <ListboxItem
+                  key={index}
+                  {...commonProps}
+                  {...buttonConfig}
+                  className={cn(commonProps.className, buttonConfig.className,)}
+                  startContent={<Icon width={16} icon={buttonConfig.startContent} />}
+                />
+              ))}
+            </Listbox>
+          </PopoverContent>
+        </Popover>
       </div>
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal isOpen={isDeleteModalOpen} onOpenChange={onDeleteModalOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
