@@ -27,13 +27,9 @@ export default function ChatMessages({ messages, chatId }: ChatMessagesProps) {
           <p className="text-center text-default-400">No messages yet. Start a conversation!</p>
         </div>
       ) : (
-        messages.map((message) => (
+        messages.map((message) =>
           message.role === "user" ? (
-            <UserMessageItem
-              key={message.id}
-              message={message}
-              chatId={chatId}
-            />
+            <UserMessageItem key={message.id} message={message} chatId={chatId} />
           ) : (
             <AssistantMessageItem
               key={message.id}
@@ -41,7 +37,7 @@ export default function ChatMessages({ messages, chatId }: ChatMessagesProps) {
               isRecent={isRecentMessage(message.timestamp)}
             />
           )
-        ))
+        )
       )}
     </div>
   );
@@ -117,7 +113,7 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
           </div>
         </Card>
       ) : (
-        <div className="group relative mr-10 rounded-xl bg-primary-50 max-w-[80%] p-4 text-right">
+        <div className="group relative mr-10 max-w-[80%] rounded-xl bg-primary-50 p-4 text-right">
           <div className="whitespace-pre-wrap">{message.content}</div>
           <MessageItemButtons buttons={userButtons} align="right" />
         </div>
@@ -169,9 +165,16 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
   return (
     <div className="flex w-full flex-col items-start">
       <span className="ml-10 text-xs text-default-400">{formattedTime}</span>
-      <div className="group relative ml-10 rounded-xl max-w-[80%] w-full bg-default-100 p-4 text-left">
+      <div className="group relative ml-10 w-full max-w-[80%] rounded-xl bg-default-100 p-4 text-left">
         {message.role === "assistant" && isRecent ? (
-          <TypingText className='bg-default-100' delay={50} smooth waitTime={500} text={message.content} repeat={false} />
+          <TypingText
+            className="bg-default-100"
+            delay={50}
+            smooth
+            waitTime={500}
+            text={message.content}
+            repeat={false}
+          />
         ) : (
           <div className="whitespace-pre-wrap">{message.content}</div>
         )}
@@ -193,7 +196,12 @@ interface MessageItemButtonsProps {
 function MessageItemButtons({ buttons, align }: MessageItemButtonsProps) {
   const alignmentClass = align === "left" ? "justify-start -ml-4" : "justify-end pr-4";
   return (
-    <div className={cn('absolute -bottom-8 flex w-full gap-1 opacity-0 group-hover:opacity-100 transition-opacity', alignmentClass)}>
+    <div
+      className={cn(
+        "absolute -bottom-8 flex w-full gap-1 opacity-0 transition-opacity group-hover:opacity-100",
+        alignmentClass
+      )}
+    >
       {buttons.map((button, index) => (
         <Tooltip key={index} content={button.content}>
           <Button

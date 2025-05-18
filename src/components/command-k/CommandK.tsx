@@ -33,9 +33,7 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
 
   const filteredChats = React.useMemo(() => {
     if (!search) return chats;
-    return chats.filter((chat) =>
-      chat.title.toLowerCase().includes(search.toLowerCase())
-    );
+    return chats.filter((chat) => chat.title.toLowerCase().includes(search.toLowerCase()));
   }, [chats, search]);
   if (!open) return null;
 
@@ -70,7 +68,7 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
                 if (e.key === "Enter" && filteredChats.length === 0 && search !== "") {
                   const newChatId = createNewChat("gpt-3.5");
                   setActiveChat(newChatId);
-                  simulateResponse(newChatId , search)
+                  simulateResponse(newChatId, search);
                   handleOpenChange(false);
                 }
               }}
@@ -84,9 +82,7 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
             {chats.length === 0 ? (
               <div className="py-6 text-center text-sm text-default-400">
                 No chats available.{" "}
-                <button onClick={() => createNewChat("gpt-3.5")}>
-                  Create new chat
-                </button>
+                <button onClick={() => createNewChat("gpt-3.5")}>Create new chat</button>
               </div>
             ) : filteredChats.length === 0 ? (
               <div className="py-6 text-center text-sm text-default-400">
