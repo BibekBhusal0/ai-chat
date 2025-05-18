@@ -1,12 +1,18 @@
-import React, { useRef } from "react";
+import React, { ReactNode, useRef } from "react";
 import { Button, Tooltip, Textarea, Card, cn, CardBody, CardFooter } from "@heroui/react";
-import { Icon } from "@iconify/react";
 import { format, parseISO } from "date-fns";
 
 import { useChatStore } from "../../store/chatStore";
 import type { Message } from "../../types";
 import TypingText from "../typing-text";
 import ChatMessageEmpty from "./ChatMessageEmpty.tsx";
+import { IconButton } from "../iconButton.tsx";
+import { RefreshCWIcon } from "../icon/refresh.tsx";
+import { CheckIcon } from "../icon/check.tsx";
+import { SquarePenIcon } from "../icon/pen.tsx";
+import { CopyIcon } from "../icon/copy.tsx";
+import { LikeIcon, LikeIconFilled } from "../icon/like.tsx";
+import { DislikeIcon, DislikeIconFilled } from "../icon/dislike.tsx";
 
 interface ChatMessagesProps {
   messages: Message[];
@@ -121,20 +127,20 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
     await simulateResponse(chatId, message.content);
   };
 
-  const userButtons = [
+  const userButtons: smallButton[] = [
     {
       content: "Edit",
-      icon: "lucide:pencil",
+      icon: <SquarePenIcon />,
       onClick: () => setIsEditing(true),
     },
     {
       content: "Copy",
-      icon: isCopied ? "lucide:check" : "lucide:copy",
+      icon: isCopied ? < CheckIcon /> : <CopyIcon />,
       onClick: handleCopyToClipboard,
     },
     {
       content: "Regenerate",
-      icon: "lucide:refresh-cw",
+      icon: <RefreshCWIcon />,
       onClick: handleRegenerate,
     },
   ];
@@ -214,17 +220,17 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
   const assistantButtons = [
     {
       content: "Like",
-      icon: isLiked ? "codicon:thumbsup-filled" : "codicon:thumbsup",
+      icon: isLiked ? <LikeIconFilled /> : <LikeIcon />,
       onClick: handleLike,
     },
     {
       content: "Dislike",
-      icon: isDisliked ? "codicon:thumbsdown-filled" : "codicon:thumbsdown",
+      icon: isDisliked ? <DislikeIconFilled /> : <DislikeIcon />,
       onClick: handleDislike,
     },
     {
       content: "Copy",
-      icon: isCopied ? "lucide:check" : "lucide:copy",
+      icon: isCopied ? <CheckIcon /> : <CopyIcon />,
       onClick: handleCopyToClipboard,
     },
     {
@@ -264,12 +270,13 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
   );
 }
 
+type smallButton = {
+  content: string;
+  icon: string | ReactNode;
+  onClick: () => void;
+}
 interface MessageItemButtonsProps {
-  buttons: {
-    content: string;
-    icon: string;
-    onClick: () => void;
-  }[];
+  buttons: smallButton[];
   align: "left" | "right";
 }
 
@@ -284,15 +291,15 @@ function MessageItemButtons({ buttons, align }: MessageItemButtonsProps) {
     >
       {buttons.map((button, index) => (
         <Tooltip key={index} content={button.content}>
-          <Button
+          <IconButton
+            icon={button.icon}
             isIconOnly
             size="sm"
             variant="shadow"
             className="h-7 w-7 min-w-0"
             onPress={button.onClick}
-          >
-            <Icon icon={button.icon} width={14} />
-          </Button>
+            iconSize={14}
+          />
         </Tooltip>
       ))}
     </div>

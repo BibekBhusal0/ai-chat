@@ -11,14 +11,13 @@ import {
   cn,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-
 import { useChatStore } from "../../store/chatStore";
 import type { ChatSession } from "../../types";
-import { AnimatedIconButton } from "../animatedButton";
 import { DownloadIcon } from "../icon/donwload";
 import { UploadIcon } from "../icon/upload";
 import { DeleteIcon } from "../icon/delete";
 import { ReactNode } from "react";
+import { IconButton } from "../iconButton";
 
 interface ChatHeaderProps {
   chat: ChatSession;
@@ -80,22 +79,9 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
       </div>
 
       <div className="flex items-center gap-2">
-        {buttonConfigs.map((buttonConfig, index) => (
-          <Tooltip key={index} content={buttonConfig.tooltip}>
-            {typeof buttonConfig.icon === 'string' ?
-              <Button
-                {...commonButonProps}
-                {...buttonConfig}
-                className={cn(commonButonProps.className, buttonConfig.className)}
-              >
-                <Icon icon={buttonConfig.icon} />
-              </Button>
-              : <AnimatedIconButton
-                {...commonButonProps}
-                {...buttonConfig}
-                className={cn(commonButonProps.className, buttonConfig.className)}
-                iconSize={18} icon={buttonConfig.icon} />
-            }
+        {buttonConfigs.map(({ tooltip, ...props }, index) => (
+          <Tooltip key={index} content={tooltip}>
+            <IconButton iconSize={18}  {...commonButonProps} {...props} className={cn(commonButonProps.className, props.className)} />
           </Tooltip>
         ))}
       </div>
