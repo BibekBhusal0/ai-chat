@@ -45,7 +45,7 @@ export default function ChatContainer() {
         </div>
       </div>
 
-      <div className="border-t border-divider p-4">
+      <div className="py-2">
         <div className="mx-auto max-w-3xl">
           <ChatInput chatId={activeChat.id} modelId={activeChat.modelId} />
         </div>

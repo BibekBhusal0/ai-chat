@@ -45,55 +45,56 @@ export default function ChatInput({ chatId, modelId }: ChatInputProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-      <div className="relative rounded-lg border border-divider bg-content1">
-        <Textarea
-          ref={textareaRef}
-          value={prompt}
-          onValueChange={setPrompt}
-          placeholder="Message the AI..."
-          minRows={2}
-          maxRows={8}
-          onKeyDown={handleKeyDown}
-          classNames={{
-            inputWrapper: "shadow-none",
-            input: "pr-12",
-          }}
-          disabled={isLoading}
-        />
+    <form onSubmit={handleSubmit} className="flex w-full flex-col items-start rounded-medium bg-default-100 transition-colors hover:bg-default-200/70 relative">
+      <Textarea
+        placeholder='Ask me anything ...'
+        variant='flat'
+        ref={textareaRef}
+        value={prompt}
+        onValueChange={setPrompt}
+        minRows={2}
+        maxRows={5}
+        onKeyDown={handleKeyDown}
+        classNames={{
+          base: "w-full",
+          inputWrapper: "!bg-transparent shadow-none  ",
+          innerWrapper: "relative",
+          input: "pt-1 pl-2 pb-6 !pr-10 text-medium ",
+        }}
+        disabled={isLoading}
+      />
 
-        <div className="absolute bottom-2 right-2">
-          <Button
-            isIconOnly
-            type="submit"
-            color={prompt.trim() ? "primary" : "default"}
-            isDisabled={!prompt.trim() || isLoading}
-            size="sm"
-          >
-            <Icon icon="lucide:send" width={16} />
-          </Button>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between">
+      <div className="flex w-full px-3 pb-3 items-center justify-between">
         <div className="flex items-center gap-2">
           <ModelSelector selectedModelId={modelId} onModelChange={handleModelChange} />
 
           <Tooltip content="Upload file">
-            <Button isIconOnly variant="flat" className="h-9 min-w-0 px-2">
+            <Button isIconOnly variant="flat" size='sm'>
               <Icon icon="lucide:paperclip" width={18} />
             </Button>
           </Tooltip>
 
           <Tooltip content="Voice input">
-            <Button isIconOnly variant="flat" className="h-9 min-w-0 px-2">
+            <Button isIconOnly variant="flat" size='sm'>
               <Icon icon="lucide:mic" width={18} />
             </Button>
           </Tooltip>
         </div>
 
+        <div className="flex items-center gap-2">
         <div className="text-xs text-default-400">
+
           {prompt.length > 0 ? `${prompt.length} characters` : ""}
+          </div>
+<Button
+          isIconOnly
+          type="submit"
+          color={prompt.trim() ? "primary" : "default"}
+          isDisabled={!prompt.trim() || isLoading}
+          size="sm"
+        >
+          <Icon icon="lucide:send" width={16} />
+        </Button>
         </div>
       </div>
     </form>
