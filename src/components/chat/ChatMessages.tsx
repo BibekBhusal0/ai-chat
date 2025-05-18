@@ -37,7 +37,7 @@ export default function ChatMessages({
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="flex h-full flex-col gap-6" ref={messagesContainerRef}>
+    <div className="flex h-full flex-col gap-6 pt-2" ref={messagesContainerRef}>
       {messages.length === 0 ? (
         <ChatMessageEmpty onSubmit={onSubmit} />
       ) : (
