@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Tooltip, Textarea, Card, cn, Spinner } from "@heroui/react";
+import { Button, Tooltip, Textarea, Card, cn, } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { format, parseISO } from "date-fns";
 
@@ -15,7 +15,6 @@ interface ChatMessagesProps {
 }
 
 export default function ChatMessages({ messages, chatId, onSubmit }: ChatMessagesProps) {
-  const { isLoading } = useChatStore();
   const isRecentMessage = (timestamp: string) => {
     const messageTime = new Date(timestamp).getTime();
     const now = Date.now();
@@ -39,11 +38,6 @@ export default function ChatMessages({ messages, chatId, onSubmit }: ChatMessage
             />
           )
         )
-      )}
-      {isLoading && (
-        <div className="flex justify-center py-4">
-          <Spinner size="md" />
-        </div>
       )}
     </div>
   );

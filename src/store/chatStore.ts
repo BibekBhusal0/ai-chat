@@ -6,7 +6,6 @@ interface ChatState {
   chats: ChatSession[];
   activeChatId: string | null;
   models: AiModel[];
-  isLoading: boolean;
 
   // Actions
   setActiveChat: (id: string) => void;
@@ -148,7 +147,6 @@ export const useChatStore = create<ChatState>((set, get) => ({
   chats: [...chatHistory],
   activeChatId: null,
   models: [...aiModels],
-  isLoading: false,
 
   setActiveChat: (id) => {
     set({ activeChatId: id });
@@ -246,15 +244,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
     // First add the user message
     get().addMessage(chatId, prompt, "user");
 
-    // Set loading state
-    set({ isLoading: true });
 
     // Find the current chat to get the model
     const chat = get().chats.find((c) => c.id === chatId);
-    if (!chat) {
-      set({ isLoading: false });
-      return;
-    }
+    if (!chat) return;
 
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -281,8 +274,6 @@ export const useChatStore = create<ChatState>((set, get) => ({
     // Add the assistant's response
     get().addMessage(chatId, response, "assistant");
 
-    // Clear loading state
-    set({ isLoading: false });
   },
 
   changeModel: (chatId, modelId) => {

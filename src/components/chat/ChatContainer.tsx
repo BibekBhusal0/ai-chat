@@ -14,7 +14,6 @@ export default function ChatContainer() {
     createNewChat,
     changeModel,
     setActiveChat,
-    isLoading,
   } = useChatStore();
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const [tempModel, setTempModel] = useState("gpt-4");
@@ -26,7 +25,7 @@ export default function ChatContainer() {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [activeChat?.messages, isLoading]);
+  }, [activeChat?.messages,]);
 
   const handleSubmit = (message: string) => {
     if (activeChat?.id) simulateResponse(activeChat.id, message);

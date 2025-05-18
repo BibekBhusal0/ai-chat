@@ -1,8 +1,6 @@
 import React from "react";
 import { Button, cn, Textarea, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
-
-import { useChatStore } from "../../store/chatStore";
 import ModelSelector from "../models/ModelSelector";
 
 interface ChatInputProps {
@@ -13,12 +11,11 @@ interface ChatInputProps {
 
 export default function ChatInput({ onSubmit, onModelChange, modelId }: ChatInputProps) {
   const [prompt, setPrompt] = React.useState("");
-  const { isLoading } = useChatStore();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!prompt.trim() || isLoading) return;
+    if (!prompt.trim()) return;
 
     onSubmit(prompt);
     setPrompt("");
@@ -51,7 +48,6 @@ export default function ChatInput({ onSubmit, onModelChange, modelId }: ChatInpu
           innerWrapper: "relative",
           input: "pt-1 pl-2 pb-6 !pr-10 text-medium ",
         }}
-        disabled={isLoading}
       />
 
       <div className="flex w-full items-center justify-between px-3 pb-3">
@@ -79,7 +75,7 @@ export default function ChatInput({ onSubmit, onModelChange, modelId }: ChatInpu
             isIconOnly
             type="submit"
             color={prompt.trim() ? "primary" : "default"}
-            isDisabled={!prompt.trim() || isLoading}
+            isDisabled={!prompt.trim()}
             size="sm"
           >
             <Icon icon="lucide:send" width={16} />
