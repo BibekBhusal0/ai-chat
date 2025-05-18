@@ -1,13 +1,13 @@
 import React from "react";
 import { Button, Divider, Tooltip, Tabs, Tab } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { useTheme } from "@heroui/use-theme";
 import { isToday, isYesterday, isThisWeek, isThisMonth, parseISO } from "date-fns";
 import { useChatStore } from "../../store/chatStore";
 import { ChatGroup } from "./chatGroup";
 import { AnimatedIconButton } from "../animatedButton";
 import { SearchIcon } from "../icon/search";
 import { SettingsGearIcon } from "../icon/settings";
+import ThemeSwitch from "../theme-switch";
 
 interface SidebarProps {
   mobile?: boolean;
@@ -16,7 +16,6 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: SidebarProps) {
-  const { theme, setTheme } = useTheme();
   const [collapsed, setCollapsed] = React.useState(false);
   const [selectedTab, setSelectedTab] = React.useState("all");
 
@@ -32,10 +31,6 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
   const handleChatSelect = (id: string) => {
     setActiveChat(id);
     if (mobile && onClose) onClose();
-  };
-
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
   };
 
   // Group chats by date category
@@ -137,11 +132,7 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
 
         <div className="border-t border-divider px-4 py-1">
           <div className="flex items-center justify-between">
-            <Tooltip content="Toggle theme">
-              <Button isIconOnly variant="light" onPress={toggleTheme}>
-                <Icon icon={theme === "light" ? "lucide:moon" : "lucide:sun"} width={20} />
-              </Button>
-            </Tooltip>
+            <ThemeSwitch />
 
             <Tooltip content="Settings">
               <AnimatedIconButton icon={<SettingsGearIcon />} variant="light" />
@@ -167,12 +158,7 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
       </Tooltip>
 
       <div className="mt-auto flex flex-col gap-2">
-        <Tooltip content="Toggle theme" placement="right">
-          <Button isIconOnly variant="light" onPress={toggleTheme}>
-            <Icon icon={theme === "light" ? "lucide:moon" : "lucide:sun"} width={20} />
-          </Button>
-        </Tooltip>
-
+        <ThemeSwitch />
         <Tooltip content="Settings" placement="right">
           <Button isIconOnly variant="light">
             <Icon icon="lucide:settings" width={20} />
