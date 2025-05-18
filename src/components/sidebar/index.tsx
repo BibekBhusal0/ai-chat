@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Divider, Tooltip, Switch } from "@heroui/react";
+import { Button, Divider, Tooltip, Tabs, Tab } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useTheme } from "@heroui/use-theme";
 import { isToday, isYesterday, isThisWeek, isThisMonth, parseISO } from "date-fns";
@@ -15,7 +15,7 @@ interface SidebarProps {
 export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: SidebarProps) {
   const { theme, setTheme } = useTheme();
   const [collapsed, setCollapsed] = React.useState(false);
-  const [showPinnedOnly, setShowPinnedOnly] = React.useState(false);
+  const [selectedTab, setSelectedTab] = React.useState("all"); 
 
   const { chats, models, createNewChat, setActiveChat } = useChatStore();
 
@@ -38,7 +38,7 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
   // Group chats by date category
   const groupedChats = React.useMemo(() => {
     // Filter chats based on pinned status if needed
-    const filteredChats = showPinnedOnly ? chats.filter((chat) => chat.pinned) : chats;
+    const filteredChats = selectedTab === "pinned" ? chats.filter((chat) => chat.pinned) : chats;
 
     // First separate pinned chats
     const pinnedChats = filteredChats.filter((chat) => chat.pinned);
@@ -71,7 +71,7 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
     });
 
     return grouped;
-  }, [chats, showPinnedOnly]);
+  }, [chats, selectedTab]);
 
   if (collapsed) {
     return (
@@ -133,10 +133,16 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
         </div>
       </div>
 
-      <div className="flex items-center justify-between px-4 py-2">
-        <span className="text-sm text-default-600">Show pinned only</span>
-        <Switch size="sm" isSelected={showPinnedOnly} onValueChange={setShowPinnedOnly} />
-      </div>
+      <Tabs
+        aria-label="Chat Filter"
+        selectedKey={selectedTab}
+        onSelectionChange ={(e)=>setSelectedTab(e as string)}
+        className="mx-auto py-1"
+        size = 'sm'
+      >
+        <Tab key="all" title="All Chats" />
+        <Tab key="pinned" title="Pinned Chats" />
+      </Tabs>
 
       <Divider />
 
@@ -157,7 +163,7 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
         )}
       </div>
 
-      <div className="border-t border-divider p-4">
+      <div className="border-t border-divider px-4 py-1">
         <div className="flex items-center justify-between">
           <Tooltip content="Toggle theme">
             <Button isIconOnly variant="light" onPress={toggleTheme}>
