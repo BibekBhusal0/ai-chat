@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Tooltip, Textarea, Card } from "@heroui/react";
+import { Button, Tooltip, Textarea, Card, cn } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { format, parseISO } from "date-fns";
 
@@ -27,7 +27,7 @@ export default function ChatMessages({ messages, chatId }: ChatMessagesProps) {
           <p className="text-center text-default-400">No messages yet. Start a conversation!</p>
         </div>
       ) : (
-        messages.map((message) =>
+        messages.map((message) => (
           message.role === "user" ? (
             <UserMessageItem
               key={message.id}
@@ -41,7 +41,7 @@ export default function ChatMessages({ messages, chatId }: ChatMessagesProps) {
               isRecent={isRecentMessage(message.timestamp)}
             />
           )
-        )
+        ))
       )}
     </div>
   );
@@ -56,6 +56,7 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedContent, setEditedContent] = React.useState(message.content);
   const { updateMessage } = useChatStore();
+  const [isCopied, setIsCopied] = React.useState(false);
 
   const formattedTime = format(parseISO(message.timestamp), "h:mm a");
 
@@ -69,11 +70,24 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
     setIsEditing(false);
   };
 
+  const handleCopyToClipboard = () => {
+    navigator.clipboard.writeText(message.content);
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1500);
+  };
+
   const userButtons = [
     {
       content: "Edit",
       icon: "lucide:pencil",
       onClick: () => setIsEditing(true),
+    },
+    {
+      content: "Copy",
+      icon: isCopied ? "lucide:check" : "lucide:copy",
+      onClick: handleCopyToClipboard,
     },
     {
       content: "Regenerate",
@@ -83,17 +97,10 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
   ];
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white">
-          <Icon icon="lucide:user" width={16} />
-        </div>
-        <span className="font-medium">You</span>
-        <span className="text-xs text-default-400">{formattedTime}</span>
-      </div>
-
+    <div className="flex w-full flex-col items-end">
+      <span className="mr-10 text-xs text-default-400">{formattedTime}</span>
       {isEditing ? (
-        <Card className="ml-10">
+        <Card className="mr-10">
           <Textarea
             value={editedContent}
             onValueChange={setEditedContent}
@@ -110,9 +117,9 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
           </div>
         </Card>
       ) : (
-        <div className="group relative ml-10">
+        <div className="group relative mr-10 rounded-xl bg-primary-50 max-w-[80%] p-4 text-right">
           <div className="whitespace-pre-wrap">{message.content}</div>
-          <MessageItemButtons buttons={userButtons} />
+          <MessageItemButtons buttons={userButtons} align="right" />
         </div>
       )}
     </div>
@@ -125,10 +132,15 @@ interface AssistantMessageItemProps {
 }
 
 function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) {
+  const [isCopied, setIsCopied] = React.useState(false);
   const formattedTime = format(parseISO(message.timestamp), "h:mm a");
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(message.content);
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1500);
   };
 
   const assistantButtons = [
@@ -144,7 +156,7 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
     },
     {
       content: "Copy",
-      icon: "lucide:copy",
+      icon: isCopied ? "lucide:check" : "lucide:copy",
       onClick: handleCopyToClipboard,
     },
     {
@@ -155,22 +167,15 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
   ];
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-default-100">
-          <Icon icon="lucide:bot" width={16} />
-        </div>
-        <span className="font-medium">AI Assistant</span>
-        <span className="text-xs text-default-400">{formattedTime}</span>
-      </div>
-
-      <div className="group relative ml-10">
+    <div className="flex w-full flex-col items-start">
+      <span className="ml-10 text-xs text-default-400">{formattedTime}</span>
+      <div className="group relative ml-10 rounded-xl max-w-[80%] bg-default-100 p-4 text-left">
         {message.role === "assistant" && isRecent ? (
-          <TypingText delay={50} grow smooth waitTime={500} text={message.content} repeat={false} />
+          <TypingText className='bg-default-100' delay={50} smooth waitTime={500} text={message.content} repeat={false} />
         ) : (
           <div className="whitespace-pre-wrap">{message.content}</div>
         )}
-        <MessageItemButtons buttons={assistantButtons} />
+        <MessageItemButtons buttons={assistantButtons} align="left" />
       </div>
     </div>
   );
@@ -182,11 +187,13 @@ interface MessageItemButtonsProps {
     icon: string;
     onClick: () => void;
   }[];
+  align: "left" | "right";
 }
 
-function MessageItemButtons({ buttons }: MessageItemButtonsProps) {
+function MessageItemButtons({ buttons, align }: MessageItemButtonsProps) {
+  const alignmentClass = align === "left" ? "justify-start -ml-4" : "justify-end pr-4";
   return (
-    <div className="absolute -right-2 -top-2 hidden gap-1 group-hover:flex">
+    <div className={cn('absolute -bottom-8 flex w-full gap-1 opacity-0 group-hover:opacity-100 transition-opacity', alignmentClass)}>
       {buttons.map((button, index) => (
         <Tooltip key={index} content={button.content}>
           <Button
