@@ -40,7 +40,7 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 pt-16"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 backdrop-blur-sm pt-16"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           handleOpenChange(false);
@@ -94,6 +94,7 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
               filteredChats.map((chat) => (
                 <Command.Item
                   key={chat.id}
+                  id={chat.id}
                   onSelect={() => {
                     setActiveChat(chat.id);
                     handleOpenChange(false);
@@ -102,6 +103,7 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-medium">{chat.title}</span>
+                    <div className="hidden">{chat.id}</div>
                   </div>
                 </Command.Item>
               ))

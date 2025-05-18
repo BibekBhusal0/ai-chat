@@ -13,7 +13,6 @@ interface ChatInputProps {
 export default function ChatInput({ chatId, modelId }: ChatInputProps) {
   const [prompt, setPrompt] = React.useState("");
   const { simulateResponse, activeChatId, isLoading, changeModel } = useChatStore();
-  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,12 +22,6 @@ export default function ChatInput({ chatId, modelId }: ChatInputProps) {
     simulateResponse(chatId, prompt);
     setPrompt("");
 
-    // Focus back on textarea after submission
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus();
-      }
-    }, 0);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -52,14 +45,12 @@ export default function ChatInput({ chatId, modelId }: ChatInputProps) {
       <Textarea
         placeholder="Ask me anything ..."
         variant="flat"
-        ref={textareaRef}
         value={prompt}
         onValueChange={setPrompt}
         minRows={2}
         maxRows={5}
         onKeyDown={handleKeyDown}
         classNames={{
-          base: "w-full",
           inputWrapper: "!bg-transparent shadow-none  ",
           innerWrapper: "relative",
           input: "pt-1 pl-2 pb-6 !pr-10 text-medium ",

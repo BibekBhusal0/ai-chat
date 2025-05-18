@@ -31,7 +31,7 @@ export default function ChatContainer() {
     <div className="flex h-full flex-col">
       <ChatHeader chat={activeChat} />
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-3xl">
           <ChatMessages messages={activeChat.messages} chatId={activeChat.id} />
 
@@ -45,7 +45,7 @@ export default function ChatContainer() {
         </div>
       </div>
 
-      <div className="py-2">
+      <div className="pb-2">
         <div className="mx-auto max-w-3xl">
           <ChatInput chatId={activeChat.id} modelId={activeChat.modelId} />
         </div>
