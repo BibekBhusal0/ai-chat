@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { useChatStore } from "../../store/chatStore";
 import ChatHeader from "./ChatHeader";
@@ -15,17 +15,10 @@ export default function ChatContainer() {
     changeModel,
     setActiveChat,
   } = useChatStore();
-  const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const [tempModel, setTempModel] = useState("gpt-4");
 
   const activeChat = chats.find((chat) => chat.id === activeChatId);
 
-  // Scroll to bottom when messages change or when loading completes
-  React.useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [activeChat?.messages,]);
 
   const handleSubmit = (message: string) => {
     if (activeChat?.id) simulateResponse(activeChat.id, message);
@@ -53,7 +46,6 @@ export default function ChatContainer() {
               <ChatMessageEmpty onSubmit={handleSubmit} />
             </div>
           )}
-          <div ref={messagesEndRef} />
         </div>
       </div>
 

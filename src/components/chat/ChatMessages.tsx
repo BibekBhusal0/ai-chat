@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, } from "react";
 import { Button, Tooltip, Textarea, Card, cn, } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { format, parseISO } from "date-fns";
@@ -22,8 +22,18 @@ export default function ChatMessages({ messages, chatId, onSubmit }: ChatMessage
     return difference <= 1000;
   };
 
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+
+  // const scrollToBottom = () => {
+  //   if (messagesContainerRef.current) {
+  //     messagesContainerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  //     toast({})
+  //   }
+  // };
+
   return (
-    <div className="flex h-full flex-col gap-6">
+    <div className="flex h-full flex-col gap-6" ref={messagesContainerRef}>
       {messages.length === 0 ? (
         <ChatMessageEmpty onSubmit={onSubmit} />
       ) : (
@@ -127,9 +137,11 @@ interface AssistantMessageItemProps {
   isRecent: boolean;
 }
 
-function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) {
+function AssistantMessageItem({ message, isRecent, }: AssistantMessageItemProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const formattedTime = format(parseISO(message.timestamp), "h:mm a");
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
+
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(message.content);
@@ -165,15 +177,23 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
   return (
     <div className="flex w-full flex-col items-start">
       <span className="ml-10 text-xs text-default-400">{formattedTime}</span>
-      <div className="group relative ml-10 w-full max-w-[80%] rounded-xl bg-default-200 px-4 py-2 text-left">
+      <div className="group relative h-auto ml-10 w-full max-w-[80%] rounded-xl bg-default-200 px-4 py-2 text-left">
         {message.role === "assistant" && isRecent ? (
-          <TypingText
-            delay={50}
-            smooth
+          <><TypingText
+            delay={15}
             waitTime={500}
+            cursor={false}
+            grow
             text={message.content}
             repeat={false}
+            onComplete={() => {
+              if (messagesEndRef.current) {
+                messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
           />
+            <div ref={messagesEndRef} />
+          </>
         ) : (
           <div className="whitespace-pre-wrap">{message.content}</div>
         )}
