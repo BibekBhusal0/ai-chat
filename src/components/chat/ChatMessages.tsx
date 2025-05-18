@@ -199,6 +199,8 @@ function AssistantMessageItem({
   isRecent,
 }: AssistantMessageItemProps) {
   const [isCopied, setIsCopied] = React.useState(false);
+  const [isLiked, setIsLiked] = React.useState(false);
+  const [isDisliked, setIsDisliked] = React.useState(false);
   const formattedTime = format(parseISO(message.timestamp), "h:mm a");
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
@@ -210,16 +212,34 @@ function AssistantMessageItem({
     }, 1500);
   };
 
+  const handleLike = () => {
+    if (isLiked) {
+      setIsLiked(false);
+    } else {
+      setIsLiked(true);
+      setIsDisliked(false);
+    }
+  };
+
+  const handleDislike = () => {
+    if (isDisliked) {
+      setIsDisliked(false);
+    } else {
+      setIsDisliked(true);
+      setIsLiked(false);
+    }
+  };
+
   const assistantButtons = [
     {
       content: "Like",
-      icon: "lucide:thumbs-up",
-      onClick: () => console.log("Like"),
+      icon: isLiked ? "codicon:thumbsup-filled" : "codicon:thumbsup",
+      onClick: handleLike,
     },
     {
       content: "Dislike",
-      icon: "lucide:thumbs-down",
-      onClick: () => console.log("Dislike"),
+      icon: isDisliked ? "codicon:thumbsdown-filled" : "codicon:thumbsdown",
+      onClick: handleDislike,
     },
     {
       content: "Copy",
