@@ -7,18 +7,11 @@ import ChatInput from "./ChatInput";
 import ChatMessageEmpty from "./ChatMessageEmpty";
 
 export default function ChatContainer() {
-  const {
-    activeChatId,
-    simulateResponse,
-    chats,
-    createNewChat,
-    changeModel,
-    setActiveChat,
-  } = useChatStore();
+  const { activeChatId, simulateResponse, chats, createNewChat, changeModel, setActiveChat } =
+    useChatStore();
   const [tempModel, setTempModel] = useState("gpt-4");
 
   const activeChat = chats.find((chat) => chat.id === activeChatId);
-
 
   const handleSubmit = (message: string) => {
     if (activeChat?.id) simulateResponse(activeChat.id, message);

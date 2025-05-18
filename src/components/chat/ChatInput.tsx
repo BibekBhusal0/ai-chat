@@ -32,8 +32,11 @@ export default function ChatInput({ onSubmit, onModelChange, modelId }: ChatInpu
   return (
     <form
       onSubmit={handleSubmit}
-      className={cn("relative w-full rounded-medium bg-default-100",
-        "flex flex-col items-start", 'border-2 border-default-300 focus-within:border-default-600 transition-border')}
+      className={cn(
+        "relative w-full rounded-medium bg-default-100",
+        "flex flex-col items-start",
+        "transition-border border-2 border-default-300 focus-within:border-default-600"
+      )}
     >
       <Textarea
         placeholder="Ask me anything ..."

@@ -1,13 +1,5 @@
 import React, { useRef } from "react";
-import {
-  Button,
-  Tooltip,
-  Textarea,
-  Card,
-  cn,
-  CardBody,
-  CardFooter,
-} from "@heroui/react";
+import { Button, Tooltip, Textarea, Card, cn, CardBody, CardFooter } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { format, parseISO } from "date-fns";
 
@@ -22,11 +14,7 @@ interface ChatMessagesProps {
   onSubmit: (message: string) => void;
 }
 
-export default function ChatMessages({
-  messages,
-  chatId,
-  onSubmit,
-}: ChatMessagesProps) {
+export default function ChatMessages({ messages, chatId, onSubmit }: ChatMessagesProps) {
   const isRecentMessage = (timestamp: string) => {
     const messageTime = new Date(timestamp).getTime();
     const now = Date.now();
@@ -43,11 +31,7 @@ export default function ChatMessages({
       ) : (
         messages.map((message) =>
           message.role === "user" ? (
-            <UserMessageItem
-              key={message.id}
-              message={message}
-              chatId={chatId}
-            />
+            <UserMessageItem key={message.id} message={message} chatId={chatId} />
           ) : (
             <AssistantMessageItem
               key={message.id}
@@ -194,10 +178,7 @@ interface AssistantMessageItemProps {
   isRecent: boolean;
 }
 
-function AssistantMessageItem({
-  message,
-  isRecent,
-}: AssistantMessageItemProps) {
+function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const [isLiked, setIsLiked] = React.useState(false);
   const [isDisliked, setIsDisliked] = React.useState(false);
@@ -256,7 +237,7 @@ function AssistantMessageItem({
   return (
     <div className="flex w-full flex-col items-start">
       <span className="ml-10 text-xs text-default-400">{formattedTime}</span>
-      <div className="group relative h-auto ml-10 w-full max-w-[80%] rounded-xl bg-default-200 px-4 py-2 text-left">
+      <div className="group relative ml-10 h-auto w-full max-w-[80%] rounded-xl bg-default-200 px-4 py-2 text-left">
         {message.role === "assistant" && isRecent ? (
           <>
             <TypingText

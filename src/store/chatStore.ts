@@ -220,11 +220,9 @@ export const useChatStore = create<ChatState>((set, get) => ({
     }));
   },
 
-
   simulateResponse: async (chatId, prompt) => {
     // First add the user message
     get().addMessage(chatId, prompt, "user");
-
 
     // Find the current chat to get the model
     const chat = get().chats.find((c) => c.id === chatId);
@@ -254,7 +252,6 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
     // Add the assistant's response
     get().addMessage(chatId, response, "assistant");
-
   },
 
   changeModel: (chatId, modelId) => {

@@ -54,29 +54,29 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
     startContent: string;
     onPress: any;
   })[] = [
-      {
-        children: chat.pinned ? "Unpin" : "Pin",
-        startContent: chat.pinned ? "lucide:pin-off" : "lucide:pin",
-        onPress: handlePin,
-      },
-      {
-        children: "Share",
-        startContent: "lucide:share",
-        onPress: null,
-      },
-      {
-        children: "Export",
-        startContent: "lucide:download",
-        onPress: null,
-      },
-      {
-        children: "Delete",
-        startContent: "lucide:trash-2",
-        onPress: handleDelete,
-        className: "text-danger",
-        color: "danger",
-      },
-    ];
+    {
+      children: chat.pinned ? "Unpin" : "Pin",
+      startContent: chat.pinned ? "lucide:pin-off" : "lucide:pin",
+      onPress: handlePin,
+    },
+    {
+      children: "Share",
+      startContent: "lucide:share",
+      onPress: null,
+    },
+    {
+      children: "Export",
+      startContent: "lucide:download",
+      onPress: null,
+    },
+    {
+      children: "Delete",
+      startContent: "lucide:trash-2",
+      onPress: handleDelete,
+      className: "text-danger",
+      color: "danger",
+    },
+  ];
   const commonProps: ListboxItemProps = {
     classNames: { title: "text-md" },
   };
@@ -91,7 +91,12 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
           )}
           onClick={onClick}
         >
-          <div className={cn("mr-3 flex h-8 w-8 items-center justify-center rounded-full", isActive ? "bg-default-50" : 'bg-default-200')}>
+          <div
+            className={cn(
+              "mr-3 flex h-8 w-8 items-center justify-center rounded-full",
+              isActive ? "bg-default-50" : "bg-default-200"
+            )}
+          >
             <Icon icon={model?.icon || "lucide:message-square"} width={16} />
           </div>
           <div className="flex-1 overflow-hidden">
@@ -106,7 +111,7 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
         </div>
 
         <Popover isOpen={isPopoverOpen} onOpenChange={setIsPopoverOpen} placement="right-start">
-          <PopoverTrigger >
+          <PopoverTrigger>
             <Button
               isIconOnly
               className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
