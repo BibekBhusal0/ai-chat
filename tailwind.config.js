@@ -8,7 +8,17 @@ export default {
     "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        "bg-position": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "100%": { backgroundPosition: "100% 50%" },
+        }
+      },
+      animation: {
+        "bg-position": "bg-position 3s infinite alternate"
+      }
+    },
   },
   darkMode: "class",
   plugins: [heroui()],
