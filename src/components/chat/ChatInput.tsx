@@ -20,7 +20,7 @@ export default function ChatInput({ onSubmit, onModelChange, modelId }: ChatInpu
 
     if (!prompt.trim() || isLoading) return;
 
-    onSubmit(prompt)
+    onSubmit(prompt);
     setPrompt("");
   };
 

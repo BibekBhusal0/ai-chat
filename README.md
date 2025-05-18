@@ -15,13 +15,11 @@ Includes chat history, multi-model support, command palette, and smooth animatio
 - [HeroUI](https://heroui.com)
 - Vite
 - Framer Motion
-- Iconify 
+- Iconify
 - Zustand
 - Cmdk
 
-
 ## 📸 Screenshots
-
 
 ## 🚀 Run Locally
 

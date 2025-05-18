@@ -13,11 +13,11 @@ export default {
         "bg-position": {
           "0%": { backgroundPosition: "0% 50%" },
           "100%": { backgroundPosition: "100% 50%" },
-        }
+        },
       },
       animation: {
-        "bg-position": "bg-position 3s infinite alternate"
-      }
+        "bg-position": "bg-position 3s infinite alternate",
+      },
     },
   },
   darkMode: "class",

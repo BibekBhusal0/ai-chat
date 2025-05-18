@@ -78,9 +78,11 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
       <div className="flex h-full w-72 flex-col border-r border-divider bg-content1">
         <div className="flex items-center justify-between p-4">
           <h1 className="text-xl font-semibold">AI Chat</h1>
-          {!mobile && <Button isIconOnly variant="light" onPress={() => setCollapsed(true)}>
-            <Icon icon="lucide:chevrons-left" width={20} />
-          </Button>}
+          {!mobile && (
+            <Button isIconOnly variant="light" onPress={() => setCollapsed(true)}>
+              <Icon icon="lucide:chevrons-left" width={20} />
+            </Button>
+          )}
         </div>
 
         <div className="flex items-center justify-between gap-4 px-4 pb-2">
@@ -107,7 +109,7 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
           selectedKey={selectedTab}
           onSelectionChange={(e) => setSelectedTab(e as string)}
           className="mx-auto py-1"
-          size='sm'
+          size="sm"
         >
           <Tab key="all" title="All Chats" />
           <Tab key="pinned" title="Pinned Chats" />

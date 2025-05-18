@@ -45,12 +45,12 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
     {
       tooltip: "Share",
       icon: "lucide:share",
-      onPress: () => { },
+      onPress: () => {},
     },
     {
       tooltip: "Export",
       icon: "lucide:download",
-      onPress: () => { },
+      onPress: () => {},
     },
     {
       tooltip: "Delete",
@@ -67,7 +67,7 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
   };
 
   return (
-    <div className={ "flex items-center pl-16 md:pl-3 justify-between border-b border-divider p-2" }>
+    <div className={"flex items-center justify-between border-b border-divider p-2 pl-16 md:pl-3"}>
       <div className="flex items-center">
         <div className="mr-3 flex items-center justify-center rounded-full bg-default-100 p-2">
           <Icon icon={model?.icon || "lucide:message-square"} width={25} />

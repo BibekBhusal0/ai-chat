@@ -35,15 +35,20 @@ export default function App() {
       <Button
         className="fixed left-4 top-2 z-30 rounded-full p-2 text-foreground md:hidden"
         onPress={onOpen}
-        variant='flat'
+        variant="flat"
         isIconOnly
       >
         <Icon icon="lucide:menu" width={24} />
       </Button>
 
       {/* Mobile drawer for sidebar */}
-      <Drawer isOpen={isOpen} classNames ={{closeButton: 'hidden', base: 'w-auto'}} onOpenChange={onOpenChange} placement="left">
-        <DrawerContent >{(onClose) => <Sidebar mobile onClose={onClose} />}</DrawerContent>
+      <Drawer
+        isOpen={isOpen}
+        classNames={{ closeButton: "hidden", base: "w-auto" }}
+        onOpenChange={onOpenChange}
+        placement="left"
+      >
+        <DrawerContent>{(onClose) => <Sidebar mobile onClose={onClose} />}</DrawerContent>
       </Drawer>
 
       {/* Desktop sidebar */}
@@ -53,9 +58,7 @@ export default function App() {
 
       {/* Main chat area */}
       <div className="flex h-full w-full flex-col">
-
         <ChatContainer />
-
       </div>
 
       {/* Command K search */}

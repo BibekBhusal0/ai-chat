@@ -40,7 +40,7 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 backdrop-blur-sm pt-16"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 pt-16 backdrop-blur-sm"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           handleOpenChange(false);
@@ -81,9 +81,16 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
 
           <Command.List className="max-h-96 overflow-y-auto p-2">
             {chats.length === 0 ? (
-              <div className="py-6 text-center text-sm text-default-400 ">
-                <div className='mb-4' >No chats available</div>
-                <Button onPress={() => { createNewChat("gpt-4"); handleOpenChange(false) }}>Create new chat</Button>
+              <div className="py-6 text-center text-sm text-default-400">
+                <div className="mb-4">No chats available</div>
+                <Button
+                  onPress={() => {
+                    createNewChat("gpt-4");
+                    handleOpenChange(false);
+                  }}
+                >
+                  Create new chat
+                </Button>
               </div>
             ) : filteredChats.length === 0 ? (
               <div className="py-6 text-center text-sm text-default-400">

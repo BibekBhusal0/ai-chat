@@ -11,7 +11,7 @@ import ChatMessageEmpty from "./ChatMessageEmpty.tsx";
 interface ChatMessagesProps {
   messages: Message[];
   chatId: string;
-  onSubmit: (message: string) => void
+  onSubmit: (message: string) => void;
 }
 
 export default function ChatMessages({ messages, chatId, onSubmit }: ChatMessagesProps) {
@@ -24,7 +24,7 @@ export default function ChatMessages({ messages, chatId, onSubmit }: ChatMessage
   };
 
   return (
-    <div className="flex flex-col gap-6 h-full">
+    <div className="flex h-full flex-col gap-6">
       {messages.length === 0 ? (
         <ChatMessageEmpty onSubmit={onSubmit} />
       ) : (
@@ -45,7 +45,6 @@ export default function ChatMessages({ messages, chatId, onSubmit }: ChatMessage
           <Spinner size="md" />
         </div>
       )}
-
     </div>
   );
 }

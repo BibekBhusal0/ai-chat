@@ -19,7 +19,6 @@ interface ChatState {
   changeModel: (chatId: string, modelId: string) => void;
 }
 
-
 export const chatHistory: ChatSession[] = [
   {
     id: "session-1",
