@@ -250,7 +250,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     if (!chat) return;
 
     // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 15));
 
     // Generate a response based on the model
     const model = get().models.find((m) => m.id === chat.modelId);
