@@ -42,7 +42,7 @@ export default function App() {
 
       {/* Desktop sidebar */}
       <div className="hidden md:block">
-        <Sidebar />
+        <Sidebar onCommandKOpen={() =>setCommandKOpen(true)} />
       </div>
 
       {/* Main chat area */}

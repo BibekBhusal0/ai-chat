@@ -1,6 +1,5 @@
 import React from "react";
 import { Command } from "cmdk";
-import { format, parseISO } from "date-fns";
 import { Icon } from "@iconify/react";
 
 import { useChatStore } from "../../store/chatStore";
@@ -12,53 +11,49 @@ interface CommandKProps {
 }
 
 export default function CommandK({ open, onOpenChange }: CommandKProps) {
-  const { chats, setActiveChat } = useChatStore();
+  const { chats, simulateResponse, setActiveChat, createNewChat } = useChatStore();
   const [search, setSearch] = React.useState("");
 
-  // Close with escape key
+  const handleOpenChange = (newOpenState: boolean) => {
+    onOpenChange(newOpenState);
+    if (!newOpenState) {
+      setSearch("");
+    }
+  };
+
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        onOpenChange(false);
+        handleOpenChange(false);
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onOpenChange]);
+  }, [handleOpenChange]);
 
-  // Flatten all messages from all chats for searching
-  const allMessages = React.useMemo(() => {
-    return chats.flatMap((chat) =>
-      chat.messages.map((message) => ({
-        chatId: chat.id,
-        chatTitle: chat.title,
-        message,
-      }))
+  const filteredChats = React.useMemo(() => {
+    if (!search) return chats;
+    return chats.filter((chat) =>
+      chat.title.toLowerCase().includes(search.toLowerCase())
     );
-  }, [chats]);
-
-  // Filter messages based on search
-  const filteredMessages = React.useMemo(() => {
-    if (!search) return [];
-
-    return allMessages.filter(
-      (item) =>
-        item.message.content.toLowerCase().includes(search.toLowerCase()) ||
-        item.chatTitle.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [allMessages, search]);
-
+  }, [chats, search]);
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 pt-16">
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 pt-16"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          handleOpenChange(false);
+        }
+      }}
+    >
       <div className="w-full max-w-2xl rounded-lg bg-content1 shadow-lg">
         <Command
           className="command-k"
           onKeyDown={(e) => {
             if (e.key === "Escape") {
-              onOpenChange(false);
+              handleOpenChange(false);
               e.preventDefault();
             }
           }}
@@ -69,8 +64,16 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
               autoFocus
               value={search}
               onValueChange={setSearch}
-              placeholder="Search messages..."
+              placeholder="Search chats..."
               className="flex-1 border-none bg-transparent px-2 py-2 text-sm outline-none"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && filteredChats.length === 0 && search !== "") {
+                  const newChatId = createNewChat("gpt-3.5");
+                  setActiveChat(newChatId);
+                  simulateResponse(newChatId , search)
+                  handleOpenChange(false);
+                }
+              }}
             />
             <div className="mr-2 rounded border border-divider px-1.5 py-0.5 text-xs text-default-400">
               ESC
@@ -78,40 +81,32 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
           </div>
 
           <Command.List className="max-h-96 overflow-y-auto p-2">
-            {search === "" ? (
+            {chats.length === 0 ? (
               <div className="py-6 text-center text-sm text-default-400">
-                Type to search across all chats...
+                No chats available.{" "}
+                <button onClick={() => createNewChat("gpt-3.5")}>
+                  Create new chat
+                </button>
               </div>
-            ) : filteredMessages.length === 0 ? (
+            ) : filteredChats.length === 0 ? (
               <div className="py-6 text-center text-sm text-default-400">
-                No results found for "{search}"
+                No results found for "{search}" (Press Enter to create a new chat)
               </div>
             ) : (
-              <Command.Group heading="Messages">
-                {filteredMessages.map((item) => (
-                  <Command.Item
-                    key={item.message.id}
-                    onSelect={() => {
-                      setActiveChat(item.chatId);
-                      onOpenChange(false);
-                    }}
-                    className="flex cursor-pointer flex-col gap-1 rounded-md p-2 text-sm hover:bg-default-100"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{item.chatTitle}</span>
-                      <span className="text-xs text-default-400">
-                        {format(parseISO(item.message.timestamp), "MMM d, yyyy")}
-                      </span>
-                    </div>
-                    <div className="line-clamp-2 text-default-500">
-                      <span className="mr-1 font-medium">
-                        {item.message.role === "user" ? "You:" : "AI:"}
-                      </span>
-                      {item.message.content}
-                    </div>
-                  </Command.Item>
-                ))}
-              </Command.Group>
+              filteredChats.map((chat) => (
+                <Command.Item
+                  key={chat.id}
+                  onSelect={() => {
+                    setActiveChat(chat.id);
+                    handleOpenChange(false);
+                  }}
+                  className="flex cursor-pointer flex-col gap-1 rounded-md p-2 text-sm hover:bg-default-100"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">{chat.title}</span>
+                  </div>
+                </Command.Item>
+              ))
             )}
           </Command.List>
         </Command>

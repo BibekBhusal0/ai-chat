@@ -9,9 +9,10 @@ import { ChatGroup } from "./chatGroup";
 interface SidebarProps {
   mobile?: boolean;
   onClose?: () => void;
+  onCommandKOpen?: () => void;
 }
 
-export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
+export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: SidebarProps) {
   const { theme, setTheme } = useTheme();
   const [collapsed, setCollapsed] = React.useState(false);
   const [showPinnedOnly, setShowPinnedOnly] = React.useState(false);
@@ -125,7 +126,7 @@ export default function Sidebar({ mobile = false, onClose }: SidebarProps) {
 
         <div className="flex items-center gap-2">
           <Tooltip content="Search chats (Cmd+K)">
-            <Button isIconOnly variant="light">
+            <Button isIconOnly variant="light" onPress={onCommandKOpen}>
               <Icon icon="lucide:search" width={20} />
             </Button>
           </Tooltip>
