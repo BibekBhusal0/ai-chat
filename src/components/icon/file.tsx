@@ -1,12 +1,7 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useRef,
-} from 'react';
-import { motion, useAnimation } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { cn } from '@heroui/react';
+import React, { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { motion, useAnimation } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { cn } from "@heroui/react";
 
 export interface FileTextIconHandle {
   startAnimation: () => void;
@@ -26,15 +21,15 @@ const FileText = forwardRef<FileTextIconHandle, FileTextIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -45,7 +40,7 @@ const FileText = forwardRef<FileTextIconHandle, FileTextIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -78,7 +73,7 @@ const FileText = forwardRef<FileTextIconHandle, FileTextIconProps>(
               scale: 1.05,
               transition: {
                 duration: 0.3,
-                ease: 'easeOut',
+                ease: "easeOut",
               },
             },
           }}
@@ -155,7 +150,6 @@ const FileText = forwardRef<FileTextIconHandle, FileTextIconProps>(
   }
 );
 
-FileText.displayName = 'FileTextIcon';
+FileText.displayName = "FileTextIcon";
 
 export { FileText as FileTextIcon };
-

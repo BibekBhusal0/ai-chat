@@ -45,12 +45,12 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
     {
       tooltip: "Share",
       icon: <UploadIcon />,
-      onPress: () => { },
+      onPress: () => {},
     },
     {
       tooltip: "Export",
       icon: <DownloadIcon />,
-      onPress: () => { },
+      onPress: () => {},
     },
     {
       tooltip: "Delete",
@@ -81,7 +81,12 @@ export default function ChatHeader({ chat }: ChatHeaderProps) {
       <div className="flex items-center gap-2">
         {buttonConfigs.map(({ tooltip, ...props }, index) => (
           <Tooltip key={index} content={tooltip}>
-            <IconButton iconSize={18}  {...commonButonProps} {...props} className={cn(commonButonProps.className, props.className)} />
+            <IconButton
+              iconSize={18}
+              {...commonButonProps}
+              {...props}
+              className={cn(commonButonProps.className, props.className)}
+            />
           </Tooltip>
         ))}
       </div>

@@ -24,7 +24,6 @@ export default function ChatInput({ onSubmit, onModelChange, modelId }: ChatInpu
     setPrompt("");
   };
 
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Submit on Enter (without shift)
     if (e.key === "Enter" && !e.shiftKey) {
@@ -68,7 +67,6 @@ export default function ChatInput({ onSubmit, onModelChange, modelId }: ChatInpu
           <Tooltip content="Voice input">
             <AnimatedIconButton icon={<AudioLinesIcon />} variant="flat" iconSize={18} size="sm" />
           </Tooltip>
-
         </div>
 
         <div className="flex items-center gap-2">

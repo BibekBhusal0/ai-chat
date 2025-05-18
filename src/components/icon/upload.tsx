@@ -1,8 +1,8 @@
-import type { Variants } from 'motion/react';
-import { motion, useAnimation } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { cn } from '@heroui/react';
+import type { Variants } from "motion/react";
+import { motion, useAnimation } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { cn } from "@heroui/react";
 
 export interface UploadIconHandle {
   startAnimation: () => void;
@@ -18,7 +18,7 @@ const arrowVariants: Variants = {
   animate: {
     y: -2,
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 200,
       damping: 10,
       mass: 1,
@@ -35,15 +35,15 @@ const UploadIcon = forwardRef<UploadIconHandle, UploadIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -54,7 +54,7 @@ const UploadIcon = forwardRef<UploadIconHandle, UploadIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -91,7 +91,6 @@ const UploadIcon = forwardRef<UploadIconHandle, UploadIconProps>(
   }
 );
 
-UploadIcon.displayName = 'UploadIcon';
+UploadIcon.displayName = "UploadIcon";
 
 export { UploadIcon };
-

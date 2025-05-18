@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import type { Variants } from 'motion/react';
-import { motion, useAnimation } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { cn } from '@heroui/react';
+import type { Variants } from "motion/react";
+import { motion, useAnimation } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { cn } from "@heroui/react";
 
 export interface SquarePenIconHandle {
   startAnimation: () => void;
@@ -37,15 +37,15 @@ const SquarePenIcon = forwardRef<SquarePenIconHandle, SquarePenIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -56,7 +56,7 @@ const SquarePenIcon = forwardRef<SquarePenIconHandle, SquarePenIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -81,7 +81,7 @@ const SquarePenIcon = forwardRef<SquarePenIconHandle, SquarePenIconProps>(
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          style={{ overflow: 'visible' }}
+          style={{ overflow: "visible" }}
         >
           <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
           <motion.path
@@ -95,7 +95,6 @@ const SquarePenIcon = forwardRef<SquarePenIconHandle, SquarePenIconProps>(
   }
 );
 
-SquarePenIcon.displayName = 'SquarePenIcon';
+SquarePenIcon.displayName = "SquarePenIcon";
 
 export { SquarePenIcon };
-

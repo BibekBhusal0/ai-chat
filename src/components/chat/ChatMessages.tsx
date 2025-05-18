@@ -135,7 +135,7 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
     },
     {
       content: "Copy",
-      icon: isCopied ? < CheckIcon /> : <CopyIcon />,
+      icon: isCopied ? <CheckIcon /> : <CopyIcon />,
       onClick: handleCopyToClipboard,
     },
     {
@@ -274,7 +274,7 @@ type smallButton = {
   content: string;
   icon: string | ReactNode;
   onClick: () => void;
-}
+};
 interface MessageItemButtonsProps {
   buttons: smallButton[];
   align: "left" | "right";

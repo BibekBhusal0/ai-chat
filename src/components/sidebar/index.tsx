@@ -95,7 +95,12 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
 
           <div className="flex items-center gap-2">
             <Tooltip content="Search chats (Cmd+K)">
-              <AnimatedIconButton icon={<SearchIcon />} isIconOnly variant="light" onPress={onCommandKOpen} />
+              <AnimatedIconButton
+                icon={<SearchIcon />}
+                isIconOnly
+                variant="light"
+                onPress={onCommandKOpen}
+              />
             </Tooltip>
           </div>
         </div>

@@ -24,7 +24,6 @@ import { DownloadIcon } from "../icon/donwload";
 import { DeleteIcon } from "../icon/delete";
 import { AnimatedDiv } from "../animatedDiv";
 
-
 interface ChatItemProps {
   chat: ChatSession;
   isActive: boolean;
@@ -39,7 +38,6 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
   } = useDisclosure();
   const { togglePinChat, deleteChat, models } = useChatStore();
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-
 
   const model = models.find((m) => m.id === chat.modelId);
 
@@ -69,12 +67,12 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
     {
       children: "Share",
       icon: <UploadIcon />,
-      onPress: () => { },
+      onPress: () => {},
     },
     {
       children: "Export",
       icon: <DownloadIcon />,
-      onPress: () => { },
+      onPress: () => {},
     },
     {
       children: "Delete",
@@ -87,7 +85,7 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
   const commonProps: ListboxItemProps = {
     classNames: { title: "text-md" },
   };
-  const cls = 'flex items-center gap-2'
+  const cls = "flex items-center gap-2";
 
   return (
     <>
@@ -140,10 +138,16 @@ export default function ChatItem({ chat, isActive, onClick }: ChatItemProps) {
                   {...buttonConfig}
                   className={cn(commonProps.className, buttonConfig.className)}
                 >
-                  {typeof buttonConfig.icon === 'string' ?
-                    <div className={cls}><Icon width={16} icon={buttonConfig.icon} />{buttonConfig.children}</div> :
-                    <AnimatedDiv className={cls} iconSize={16} icon={buttonConfig.icon} >{buttonConfig.children}</AnimatedDiv>
-                  }
+                  {typeof buttonConfig.icon === "string" ? (
+                    <div className={cls}>
+                      <Icon width={16} icon={buttonConfig.icon} />
+                      {buttonConfig.children}
+                    </div>
+                  ) : (
+                    <AnimatedDiv className={cls} iconSize={16} icon={buttonConfig.icon}>
+                      {buttonConfig.children}
+                    </AnimatedDiv>
+                  )}
                 </ListboxItem>
               ))}
             </Listbox>
