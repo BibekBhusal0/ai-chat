@@ -1,5 +1,13 @@
-import React, { useRef, } from "react";
-import { Button, Tooltip, Textarea, Card, cn, } from "@heroui/react";
+import React, { useRef } from "react";
+import {
+  Button,
+  Tooltip,
+  Textarea,
+  Card,
+  cn,
+  CardBody,
+  CardFooter,
+} from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { format, parseISO } from "date-fns";
 
@@ -14,7 +22,11 @@ interface ChatMessagesProps {
   onSubmit: (message: string) => void;
 }
 
-export default function ChatMessages({ messages, chatId, onSubmit }: ChatMessagesProps) {
+export default function ChatMessages({
+  messages,
+  chatId,
+  onSubmit,
+}: ChatMessagesProps) {
   const isRecentMessage = (timestamp: string) => {
     const messageTime = new Date(timestamp).getTime();
     const now = Date.now();
@@ -24,14 +36,6 @@ export default function ChatMessages({ messages, chatId, onSubmit }: ChatMessage
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-
-  // const scrollToBottom = () => {
-  //   if (messagesContainerRef.current) {
-  //     messagesContainerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-  //     toast({})
-  //   }
-  // };
-
   return (
     <div className="flex h-full flex-col gap-6" ref={messagesContainerRef}>
       {messages.length === 0 ? (
@@ -39,7 +43,11 @@ export default function ChatMessages({ messages, chatId, onSubmit }: ChatMessage
       ) : (
         messages.map((message) =>
           message.role === "user" ? (
-            <UserMessageItem key={message.id} message={message} chatId={chatId} />
+            <UserMessageItem
+              key={message.id}
+              message={message}
+              chatId={chatId}
+            />
           ) : (
             <AssistantMessageItem
               key={message.id}
@@ -61,14 +69,33 @@ interface UserMessageItemProps {
 function UserMessageItem({ message, chatId }: UserMessageItemProps) {
   const [isEditing, setIsEditing] = React.useState(false);
   const [editedContent, setEditedContent] = React.useState(message.content);
-  const { updateMessage } = useChatStore();
+  const { simulateResponse, chats } = useChatStore();
   const [isCopied, setIsCopied] = React.useState(false);
 
   const formattedTime = format(parseISO(message.timestamp), "h:mm a");
 
-  const handleSaveEdit = () => {
-    updateMessage(chatId, message.id, editedContent);
+  const handleSaveEdit = async () => {
+    const chat = chats.find((c) => c.id === chatId);
+    if (!chat) return;
+
+    // Find the index of the current message in the chat's messages array
+    const messageIndex = chat.messages.findIndex((msg) => msg.id === message.id);
+    if (messageIndex === -1) return;
+
+    // Remove all messages after the current message
+    const newChats = chats.map((c) => {
+      if (c.id === chatId) {
+        return {
+          ...c,
+          messages: c.messages.slice(0, messageIndex),
+        };
+      }
+      return c;
+    });
+
+    useChatStore.setState({ chats: newChats });
     setIsEditing(false);
+    await simulateResponse(chatId, editedContent);
   };
 
   const handleCancelEdit = () => {
@@ -82,6 +109,32 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
     setTimeout(() => {
       setIsCopied(false);
     }, 1500);
+  };
+
+  const handleRegenerate = async () => {
+    const chat = chats.find((c) => c.id === chatId);
+    if (!chat) return;
+
+    // Find the index of the current message in the chat's messages array
+    const messageIndex = chat.messages.findIndex((msg) => msg.id === message.id);
+
+    if (messageIndex === -1) return;
+
+    // Remove all messages after the current message
+    const newChats = chats.map((c) => {
+      if (c.id === chatId) {
+        return {
+          ...c,
+          messages: c.messages.slice(0, messageIndex),
+        };
+      }
+      return c;
+    });
+
+    useChatStore.setState({
+      chats: newChats,
+    });
+    await simulateResponse(chatId, message.content);
   };
 
   const userButtons = [
@@ -98,7 +151,7 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
     {
       content: "Regenerate",
       icon: "lucide:refresh-cw",
-      onClick: () => console.log("Regenerate"),
+      onClick: handleRegenerate,
     },
   ];
 
@@ -106,21 +159,25 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
     <div className="flex w-full flex-col items-end">
       <span className="mr-10 text-xs text-default-400">{formattedTime}</span>
       {isEditing ? (
-        <Card className="mr-10">
-          <Textarea
-            value={editedContent}
-            onValueChange={setEditedContent}
-            minRows={3}
-            className="w-full"
-          />
-          <div className="flex justify-end gap-2 p-2">
+        <Card className="w-[80%]">
+          <CardBody>
+            <Textarea
+              value={editedContent}
+              onValueChange={setEditedContent}
+              variant="faded"
+              autoFocus
+              minRows={3}
+              className="w-full"
+            />
+          </CardBody>
+          <CardFooter className="flex justify-end gap-2 p-2">
             <Button size="sm" variant="flat" onPress={handleCancelEdit}>
               Cancel
             </Button>
             <Button size="sm" color="primary" onPress={handleSaveEdit}>
               Save
             </Button>
-          </div>
+          </CardFooter>
         </Card>
       ) : (
         <div className="group relative mr-10 max-w-[80%] rounded-xl bg-primary-400 px-4 py-2 text-right">
@@ -137,11 +194,13 @@ interface AssistantMessageItemProps {
   isRecent: boolean;
 }
 
-function AssistantMessageItem({ message, isRecent, }: AssistantMessageItemProps) {
+function AssistantMessageItem({
+  message,
+  isRecent,
+}: AssistantMessageItemProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const formattedTime = format(parseISO(message.timestamp), "h:mm a");
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
-
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(message.content);
@@ -179,19 +238,20 @@ function AssistantMessageItem({ message, isRecent, }: AssistantMessageItemProps)
       <span className="ml-10 text-xs text-default-400">{formattedTime}</span>
       <div className="group relative h-auto ml-10 w-full max-w-[80%] rounded-xl bg-default-200 px-4 py-2 text-left">
         {message.role === "assistant" && isRecent ? (
-          <><TypingText
-            delay={15}
-            waitTime={500}
-            cursor={false}
-            grow
-            text={message.content}
-            repeat={false}
-            onComplete={() => {
-              if (messagesEndRef.current) {
-                messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-          />
+          <>
+            <TypingText
+              delay={15}
+              waitTime={500}
+              cursor={false}
+              grow
+              text={message.content}
+              repeat={false}
+              onComplete={() => {
+                if (messagesEndRef.current) {
+                  messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+            />
             <div ref={messagesEndRef} />
           </>
         ) : (

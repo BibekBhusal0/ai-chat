@@ -13,7 +13,6 @@ interface ChatState {
   addMessage: (chatId: string, content: string, role: "user" | "assistant") => void;
   deleteChat: (id: string) => void;
   togglePinChat: (id: string) => void;
-  updateMessage: (chatId: string, messageId: string, content: string) => void;
   simulateResponse: (chatId: string, prompt: string) => Promise<void>;
   changeModel: (chatId: string, modelId: string) => void;
 }
@@ -221,24 +220,6 @@ export const useChatStore = create<ChatState>((set, get) => ({
     }));
   },
 
-  updateMessage: (chatId, messageId, content) => {
-    set((state) => ({
-      chats: state.chats.map((chat) => {
-        if (chat.id === chatId) {
-          return {
-            ...chat,
-            messages: chat.messages.map((msg) => {
-              if (msg.id === messageId) {
-                return { ...msg, content };
-              }
-              return msg;
-            }),
-          };
-        }
-        return chat;
-      }),
-    }));
-  },
 
   simulateResponse: async (chatId, prompt) => {
     // First add the user message
