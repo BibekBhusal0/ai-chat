@@ -8,6 +8,7 @@ import { SettingsGearIcon } from "../icon/settings";
 import ThemeSwitch from "../theme-switch";
 import { IconButton } from "../iconButton";
 import { cn } from "@heroui/react";
+import { motion } from 'motion/react'
 
 interface SidebarProps {
   mobile?: boolean;
@@ -62,30 +63,54 @@ export default function Sidebar({
     return grouped;
   }, [chats, selectedTab]);
 
+  const animationConfig = {
+    type: "spring",
+    visualDuration: 0.2,
+    bounce: 0.2,
+  }
   return (
     <div
       className={cn(
         "flex h-full flex-col border-r border-divider overflow-hidden bg-default-50 transition-[width] duration-300 ease-in-out",
-        showFullSidebar ? "w-72" : "w-16 items-center py-4"
+        showFullSidebar ? "w-72" : "w-16 items-center"
       )}
     >
 
       {/* Logo and toggle icon */}
       <div className="flex w-full items-center gap-2 py-3 px-4 justify-between">
-        {showFullSidebar && <h1 className="text-xl font-semibold">AI Chat</h1>}
-        <Button isIconOnly variant="light" onPress={() => { if (mobile) onClose(); else setCollapsed(!collapsed) }}>
-          <Icon icon={"lucide:chevrons-left"} className={cn('transition-[transform]', showFullSidebar ? 'rotate-0' : 'rotate-180')} width={20} />
-        </Button>
+        <h1 className={cn("text-xl font-semibold transition-all duration-300 absolute", showFullSidebar ? "left-3" : "-left-20")} >AI Chat</h1>
+        {showFullSidebar && <div />}
+        <motion.div layout transition={animationConfig}>
+          <Button isIconOnly className='overflow-hidden' variant="light" onPress={() => { if (mobile) onClose(); else setCollapsed(!collapsed) }}>
+            <Icon icon={"lucide:chevrons-left"} className={cn('transition-[transform]', showFullSidebar ? 'rotate-0' : 'rotate-180')} width={20} />
+          </Button>
+        </motion.div>
       </div>
 
       {/* New Chat Button and Search */}
       <div className="flex items-center justify-between gap-4 px-4 pb-2">
         <Button
           color="primary"
-          startContent={<Icon icon="lucide:plus" width={20} />}
           onPress={handleNewChat}
-          className={cn('min-w-4', showFullSidebar ? 'w-full' : 'w-10 p-1')}
-        >{showFullSidebar && "New Chat"}</Button>
+          className={cn('min-w-10 transition-all overlfow-hidden', showFullSidebar ? 'w-full' : 'w-10 p-1')}
+        >
+          <Icon icon="lucide:plus" width={20} className='-mr-2' />
+          <span
+            className={cn(
+              "w-fit max-w-0 transform-gpu overflow-hidden transition-all duration-300",
+              showFullSidebar && "max-w-40"
+            )}
+          >
+            <span
+              className={cn(
+                "transform-gpu whitespace-nowrap pl-0 opacity-0 transition-all duration-300",
+                showFullSidebar && "pl-2 opacity-100"
+              )}
+            >
+              {showFullSidebar && <span className="text-sm">New Chat</span>}
+            </span>
+          </span>
+        </Button>
         {showFullSidebar &&
           <Tooltip content="Search chats (Cmd+K)">
             <IconButton
@@ -132,13 +157,15 @@ export default function Sidebar({
       )}
 
       {/* Bottom Controls: Theme + Settings */}
-      <div className="border-t border-divider px-4 py-1 w-full mt-auto">
-        <div className={cn("flex items-center justify-between", !showFullSidebar && "flex-col gap-2")}>
+      <div className={cn("flex items-center justify-between", "border-t border-divider", "mt-auto px-4 py-2 w-full overflow-hidden", !showFullSidebar && "flex-col gap-2")}>
+        <motion.div layout transition={animationConfig}>
           <ThemeSwitch />
+        </motion.div>
+        <motion.div layout transition={animationConfig}>
           <Tooltip content="Settings" placement={collapsed ? "right" : "top"}>
             <IconButton icon={<SettingsGearIcon />} variant="light" />
           </Tooltip>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
