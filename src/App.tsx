@@ -6,9 +6,11 @@ import ChatContainer from "./components/chat/ChatContainer";
 import { useChatStore } from "./store/chatStore";
 import CommandK from "./components/command-k/CommandK";
 import Sidebar from "./components/sidebar";
+import { Settings } from "./components/settings";
 
 export default function App() {
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onOpenChange: onDrawerOpenChange } = useDisclosure();
+  const { isOpen: isSettingsOpen, onOpen: onSettingsOpen, onOpenChange: onSettingsOpenChange } = useDisclosure();
   const [commandKOpen, setCommandKOpen] = React.useState(false);
   const { createNewChat, setActiveChat } = useChatStore();
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
@@ -28,18 +30,23 @@ export default function App() {
         e.preventDefault();
         setSidebarCollapsed((prev) => !prev);
       }
+      else if ((e.ctrlKey || e.metaKey) && e.key === ",") {
+        //Toggle sidebar
+        e.preventDefault();
+        onSettingsOpen()
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose, onOpen, createNewChat, setActiveChat]);
+  });
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-default-100">
       {/* Mobile sidebar toggle */}
       <Button
         className="fixed left-4 top-2 z-30 rounded-full p-2 text-foreground md:hidden"
-        onPress={onOpen}
+        onPress={onDrawerOpen}
         variant="flat"
         isIconOnly
       >
@@ -48,14 +55,19 @@ export default function App() {
 
       {/* Mobile drawer for sidebar */}
       <Drawer
-        isOpen={isOpen}
+        isOpen={isDrawerOpen}
         classNames={{ closeButton: "hidden", base: "w-auto" }}
-        onOpenChange={onOpenChange}
+        onOpenChange={onDrawerOpenChange}
         placement="left"
       >
         <DrawerContent>
           {(onClose) => (
-            <Sidebar mobile onClose={onClose} onCommandKOpen={() => setCommandKOpen(true)} />
+            <Sidebar
+              mobile
+              onClose={onClose}
+              onSettingsOpen={onSettingsOpen}
+              onCommandKOpen={() => setCommandKOpen(true)}
+            />
           )}
         </DrawerContent>
       </Drawer>
@@ -65,6 +77,7 @@ export default function App() {
         <Sidebar
           collapsed={sidebarCollapsed}
           setCollapsed={(a) => setSidebarCollapsed(a)}
+          onSettingsOpen={onSettingsOpen}
           onCommandKOpen={() => setCommandKOpen(true)}
         />
       </div>
@@ -76,6 +89,7 @@ export default function App() {
 
       {/* Command K search */}
       <CommandK open={commandKOpen} onOpenChange={setCommandKOpen} />
+      <Settings onOpenChange={onSettingsOpenChange} isOpen={isSettingsOpen} />
     </div>
   );
 }

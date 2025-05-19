@@ -16,6 +16,7 @@ interface SidebarProps {
   onClose?: () => void;
   onCommandKOpen?: () => void;
   setCollapsed?: (istate: boolean) => void;
+  onSettingsOpen?: () => void;
 }
 
 export default function Sidebar({
@@ -24,6 +25,7 @@ export default function Sidebar({
   setCollapsed,
   onClose,
   onCommandKOpen,
+  onSettingsOpen
 }: SidebarProps) {
   const [selectedTab, setSelectedTab] = React.useState("all");
   const { chats, models, createNewChat, setActiveChat } = useChatStore();
@@ -191,7 +193,7 @@ export default function Sidebar({
         </motion.div>
         <motion.div layout transition={animationConfig}>
           <Tooltip content="Settings" placement={collapsed ? "right" : "top"}>
-            <IconButton icon={<SettingsGearIcon />} variant="light" />
+            <IconButton icon={<SettingsGearIcon />} onPress={onSettingsOpen} variant="light" />
           </Tooltip>
         </motion.div>
       </div>
