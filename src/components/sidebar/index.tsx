@@ -8,7 +8,7 @@ import { SettingsGearIcon } from "../icon/settings";
 import ThemeSwitch from "../theme-switch";
 import { IconButton } from "../iconButton";
 import { cn } from "@heroui/react";
-import { motion } from 'motion/react'
+import { motion } from "motion/react";
 
 interface SidebarProps {
   mobile?: boolean;
@@ -27,7 +27,7 @@ export default function Sidebar({
 }: SidebarProps) {
   const [selectedTab, setSelectedTab] = React.useState("all");
   const { chats, models, createNewChat, setActiveChat } = useChatStore();
-  const showFullSidebar = mobile || !collapsed
+  const showFullSidebar = mobile || !collapsed;
 
   const handleNewChat = () => {
     const defaultModelId = models[0]?.id || "gpt-4";
@@ -67,22 +67,40 @@ export default function Sidebar({
     type: "spring",
     visualDuration: 0.2,
     bounce: 0.2,
-  }
+  };
   return (
     <div
       className={cn(
-        "flex h-full flex-col border-r border-divider overflow-hidden bg-default-50 transition-[width] duration-300 ease-in-out",
+        "flex h-full flex-col overflow-hidden border-r border-divider bg-default-50 transition-[width] duration-300 ease-in-out",
         showFullSidebar ? "w-72" : "w-16 items-center"
       )}
     >
-
       {/* Logo and toggle icon */}
-      <div className="flex w-full items-center gap-2 py-3 px-4 justify-between">
-        <h1 className={cn("text-xl font-semibold transition-all duration-300 absolute", showFullSidebar ? "left-3" : "-left-20")} >AI Chat</h1>
+      <div className="flex w-full items-center justify-between gap-2 px-4 py-3">
+        <h1
+          className={cn(
+            "absolute text-xl font-semibold transition-all duration-300",
+            showFullSidebar ? "left-3" : "-left-20"
+          )}
+        >
+          AI Chat
+        </h1>
         {showFullSidebar && <div />}
         <motion.div layout transition={animationConfig}>
-          <Button isIconOnly className='overflow-hidden' variant="light" onPress={() => { if (mobile) onClose(); else setCollapsed(!collapsed) }}>
-            <Icon icon={"lucide:chevrons-left"} className={cn('transition-[transform]', showFullSidebar ? 'rotate-0' : 'rotate-180')} width={20} />
+          <Button
+            isIconOnly
+            className="overflow-hidden"
+            variant="light"
+            onPress={() => {
+              if (mobile) onClose();
+              else setCollapsed(!collapsed);
+            }}
+          >
+            <Icon
+              icon={"lucide:chevrons-left"}
+              className={cn("transition-[transform]", showFullSidebar ? "rotate-0" : "rotate-180")}
+              width={20}
+            />
           </Button>
         </motion.div>
       </div>
@@ -92,9 +110,12 @@ export default function Sidebar({
         <Button
           color="primary"
           onPress={handleNewChat}
-          className={cn('min-w-10 transition-all overlfow-hidden', showFullSidebar ? 'w-full' : 'w-10 p-1')}
+          className={cn(
+            "overlfow-hidden min-w-10 transition-all",
+            showFullSidebar ? "w-full" : "w-10 p-1"
+          )}
         >
-          <Icon icon="lucide:plus" width={20} className='-mr-2' />
+          <Icon icon="lucide:plus" width={20} className="-mr-2" />
           <span
             className={cn(
               "w-fit max-w-0 transform-gpu overflow-hidden transition-all duration-300",
@@ -111,7 +132,7 @@ export default function Sidebar({
             </span>
           </span>
         </Button>
-        {showFullSidebar &&
+        {showFullSidebar && (
           <Tooltip content="Search chats (Cmd+K)">
             <IconButton
               icon="lucide:search"
@@ -121,7 +142,7 @@ export default function Sidebar({
               onPress={onCommandKOpen}
             />
           </Tooltip>
-        }
+        )}
       </div>
 
       {/* Tabs and Chat List */}
@@ -157,7 +178,14 @@ export default function Sidebar({
       )}
 
       {/* Bottom Controls: Theme + Settings */}
-      <div className={cn("flex items-center justify-between", "border-t border-divider", "mt-auto px-4 py-2 w-full overflow-hidden", !showFullSidebar && "flex-col gap-2")}>
+      <div
+        className={cn(
+          "flex items-center justify-between",
+          "border-t border-divider",
+          "mt-auto w-full overflow-hidden px-4 py-2",
+          !showFullSidebar && "flex-col gap-2"
+        )}
+      >
         <motion.div layout transition={animationConfig}>
           <ThemeSwitch />
         </motion.div>
@@ -170,4 +198,3 @@ export default function Sidebar({
     </div>
   );
 }
-
