@@ -1,31 +1,35 @@
 # AI Chat UI – HeroHack 2025 Submission
 
 A stunning, fast AI chat interface built with [HeroUI](https://heroui.com).  
-Includes rich interactions, shortcut support, command palette, chat history, and multi-model selection — all powered by a clean animations.
+Includes rich interactions, shortcut support, command palette, chat history, and multi-model selection — all powered by a smooth animations.
 
 ## ✨ Features
 
-- 🧠 Multi-model AI support (GPT-4, DALL·E, Whisper, and more)
+- 🧠 Multi-model AI support 
 - 💬 Saved chat sessions with timestamps
 - ⌨️ Command palette (Cmd + K) to quickly search and start actions
-- ➕ New chat button & keyboard shortcut (`Alt + N`)
 - 🎨 Smooth animations
 - 🌗 Dark/Light mode toggle
 - 🧠 Zustand for state management
+- 💡 Smart keyboard shortcuts
+- ✨ Animated icons
 
 ## 🛠️ Tech Stack
 
+
 - [HeroUI](https://heroui.com)
-- Vite
-- Framer Motion
-- Iconify
-- Zustand
-- Cmdk
+- [Vite](https://vitejs.dev/)
+- [Iconify](https://iconify.design/)
+- [Zustand](https://github.com/pmndrs/zustand)
+- [Cmdk](https://cmdk.proust.cx/)
+- [motion](https://motion.dev/)
+
 
 ## ⌨️ Keyboard Shortcuts
 
 - `Cmd/Ctrl + K` → Open command palette
 - `Alt/Option + N` → Start a new chat
+- `Alt + B` → Toggle sidebar
 
 ## 📸 Screenshots
 
