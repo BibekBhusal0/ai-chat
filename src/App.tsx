@@ -11,6 +11,7 @@ export default function App() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [commandKOpen, setCommandKOpen] = React.useState(false);
   const { createNewChat, setActiveChat } = useChatStore();
+  const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -22,6 +23,11 @@ export default function App() {
         e.preventDefault();
         const newChatId = createNewChat("gpt-4");
         setActiveChat(newChatId);
+      }
+      else if (e.altKey && e.key === "b") {
+        //Toggle sidebar
+        e.preventDefault();
+        setSidebarCollapsed((prev) => !prev)
       }
     };
 
@@ -48,12 +54,12 @@ export default function App() {
         onOpenChange={onOpenChange}
         placement="left"
       >
-        <DrawerContent>{(onClose) => <Sidebar mobile onClose={onClose} />}</DrawerContent>
+        <DrawerContent>{(onClose) => <Sidebar mobile onClose={onClose} onCommandKOpen={() => setCommandKOpen(true)} />}</DrawerContent>
       </Drawer>
 
       {/* Desktop sidebar */}
       <div className="hidden md:block">
-        <Sidebar onCommandKOpen={() => setCommandKOpen(true)} />
+        <Sidebar collapsed={sidebarCollapsed} setCollapsed={(a) => setSidebarCollapsed(a)} onCommandKOpen={() => setCommandKOpen(true)} />
       </div>
 
       {/* Main chat area */}

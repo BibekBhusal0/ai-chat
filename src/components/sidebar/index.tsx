@@ -10,12 +10,13 @@ import { IconButton } from "../iconButton";
 
 interface SidebarProps {
   mobile?: boolean;
+  collapsed?: boolean;
   onClose?: () => void;
   onCommandKOpen?: () => void;
+  setCollapsed?: (istate: boolean) => void;
 }
 
-export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: SidebarProps) {
-  const [collapsed, setCollapsed] = React.useState(false);
+export default function Sidebar({ mobile = false, collapsed = false, setCollapsed, onClose, onCommandKOpen }: SidebarProps) {
   const [selectedTab, setSelectedTab] = React.useState("all");
 
   const { chats, models, createNewChat, setActiveChat } = useChatStore();
