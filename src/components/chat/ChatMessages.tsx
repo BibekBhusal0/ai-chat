@@ -134,7 +134,7 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
     },
     {
       content: "Copy",
-      icon: isCopied ? <CheckIcon /> : 'lucide:copy',
+      icon: isCopied ? <CheckIcon /> : "lucide:copy",
       onClick: handleCopyToClipboard,
     },
     {
@@ -229,7 +229,7 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
     },
     {
       content: "Copy",
-      icon: isCopied ? <CheckIcon /> : 'lucide:copy',
+      icon: isCopied ? <CheckIcon /> : "lucide:copy",
       onClick: handleCopyToClipboard,
     },
     {
