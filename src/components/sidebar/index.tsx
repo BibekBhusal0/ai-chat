@@ -4,10 +4,9 @@ import { Icon } from "@iconify/react";
 import { isToday, isYesterday, isThisWeek, isThisMonth, parseISO } from "date-fns";
 import { useChatStore } from "../../store/chatStore";
 import { ChatGroup } from "./chatGroup";
-import { AnimatedIconButton } from "../animatedButton";
-import { SearchIcon } from "../icon/search";
 import { SettingsGearIcon } from "../icon/settings";
 import ThemeSwitch from "../theme-switch";
+import { IconButton } from "../iconButton";
 
 interface SidebarProps {
   mobile?: boolean;
@@ -95,8 +94,9 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
 
           <div className="flex items-center gap-2">
             <Tooltip content="Search chats (Cmd+K)">
-              <AnimatedIconButton
-                icon={<SearchIcon />}
+              <IconButton
+                icon='lucide:search'
+                iconSize={24}
                 isIconOnly
                 variant="light"
                 onPress={onCommandKOpen}
@@ -140,7 +140,7 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
             <ThemeSwitch />
 
             <Tooltip content="Settings">
-              <AnimatedIconButton icon={<SettingsGearIcon />} variant="light" />
+              <IconButton icon={<SettingsGearIcon />} variant="light" />
             </Tooltip>
           </div>
         </div>
@@ -165,9 +165,7 @@ export default function Sidebar({ mobile = false, onClose, onCommandKOpen }: Sid
       <div className="mt-auto flex flex-col gap-2">
         <ThemeSwitch />
         <Tooltip content="Settings" placement="right">
-          <Button isIconOnly variant="light">
-            <Icon icon="lucide:settings" width={20} />
-          </Button>
+          <IconButton icon={<SettingsGearIcon />} variant="light" />
         </Tooltip>
       </div>
     </div>

@@ -10,7 +10,6 @@ import { IconButton } from "../iconButton.tsx";
 import { RefreshCWIcon } from "../icon/refresh.tsx";
 import { CheckIcon } from "../icon/check.tsx";
 import { SquarePenIcon } from "../icon/pen.tsx";
-import { CopyIcon } from "../icon/copy.tsx";
 import { LikeIcon, LikeIconFilled } from "../icon/like.tsx";
 import { DislikeIcon, DislikeIconFilled } from "../icon/dislike.tsx";
 
@@ -135,7 +134,7 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
     },
     {
       content: "Copy",
-      icon: isCopied ? <CheckIcon /> : <CopyIcon />,
+      icon: isCopied ? <CheckIcon /> : 'lucide:copy',
       onClick: handleCopyToClipboard,
     },
     {
@@ -230,7 +229,7 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
     },
     {
       content: "Copy",
-      icon: isCopied ? <CheckIcon /> : <CopyIcon />,
+      icon: isCopied ? <CheckIcon /> : 'lucide:copy',
       onClick: handleCopyToClipboard,
     },
     {
