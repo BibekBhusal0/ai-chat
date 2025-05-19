@@ -116,7 +116,11 @@ function NormalEffect({
   index: number;
   alwaysVisibleCount: number;
 }) {
-  return <>{text.slice(0, Math.max(index, Math.min(text.length, alwaysVisibleCount ?? 1)))}</>;
+  const renderText = text
+    .slice(0, Math.max(index, Math.min(text.length, alwaysVisibleCount ?? 1)))
+    .split("\n")
+    .map((line, i, arr) => (i < arr.length - 1 ? <>{line}<br /></> : line));
+  return <>{renderText}</>;
 }
 
 enum TypingDirection {
@@ -213,9 +217,11 @@ function Type({
 
   const waitingNextCycle = index === total || index === 0;
 
+  const preRenderedText = text.split("\n").map((line, i, arr) => (i < arr.length - 1 ? <>{line}<br /></> : line));
+
   return (
     <div className={cn("relative", className)}>
-      {!grow && <div className="invisible">{text}</div>}
+      {!grow && <div className="invisible">{preRenderedText}</div>}
       <div
         className={cn({
           "absolute inset-0 h-full w-full": !grow,
@@ -267,3 +273,4 @@ export default function TypingText({
     />
   );
 }
+
