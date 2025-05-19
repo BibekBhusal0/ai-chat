@@ -1,15 +1,9 @@
 import { Button, ScrollShadow } from "@heroui/react";
+import { suggestedCommands } from '../../data/suggestions'
 
 interface SuggestionsProps {
   onSubmit: (message: string) => void;
 }
-
-const suggestedCommands = [
-  "Write a poem about the moon",
-  "Explain quantum physics",
-  "Translate 'hello' to Spanish",
-  "Summarize the plot of Hamlet",
-];
 
 export const Suggestions = ({ onSubmit }: SuggestionsProps) => {
   return (
@@ -17,15 +11,16 @@ export const Suggestions = ({ onSubmit }: SuggestionsProps) => {
       <div className="flex gap-2">
         {suggestedCommands.map((command, index) => (
           <Button
-            onPress={() => onSubmit(command)}
+            onPress={() => onSubmit(command.question)}
             key={index}
             className="flex h-14 flex-col items-start gap-0"
             variant="flat"
           >
-            {command}
+            {command.question}
           </Button>
         ))}
       </div>
     </ScrollShadow>
   );
 };
+
