@@ -16,7 +16,6 @@
     "@iconify/react": "latest",
     "cmdk": "^0.2.1",
     "date-fns": "^3.3.1",
-    "framer-motion": "^11.18.2",
     "motion": "^12.12.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
