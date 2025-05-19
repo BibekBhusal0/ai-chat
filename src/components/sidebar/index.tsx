@@ -7,6 +7,7 @@ import { ChatGroup } from "./chatGroup";
 import { SettingsGearIcon } from "../icon/settings";
 import ThemeSwitch from "../theme-switch";
 import { IconButton } from "../iconButton";
+import { cn } from "@heroui/react";
 
 interface SidebarProps {
   mobile?: boolean;
@@ -16,13 +17,18 @@ interface SidebarProps {
   setCollapsed?: (istate: boolean) => void;
 }
 
-export default function Sidebar({ mobile = false, collapsed = false, setCollapsed, onClose, onCommandKOpen }: SidebarProps) {
+export default function Sidebar({
+  mobile = false,
+  collapsed = false,
+  setCollapsed,
+  onClose,
+  onCommandKOpen,
+}: SidebarProps) {
   const [selectedTab, setSelectedTab] = React.useState("all");
-
   const { chats, models, createNewChat, setActiveChat } = useChatStore();
+  const showFullSidebar = mobile || !collapsed
 
   const handleNewChat = () => {
-    // Default to first model
     const defaultModelId = models[0]?.id || "gpt-4";
     createNewChat(defaultModelId);
     if (mobile && onClose) onClose();
@@ -33,16 +39,10 @@ export default function Sidebar({ mobile = false, collapsed = false, setCollapse
     if (mobile && onClose) onClose();
   };
 
-  // Group chats by date category
   const groupedChats = React.useMemo(() => {
-    // Filter chats based on pinned status if needed
     const filteredChats = selectedTab === "pinned" ? chats.filter((chat) => chat.pinned) : chats;
-
-    // First separate pinned chats
     const pinnedChats = filteredChats.filter((chat) => chat.pinned);
     const unpinnedChats = filteredChats.filter((chat) => !chat.pinned);
-
-    // Group unpinned chats by date
     const grouped = {
       pinned: pinnedChats,
       today: [] as typeof chats,
@@ -51,124 +51,96 @@ export default function Sidebar({ mobile = false, collapsed = false, setCollapse
       thisMonth: [] as typeof chats,
       older: [] as typeof chats,
     };
-
     unpinnedChats.forEach((chat) => {
       const date = parseISO(chat.date);
-
-      if (isToday(date)) {
-        grouped.today.push(chat);
-      } else if (isYesterday(date)) {
-        grouped.yesterday.push(chat);
-      } else if (isThisWeek(date)) {
-        grouped.thisWeek.push(chat);
-      } else if (isThisMonth(date)) {
-        grouped.thisMonth.push(chat);
-      } else {
-        grouped.older.push(chat);
-      }
+      if (isToday(date)) grouped.today.push(chat);
+      else if (isYesterday(date)) grouped.yesterday.push(chat);
+      else if (isThisWeek(date)) grouped.thisWeek.push(chat);
+      else if (isThisMonth(date)) grouped.thisMonth.push(chat);
+      else grouped.older.push(chat);
     });
-
     return grouped;
   }, [chats, selectedTab]);
 
-  if (!collapsed || mobile) {
-    return (
-      <div className="flex h-full w-72 flex-col border-r border-divider bg-default-50">
-        <div className="flex items-center justify-between p-4">
-          <h1 className="text-xl font-semibold">AI Chat</h1>
-          {!mobile && (
-            <Button isIconOnly variant="light" onPress={() => setCollapsed(true)}>
-              <Icon icon="lucide:chevrons-left" width={20} />
-            </Button>
-          )}
-        </div>
-
-        <div className="flex items-center justify-between gap-4 px-4 pb-2">
-          <Button
-            color="primary"
-            startContent={<Icon icon="lucide:plus" width={20} />}
-            className="w-full"
-            onPress={handleNewChat}
-          >
-            New Chat
-          </Button>
-
-          <div className="flex items-center gap-2">
-            <Tooltip content="Search chats (Cmd+K)">
-              <IconButton
-                icon='lucide:search'
-                iconSize={24}
-                isIconOnly
-                variant="light"
-                onPress={onCommandKOpen}
-              />
-            </Tooltip>
-          </div>
-        </div>
-
-        <Tabs
-          aria-label="Chat Filter"
-          selectedKey={selectedTab}
-          onSelectionChange={(e) => setSelectedTab(e as string)}
-          className="mx-auto py-1"
-          size="sm"
-        >
-          <Tab key="all" title="All Chats" />
-          <Tab key="pinned" title="Pinned Chats" />
-        </Tabs>
-
-        <Divider />
-
-        <div className="flex-1 overflow-y-auto p-2">
-          {Object.entries(groupedChats).map(([groupName, chats]) => (
-            <ChatGroup
-              title={groupName}
-              key={groupName}
-              chats={chats}
-              handleChatSelect={handleChatSelect}
-            />
-          ))}
-
-          {Object.values(groupedChats).flat().length === 0 && (
-            <div className="flex h-32 items-center justify-center">
-              <p className="text-center text-default-400">No chats found</p>
-            </div>
-          )}
-        </div>
-
-        <div className="border-t border-divider px-4 py-1">
-          <div className="flex items-center justify-between">
-            <ThemeSwitch />
-
-            <Tooltip content="Settings">
-              <IconButton icon={<SettingsGearIcon />} variant="light" />
-            </Tooltip>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex h-full w-16 flex-col items-center border-r border-divider bg-content1 py-4">
-      <div className="mb-8 flex justify-center">
-        <Button isIconOnly variant="light" onPress={() => setCollapsed(false)}>
-          <Icon icon="lucide:chevrons-right" width={20} />
+    <div
+      className={cn(
+        "flex h-full flex-col border-r border-divider overflow-hidden bg-default-50 transition-[width] duration-300 ease-in-out",
+        showFullSidebar ? "w-72" : "w-16 items-center py-4"
+      )}
+    >
+
+      {/* Logo and toggle icon */}
+      <div className="flex w-full items-center gap-2 py-3 px-4 justify-between">
+        {showFullSidebar && <h1 className="text-xl font-semibold">AI Chat</h1>}
+        <Button isIconOnly variant="light" onPress={() => { if (mobile) onClose(); else setCollapsed(!collapsed) }}>
+          <Icon icon={"lucide:chevrons-left"} className={cn('transition-[transform]', showFullSidebar ? 'rotate-0' : 'rotate-180')} width={20} />
         </Button>
       </div>
 
-      <Tooltip content="New Chat" color="primary" placement="right">
-        <Button isIconOnly color="primary" className="mb-4" onPress={handleNewChat}>
-          <Icon icon="lucide:plus" width={24} />
-        </Button>
-      </Tooltip>
+      {/* New Chat Button and Search */}
+      <div className="flex items-center justify-between gap-4 px-4 pb-2">
+        <Button
+          color="primary"
+          startContent={<Icon icon="lucide:plus" width={20} />}
+          onPress={handleNewChat}
+          className={cn('min-w-4', showFullSidebar ? 'w-full' : 'w-10 p-1')}
+        >{showFullSidebar && "New Chat"}</Button>
+        {showFullSidebar &&
+          <Tooltip content="Search chats (Cmd+K)">
+            <IconButton
+              icon="lucide:search"
+              iconSize={24}
+              isIconOnly
+              variant="light"
+              onPress={onCommandKOpen}
+            />
+          </Tooltip>
+        }
+      </div>
 
-      <div className="mt-auto flex flex-col gap-2">
-        <ThemeSwitch />
-        <Tooltip content="Settings" placement="right">
-          <IconButton icon={<SettingsGearIcon />} variant="light" />
-        </Tooltip>
+      {/* Tabs and Chat List */}
+      {showFullSidebar && (
+        <>
+          <Tabs
+            aria-label="Chat Filter"
+            selectedKey={selectedTab}
+            onSelectionChange={(e) => setSelectedTab(e as string)}
+            className="mx-auto py-1"
+            size="sm"
+          >
+            <Tab key="all" title="All Chats" />
+            <Tab key="pinned" title="Pinned Chats" />
+          </Tabs>
+          <Divider />
+          <div className="flex-1 overflow-y-auto p-2">
+            {Object.entries(groupedChats).map(([groupName, chats]) => (
+              <ChatGroup
+                title={groupName}
+                key={groupName}
+                chats={chats}
+                handleChatSelect={handleChatSelect}
+              />
+            ))}
+            {Object.values(groupedChats).flat().length === 0 && (
+              <div className="flex h-32 items-center justify-center">
+                <p className="text-center text-default-400">No chats found</p>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      {/* Bottom Controls: Theme + Settings */}
+      <div className="border-t border-divider px-4 py-1 w-full mt-auto">
+        <div className={cn("flex items-center justify-between", !showFullSidebar && "flex-col gap-2")}>
+          <ThemeSwitch />
+          <Tooltip content="Settings" placement={collapsed ? "right" : "top"}>
+            <IconButton icon={<SettingsGearIcon />} variant="light" />
+          </Tooltip>
+        </div>
       </div>
     </div>
   );
 }
+
