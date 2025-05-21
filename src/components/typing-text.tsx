@@ -119,7 +119,16 @@ function NormalEffect({
   const renderText = text
     .slice(0, Math.max(index, Math.min(text.length, alwaysVisibleCount ?? 1)))
     .split("\n")
-    .map((line, i, arr) => (i < arr.length - 1 ? <>{line}<br /></> : line));
+    .map((line, i, arr) =>
+      i < arr.length - 1 ? (
+        <>
+          {line}
+          <br />
+        </>
+      ) : (
+        line
+      )
+    );
   return <>{renderText}</>;
 }
 
@@ -217,7 +226,16 @@ function Type({
 
   const waitingNextCycle = index === total || index === 0;
 
-  const preRenderedText = text.split("\n").map((line, i, arr) => (i < arr.length - 1 ? <>{line}<br /></> : line));
+  const preRenderedText = text.split("\n").map((line, i, arr) =>
+    i < arr.length - 1 ? (
+      <>
+        {line}
+        <br />
+      </>
+    ) : (
+      line
+    )
+  );
 
   return (
     <div className={cn("relative", className)}>
@@ -273,4 +291,3 @@ export default function TypingText({
     />
   );
 }
-

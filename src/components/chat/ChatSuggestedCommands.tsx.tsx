@@ -1,5 +1,5 @@
 import { Button, ScrollShadow } from "@heroui/react";
-import { suggestedCommands } from '../../data/suggestions'
+import { suggestedCommands } from "../../data/suggestions";
 
 interface SuggestionsProps {
   onSubmit: (message: string) => void;
@@ -23,4 +23,3 @@ export const Suggestions = ({ onSubmit }: SuggestionsProps) => {
     </ScrollShadow>
   );
 };
-

@@ -5,7 +5,7 @@ Includes rich interactions, shortcut support, command palette, chat history, and
 
 ## ✨ Features
 
-- 🧠 Multi-model AI support 
+- 🧠 Multi-model AI support
 - 💬 Saved chat sessions with timestamps
 - ⌨️ Command palette (Cmd + K) to quickly search and start actions
 - 🎨 Smooth animations
@@ -16,14 +16,12 @@ Includes rich interactions, shortcut support, command palette, chat history, and
 
 ## 🛠️ Tech Stack
 
-
 - [HeroUI](https://heroui.com)
 - [Vite](https://vitejs.dev/)
 - [Iconify](https://iconify.design/)
 - [Zustand](https://github.com/pmndrs/zustand)
 - [Cmdk](https://cmdk.proust.cx/)
 - [motion](https://motion.dev/)
-
 
 ## ⌨️ Keyboard Shortcuts
 

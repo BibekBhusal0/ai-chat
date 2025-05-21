@@ -37,4 +37,3 @@ export const aiModels: AiModel[] = [
     abilities: ["files"],
   },
 ];
-

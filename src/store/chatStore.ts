@@ -112,7 +112,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     // Generate a response based on the model
     const model = get().models.find((m) => m.id === chat.modelId);
     let response = "I'm sorry, I don't understand your question.";
-    const answer = getAnswer(prompt)
+    const answer = getAnswer(prompt);
 
     if (!answer) {
       if (model) {
@@ -120,7 +120,8 @@ export const useChatStore = create<ChatState>((set, get) => ({
           model.abilities.includes("image-generation") &&
           (prompt.toLowerCase().includes("image") || prompt.toLowerCase().includes("picture"))
         ) {
-          response = "I've generated an image based on your request. [Image would be displayed here]";
+          response =
+            "I've generated an image based on your request. [Image would be displayed here]";
         } else if (model.abilities.includes("reasoning")) {
           response = `Based on careful reasoning: ${prompt} is an interesting question. Let me think through this step by step and provide a comprehensive answer...`;
         } else if (model.abilities.includes("search")) {
@@ -129,7 +130,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
           response = `Thank you for your message about "${prompt}". I'm processing your request and will provide the best possible answer based on my training.`;
         }
       }
-    } else response = answer
+    } else response = answer;
 
     // Add the assistant's response
     get().addMessage(chatId, response, "assistant");

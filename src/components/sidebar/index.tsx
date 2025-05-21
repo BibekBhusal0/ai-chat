@@ -25,7 +25,7 @@ export default function Sidebar({
   setCollapsed,
   onClose,
   onCommandKOpen,
-  onSettingsOpen
+  onSettingsOpen,
 }: SidebarProps) {
   const [selectedTab, setSelectedTab] = React.useState("all");
   const { chats, models, createNewChat, setActiveChat } = useChatStore();

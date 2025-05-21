@@ -24,10 +24,9 @@ export const suggestedCommands = [
     answer:
       "Planning a family vacation in Italy requires careful consideration of interests and ages. Start with Rome, exploring the Colosseum, Roman Forum, and Vatican City. Toss a coin in the Trevi Fountain and enjoy delicious gelato. Next, head to Florence, the birthplace of the Renaissance, and visit the Uffizi Gallery and climb the Duomo for panoramic views. \n\nConsider a few days in Venice, riding gondolas through the canals and exploring St. Mark's Square. For a relaxing break, visit the Tuscan countryside, staying in a farmhouse and enjoying wine tasting and cooking classes. If you have older children, consider a visit to Pompeii and Mount Vesuvius to learn about ancient Roman history. \n\nFactor in travel time between locations, using trains for efficient transportation. Book accommodations in advance, opting for family-friendly hotels or apartments. Pack comfortable shoes for walking and exploring. Enjoy the local cuisine, including pizza, pasta, and regional specialties. Italy offers a rich blend of history, culture, and natural beauty, making it a perfect destination for a memorable family vacation.",
   },
-]
+];
 
 export function getAnswer(question: string): string | null {
   const suggestion = suggestedCommands.find((s) => s.question === question);
   return suggestion ? suggestion.answer : null;
 }
-

@@ -9,8 +9,16 @@ import Sidebar from "./components/sidebar";
 import { Settings } from "./components/settings";
 
 export default function App() {
-  const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onOpenChange: onDrawerOpenChange } = useDisclosure();
-  const { isOpen: isSettingsOpen, onOpen: onSettingsOpen, onOpenChange: onSettingsOpenChange } = useDisclosure();
+  const {
+    isOpen: isDrawerOpen,
+    onOpen: onDrawerOpen,
+    onOpenChange: onDrawerOpenChange,
+  } = useDisclosure();
+  const {
+    isOpen: isSettingsOpen,
+    onOpen: onSettingsOpen,
+    onOpenChange: onSettingsOpenChange,
+  } = useDisclosure();
   const [commandKOpen, setCommandKOpen] = React.useState(false);
   const { createNewChat, setActiveChat } = useChatStore();
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
@@ -29,11 +37,10 @@ export default function App() {
         //Toggle sidebar
         e.preventDefault();
         setSidebarCollapsed((prev) => !prev);
-      }
-      else if ((e.ctrlKey || e.metaKey) && e.key === ",") {
+      } else if ((e.ctrlKey || e.metaKey) && e.key === ",") {
         //Toggle sidebar
         e.preventDefault();
-        onSettingsOpen()
+        onSettingsOpen();
       }
     };
 
