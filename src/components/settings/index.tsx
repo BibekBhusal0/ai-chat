@@ -10,6 +10,7 @@ import { UserIcon } from "../icon/user";
 import Account from "./account";
 import { IconButton } from "../iconButton";
 import Info from "./info";
+import { AnimatePresence, motion } from "motion/react"
 
 type SettingsProps = { onOpenChange: () => void; isOpen: boolean };
 
@@ -30,6 +31,33 @@ const settings: setting[] = [
 
 export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [direction, setDirection] = useState(0)
+
+  const onPress = (i: number) => {
+    if (i === selectedIndex) return
+    setDirection(i>selectedIndex ? 1: -1)
+    setSelectedIndex(i)
+  }
+  
+  const variants = {
+    initial: (direction: number) => ({
+      y: 300 * direction,
+      opacity: 0,
+      filter: "blur(4px)",
+    }),
+    active: {
+      y: 0,
+      opacity: 1,
+      filter: "blur(0px)",
+    },
+    exit: (direction: number) => ({
+      y: -300 * direction,
+      opacity: 0,
+      filter: "blur(4px)",
+    }),
+  }
+
+
   const size = 15;
   return (
     <Modal backdrop="blur" size="2xl" isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -47,7 +75,7 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
                       className="align-center flex justify-start"
                       size="sm"
                       color={i === selectedIndex ? "primary" : "default"}
-                      onPress={() => setSelectedIndex(i)}
+                      onPress={() =>onPress(i)}
                       key={i}
                       iconSize={size}
                       endContent={<div className="text-lg">{title}</div>}
@@ -57,8 +85,23 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
                 })}
               </div>
 
-              {/* TODO: add animation in switching */}
-              <div className="w-full p-1">{settings[selectedIndex].content}</div>
+              <AnimatePresence
+                         custom={direction}
+              mode="popLayout"
+              >
+
+              <motion.div
+                className="w-full p-1"
+                    key={selectedIndex}
+                   transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}
+                variants={variants}
+                initial="initial"
+                animate="active"
+                exit="exit"
+                custom={direction}
+              >{settings[selectedIndex].content}</motion.div>
+              </AnimatePresence>
+
             </ModalBody>
             <ModalFooter>
               <Button variant="solid" color="primary">
