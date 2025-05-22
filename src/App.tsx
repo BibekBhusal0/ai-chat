@@ -23,9 +23,11 @@ export default function App() {
   const { createNewChat, setActiveChat } = useChatStore();
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
 
+  // TODO: close settings, search in other shortcuts
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        // Search chats
         e.preventDefault();
         setCommandKOpen(true);
       } else if (e.altKey && e.key === "n") {
@@ -38,12 +40,11 @@ export default function App() {
         e.preventDefault();
         setSidebarCollapsed((prev) => !prev);
       } else if ((e.ctrlKey || e.metaKey) && e.key === ",") {
-        //Toggle sidebar
+        //Open settings
         e.preventDefault();
         onSettingsOpen();
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   });

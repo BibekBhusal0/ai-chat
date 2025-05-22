@@ -1,7 +1,7 @@
 import React, { useRef, ReactNode, forwardRef } from "react";
 import { Button, ButtonProps } from "@heroui/react";
 
-interface AnimatedIconButtonProps extends ButtonProps {
+export interface AnimatedIconButtonProps extends ButtonProps {
   icon: ReactNode;
   iconSize?: number;
 }

@@ -4,10 +4,16 @@ import { SettingsIcon } from "../icon/settings2";
 import General from "./general";
 import { FlaskIcon } from "../icon/flask";
 import Experimental from "./experimental";
-import { AnimatedIconButton } from "../animatedButton";
+import { KeyboardIcon } from "../icon/keyboard";
+import Shortcuts from "./shortcuts";
+import { UserIcon } from "../icon/user";
+import Account from "./account";
+import { IconButton } from "../iconButton";
+import Info from "./info";
 
 type SettingsProps = { onOpenChange: () => void; isOpen: boolean };
 
+// TODO: add description
 type setting = {
   icon: ReactNode;
   title: string;
@@ -16,7 +22,10 @@ type setting = {
 
 const settings: setting[] = [
   { icon: <SettingsIcon />, title: "General", content: <General /> },
+  { icon: <KeyboardIcon />, title: "HotKeys", content: <Shortcuts /> },
   { icon: <FlaskIcon />, title: "Experimental", content: <Experimental /> },
+  { icon: <UserIcon />, title: "Account", content: <Account /> },
+  { icon: 'lucide:info', title: "Info", content: <Info /> },
 ];
 
 export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
@@ -32,7 +41,7 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
               <div className="flex flex-col gap-2">
                 {settings.map(({ icon, title }, i) => {
                   return (
-                    <AnimatedIconButton
+                    <IconButton
                       icon={icon}
                       variant={i === selectedIndex ? "solid" : "light"}
                       className="align-center flex justify-start"
@@ -48,6 +57,7 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
                 })}
               </div>
 
+              {/* TODO: add animation in switching */}
               <div className="w-full p-1">{settings[selectedIndex].content}</div>
             </ModalBody>
             <ModalFooter>
