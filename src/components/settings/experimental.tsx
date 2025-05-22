@@ -8,12 +8,22 @@ export default function Experimental() {
     { label: "Frequency Penalty", maxValue: 2, defaultValue: 0 },
     { label: "Presence Penalty", maxValue: 2, defaultValue: 0 },
   ];
-  const defaultProps: SliderProps = { size: "sm", step: 0.005, minValue: 0 };
+  const defaultProps: SliderProps = {
+    size: "md",
+    step: 0.005,
+    minValue: 0,
+    classNames: {
+      label: 'text-md',
+      value: 'text-md',
+      base: 'pt-1'
+    }
+  };
 
   return (
-    <div>
-      {sliders.map((props) => (
+    <div className='space-y-2 divide-divider'>
+      {sliders.map((props, key) => (
         <Slider
+          key={key}
           {...defaultProps}
           {...props}
           className={cn(defaultProps.className, props.className)}
@@ -22,3 +32,4 @@ export default function Experimental() {
     </div>
   );
 }
+

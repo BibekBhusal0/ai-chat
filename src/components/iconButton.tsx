@@ -1,14 +1,9 @@
-import { Button, ButtonProps } from "@heroui/react";
+import { Button, } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { forwardRef, ReactNode } from "react";
-import { AnimatedIconButton } from "./animatedButton";
+import { forwardRef, } from "react";
+import { AnimatedIconButton, AnimatedIconButtonProps } from "./animatedButton";
 
-interface IconButtonProps extends ButtonProps {
-  icon: string | ReactNode;
-  iconSize?: number;
-}
-
-export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+export const IconButton = forwardRef<HTMLButtonElement, AnimatedIconButtonProps>(
   ({ icon, iconSize, ...props }, ref) => {
     if (typeof icon === "string")
       return (

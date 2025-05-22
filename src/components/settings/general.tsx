@@ -1,16 +1,11 @@
-import { Select, SelectItem, Textarea } from "@heroui/react";
+import { SelectItem, Textarea } from "@heroui/react";
 import { useTheme } from "@heroui/use-theme";
 import { useChatStore } from "../../store/chatStore";
+import { LanguageSelector, SettingSelect } from "./select";
 
-const languages = [
-  "Auto",
-  "English",
-  "French",
-  "Spanish",
-  "German",
-  "Italian",
-  "Japanese",
-  "Chinese",
+const themes = [
+  { key: "light", label: "Light" },
+  { key: "dark", label: "Dark" },
 ];
 
 export default function General() {
@@ -18,31 +13,32 @@ export default function General() {
   const { models } = useChatStore();
 
   return (
-    <div>
-      <Select
+    <div className='space-y-2 divide-y-1 divide-divider' >
+      <SettingSelect
         selectedKeys={[theme]}
         onChange={(e) => setTheme(e.target.value)}
         label="Theme"
         labelPlacement="outside-left"
-      >
-        <SelectItem key="light">Light</SelectItem>
-        <SelectItem key="dark">Dark</SelectItem>
-      </Select>
-      <Select label="Language" labelPlacement="outside-left" defaultSelectedKeys={["Auto"]}>
-        {languages.map((lang) => (
-          <SelectItem key={lang}>{lang}</SelectItem>
-        ))}
-      </Select>
-      <Select label="Default Model" labelPlacement="outside-left" defaultSelectedKeys={["gpt-4"]}>
+        items={themes}
+      />
+      <LanguageSelector />
+      <SettingSelect label="Default Model" defaultSelectedKeys={["gpt-4"]}>
         {models.map(({ id, name }) => (
           <SelectItem key={id}>{name}</SelectItem>
         ))}
-      </Select>
+      </SettingSelect>
       <Textarea
         label="System Prompt"
-        placeholder="your system prompt here"
+        placeholder="Your system prompt here"
         labelPlacement="outside"
+        classNames = {{
+          base: 'pt-2',
+          label: 'text-lg'
+        }}
+        minRows = { 5 } 
+        maxRows = {5}
       />
     </div>
   );
 }
+

@@ -35,15 +35,15 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
 
   const onPress = (i: number) => {
     if (i === selectedIndex) return
-    setDirection(i>selectedIndex ? 1: -1)
+    setDirection(i > selectedIndex ? 1 : -1)
     setSelectedIndex(i)
   }
-  
+
   const variants = {
     initial: (direction: number) => ({
       y: 300 * direction,
       opacity: 0,
-      filter: "blur(4px)",
+      filter: "blur(1px)",
     }),
     active: {
       y: 0,
@@ -53,7 +53,7 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
     exit: (direction: number) => ({
       y: -300 * direction,
       opacity: 0,
-      filter: "blur(4px)",
+      filter: "blur(1px)",
     }),
   }
 
@@ -75,7 +75,7 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
                       className="align-center flex justify-start"
                       size="sm"
                       color={i === selectedIndex ? "primary" : "default"}
-                      onPress={() =>onPress(i)}
+                      onPress={() => onPress(i)}
                       key={i}
                       iconSize={size}
                       endContent={<div className="text-lg">{title}</div>}
@@ -86,20 +86,20 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
               </div>
 
               <AnimatePresence
-                         custom={direction}
-              mode="popLayout"
+                custom={direction}
+                mode="popLayout"
               >
 
-              <motion.div
-                className="w-full p-1"
-                    key={selectedIndex}
-                   transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}
-                variants={variants}
-                initial="initial"
-                animate="active"
-                exit="exit"
-                custom={direction}
-              >{settings[selectedIndex].content}</motion.div>
+                <motion.div
+                  className="w-full p-2 overflow-auto h-80"
+                  key={selectedIndex}
+                  transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}
+                  variants={variants}
+                  initial="initial"
+                  animate="active"
+                  exit="exit"
+                  custom={direction}
+                >{settings[selectedIndex].content}</motion.div>
               </AnimatePresence>
 
             </ModalBody>

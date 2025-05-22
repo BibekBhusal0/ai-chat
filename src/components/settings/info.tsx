@@ -1,17 +1,11 @@
-import { Button } from "@heroui/react";
+import { Link } from "@heroui/react";
 
 export default function Info() {
   return (
     <div>
-      <Button color="primary" >
-        Terms of Use
-      </Button>
-      <Button color="primary" >
-        Privacy Policy
-      </Button>
-      <Button color="primary" as="a" href="https://github.com/bibekbhusal0/ai-chat">
+      This project is build for HeroUI hackathon 20205. You an check the source code at <Link isExternal color="primary"  href="https://github.com/bibekbhusal0/ai-chat">
         GitHub
-      </Button>
+      </Link>
     </div>
   );
 }
