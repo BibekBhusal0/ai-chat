@@ -11,10 +11,11 @@ import Account from "./account";
 import { IconButton } from "../iconButton";
 import Info from "./info";
 import { AnimatePresence, motion } from "motion/react";
+import { AudioLinesIcon } from "../icon/audio";
+import Audio from "./audio";
 
 type SettingsProps = { onOpenChange: () => void; isOpen: boolean };
 
-// TODO: add description
 type setting = {
   icon: ReactNode;
   title: string;
@@ -23,6 +24,7 @@ type setting = {
 
 const settings: setting[] = [
   { icon: <SettingsIcon />, title: "General", content: <General /> },
+  { icon: <AudioLinesIcon />, title: "Speech", content: <Audio /> },
   { icon: <KeyboardIcon />, title: "HotKeys", content: <Shortcuts /> },
   { icon: <FlaskIcon />, title: "Experimental", content: <Experimental /> },
   { icon: <UserIcon />, title: "Account", content: <Account /> },
@@ -63,9 +65,9 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader>Settings</ModalHeader>
-            <ModalBody className="flex w-full flex-row gap-2">
-              <div className="flex flex-col gap-2">
+            <ModalHeader className = 'border-b-1 border-divider'>Settings</ModalHeader>
+            <ModalBody className="flex w-full flex-row gap-2 overflow-y-hidden py-0">
+              <div className="flex flex-col gap-2 p-2 border-divider border-1 h-auto my-3 rounded-md">
                 {settings.map(({ icon, title }, i) => {
                   return (
                     <IconButton
@@ -99,7 +101,7 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
                 </motion.div>
               </AnimatePresence>
             </ModalBody>
-            <ModalFooter>
+            <ModalFooter className = 'pt-1'>
               <Button variant="solid" color="primary">
                 Save
               </Button>
@@ -113,3 +115,4 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
     </Modal>
   );
 };
+
