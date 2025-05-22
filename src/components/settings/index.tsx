@@ -65,9 +65,9 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className = 'border-b-1 border-divider'>Settings</ModalHeader>
+            <ModalHeader className="border-b-1 border-divider">Settings</ModalHeader>
             <ModalBody className="flex w-full flex-row gap-2 overflow-y-hidden py-0">
-              <div className="flex flex-col gap-2 p-2 border-divider border-1 h-auto my-3 rounded-md">
+              <div className="my-3 flex h-auto flex-col gap-2 rounded-md border-1 border-divider p-2">
                 {settings.map(({ icon, title }, i) => {
                   return (
                     <IconButton
@@ -101,7 +101,7 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
                 </motion.div>
               </AnimatePresence>
             </ModalBody>
-            <ModalFooter className = 'pt-1'>
+            <ModalFooter className="pt-1">
               <Button variant="solid" color="primary">
                 Save
               </Button>
@@ -115,4 +115,3 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
     </Modal>
   );
 };
-
