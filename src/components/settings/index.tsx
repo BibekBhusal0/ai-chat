@@ -10,7 +10,7 @@ import { UserIcon } from "../icon/user";
 import Account from "./account";
 import { IconButton } from "../iconButton";
 import Info from "./info";
-import { AnimatePresence, motion } from "motion/react"
+import { AnimatePresence, motion } from "motion/react";
 
 type SettingsProps = { onOpenChange: () => void; isOpen: boolean };
 
@@ -26,18 +26,18 @@ const settings: setting[] = [
   { icon: <KeyboardIcon />, title: "HotKeys", content: <Shortcuts /> },
   { icon: <FlaskIcon />, title: "Experimental", content: <Experimental /> },
   { icon: <UserIcon />, title: "Account", content: <Account /> },
-  { icon: 'lucide:info', title: "Info", content: <Info /> },
+  { icon: "lucide:info", title: "Info", content: <Info /> },
 ];
 
 export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [direction, setDirection] = useState(0)
+  const [direction, setDirection] = useState(0);
 
   const onPress = (i: number) => {
-    if (i === selectedIndex) return
-    setDirection(i > selectedIndex ? 1 : -1)
-    setSelectedIndex(i)
-  }
+    if (i === selectedIndex) return;
+    setDirection(i > selectedIndex ? 1 : -1);
+    setSelectedIndex(i);
+  };
 
   const variants = {
     initial: (direction: number) => ({
@@ -55,8 +55,7 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
       opacity: 0,
       filter: "blur(1px)",
     }),
-  }
-
+  };
 
   const size = 15;
   return (
@@ -85,13 +84,9 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
                 })}
               </div>
 
-              <AnimatePresence
-                custom={direction}
-                mode="popLayout"
-              >
-
+              <AnimatePresence custom={direction} mode="popLayout">
                 <motion.div
-                  className="w-full p-2 overflow-auto h-80"
+                  className="h-80 w-full overflow-auto p-2"
                   key={selectedIndex}
                   transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}
                   variants={variants}
@@ -99,9 +94,10 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
                   animate="active"
                   exit="exit"
                   custom={direction}
-                >{settings[selectedIndex].content}</motion.div>
+                >
+                  {settings[selectedIndex].content}
+                </motion.div>
               </AnimatePresence>
-
             </ModalBody>
             <ModalFooter>
               <Button variant="solid" color="primary">

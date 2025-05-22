@@ -1,8 +1,8 @@
-import type { Variants } from 'motion/react';
-import { motion, useAnimation } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
-import { cn } from '@heroui/react';
+import type { Variants } from "motion/react";
+import { motion, useAnimation } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { cn } from "@heroui/react";
 
 export interface LogoutIconHandle {
   startAnimation: () => void;
@@ -32,15 +32,15 @@ const LogoutIcon = forwardRef<LogoutIconHandle, LogoutIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -51,7 +51,7 @@ const LogoutIcon = forwardRef<LogoutIconHandle, LogoutIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -78,26 +78,14 @@ const LogoutIcon = forwardRef<LogoutIconHandle, LogoutIconProps>(
           strokeLinejoin="round"
         >
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-          <motion.polyline
-            points="16 17 21 12 16 7"
-            variants={pathVariants}
-            animate={controls}
-          />
-          <motion.line
-            x1="21"
-            x2="9"
-            y1="12"
-            y2="12"
-            variants={pathVariants}
-            animate={controls}
-          />
+          <motion.polyline points="16 17 21 12 16 7" variants={pathVariants} animate={controls} />
+          <motion.line x1="21" x2="9" y1="12" y2="12" variants={pathVariants} animate={controls} />
         </svg>
       </div>
     );
   }
 );
 
-LogoutIcon.displayName = 'LogoutIcon';
+LogoutIcon.displayName = "LogoutIcon";
 
 export { LogoutIcon };
-

@@ -1,7 +1,7 @@
-import type { Variants } from 'motion/react';
-import { motion, useAnimation } from 'motion/react';
-import type { HTMLAttributes } from 'react';
-import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
+import type { Variants } from "motion/react";
+import { motion, useAnimation } from "motion/react";
+import type { HTMLAttributes } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
 import { cn } from "@heroui/react";
 
 export interface UserIconHandle {
@@ -44,15 +44,15 @@ const UserIcon = forwardRef<UserIconHandle, UserIconProps>(
       isControlledRef.current = true;
 
       return {
-        startAnimation: () => controls.start('animate'),
-        stopAnimation: () => controls.start('normal'),
+        startAnimation: () => controls.start("animate"),
+        stopAnimation: () => controls.start("normal"),
       };
     });
 
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('animate');
+          controls.start("animate");
         } else {
           onMouseEnter?.(e);
         }
@@ -63,7 +63,7 @@ const UserIcon = forwardRef<UserIconHandle, UserIconProps>(
     const handleMouseLeave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         if (!isControlledRef.current) {
-          controls.start('normal');
+          controls.start("normal");
         } else {
           onMouseLeave?.(e);
         }
@@ -88,13 +88,7 @@ const UserIcon = forwardRef<UserIconHandle, UserIconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <motion.circle
-            cx="12"
-            cy="8"
-            r="5"
-            animate={controls}
-            variants={circleVariant}
-          />
+          <motion.circle cx="12" cy="8" r="5" animate={controls} variants={circleVariant} />
 
           <motion.path
             d="M20 21a8 8 0 0 0-16 0"
@@ -111,7 +105,6 @@ const UserIcon = forwardRef<UserIconHandle, UserIconProps>(
   }
 );
 
-UserIcon.displayName = 'UserIcon';
+UserIcon.displayName = "UserIcon";
 
 export { UserIcon };
-

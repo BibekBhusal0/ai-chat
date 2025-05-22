@@ -13,7 +13,7 @@ export default function General() {
   const { models } = useChatStore();
 
   return (
-    <div className='space-y-2 divide-y-1 divide-divider' >
+    <div className="space-y-2 divide-y-1 divide-divider">
       <SettingSelect
         selectedKeys={[theme]}
         onChange={(e) => setTheme(e.target.value)}
@@ -31,14 +31,13 @@ export default function General() {
         label="System Prompt"
         placeholder="Your system prompt here"
         labelPlacement="outside"
-        classNames = {{
-          base: 'pt-2',
-          label: 'text-lg'
+        classNames={{
+          base: "pt-2",
+          label: "text-lg",
         }}
-        minRows = { 5 } 
-        maxRows = {5}
+        minRows={5}
+        maxRows={5}
       />
     </div>
   );
 }
-

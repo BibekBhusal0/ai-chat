@@ -13,14 +13,14 @@ export default function Experimental() {
     step: 0.005,
     minValue: 0,
     classNames: {
-      label: 'text-md',
-      value: 'text-md',
-      base: 'pt-1'
-    }
+      label: "text-md",
+      value: "text-md",
+      base: "pt-1",
+    },
   };
 
   return (
-    <div className='space-y-2 divide-divider'>
+    <div className="space-y-2 divide-divider">
       {sliders.map((props, key) => (
         <Slider
           key={key}
@@ -32,4 +32,3 @@ export default function Experimental() {
     </div>
   );
 }
-

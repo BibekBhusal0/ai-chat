@@ -1,6 +1,6 @@
-import { Button, } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { forwardRef, } from "react";
+import { forwardRef } from "react";
 import { AnimatedIconButton, AnimatedIconButtonProps } from "./animatedButton";
 
 export const IconButton = forwardRef<HTMLButtonElement, AnimatedIconButtonProps>(
