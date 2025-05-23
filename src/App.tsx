@@ -23,26 +23,28 @@ export default function App() {
   const { createNewChat, setActiveChat } = useChatStore();
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
 
-  // TODO: close settings, search in other shortcuts
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        // Search chats
         e.preventDefault();
         setCommandKOpen(true);
+        if (isSettingsOpen) onSettingsOpenChange();
       } else if (e.altKey && e.key === "n") {
-        // Create new chat
         e.preventDefault();
         const newChatId = createNewChat("gpt-4");
         setActiveChat(newChatId);
+        if (isSettingsOpen) onSettingsOpenChange();
+        if (commandKOpen) setCommandKOpen(false);
       } else if (e.altKey && e.key === "b") {
-        //Toggle sidebar
         e.preventDefault();
         setSidebarCollapsed((prev) => !prev);
       } else if ((e.ctrlKey || e.metaKey) && e.key === ",") {
-        //Open settings
         e.preventDefault();
         onSettingsOpen();
+        if (commandKOpen) setCommandKOpen(false);
+      } else if (e.key === "Escape") {
+        if (isSettingsOpen) onSettingsOpenChange();
+        if (commandKOpen) setCommandKOpen(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -101,3 +103,4 @@ export default function App() {
     </div>
   );
 }
+
