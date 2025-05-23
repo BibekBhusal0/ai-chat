@@ -26,8 +26,9 @@ Includes rich interactions, shortcut support, command palette, chat history, and
 ## ⌨️ Keyboard Shortcuts
 
 - `Cmd/Ctrl + K` → Open command palette
+- `Cmd/Ctrl + ,` → Open settings
 - `Alt/Option + N` → Start a new chat
-- `Alt + B` → Toggle sidebar
+- `Alt/Option + B` → Toggle sidebar
 
 ## 📸 Screenshots
 
