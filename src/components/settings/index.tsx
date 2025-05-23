@@ -73,13 +73,13 @@ export const Settings: FC<SettingsProps> = ({ onOpenChange, isOpen }) => {
                     <IconButton
                       icon={icon}
                       variant={i === selectedIndex ? "solid" : "light"}
-                      className="align-center flex justify-start min-w-4"
+                      className="align-center flex min-w-4 justify-start"
                       size="sm"
                       color={i === selectedIndex ? "primary" : "default"}
                       onPress={() => onPress(i)}
                       key={i}
                       iconSize={size}
-                      endContent={<div className="text-lg hidden sm:block">{title}</div>}
+                      endContent={<div className="hidden text-lg sm:block">{title}</div>}
                       isIconOnly={false}
                     />
                   );
