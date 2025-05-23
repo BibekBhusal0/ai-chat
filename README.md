@@ -32,6 +32,11 @@ Includes rich interactions, shortcut support, command palette, chat history, and
 
 ## 📸 Screenshots
 
+https://github.com/user-attachments/assets/bf28ff8d-d0a3-4bbf-937e-293590bb9457
+
+> [!note]
+> Many changes have made after this screenshot like, animated sidebar, settigns, animated icons etc.
+
 ## 🚀 Run Locally
 
 ```bash
