@@ -141,7 +141,10 @@ export default function Sidebar({
               iconSize={24}
               isIconOnly
               variant="light"
-              onPress={onCommandKOpen}
+              onPress={() => {
+                if (mobile && onClose) onClose();
+                onCommandKOpen();
+              }}
             />
           </Tooltip>
         )}
