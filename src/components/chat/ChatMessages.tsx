@@ -169,7 +169,7 @@ function UserMessageItem({ message, chatId }: UserMessageItemProps) {
           </CardFooter>
         </Card>
       ) : (
-        <div className="group relative mr-10 max-w-[80%] rounded-xl dark:bg-primary-400 bg-primary-300  px-4 py-2 text-right">
+        <div className="group relative mr-10 max-w-[80%] rounded-xl bg-primary-300 px-4 py-2 text-right dark:bg-primary-400">
           <div className="whitespace-pre-wrap">{message.content}</div>
           <MessageItemButtons buttons={userButtons} align="right" />
         </div>
@@ -291,7 +291,7 @@ function MessageItemButtons({ buttons, align }: MessageItemButtonsProps) {
       )}
     >
       {buttons.map((button, index) => (
-        <Tooltip key={index} size ='sm' content={button.content} delay = {0} closeDelay = {0}>
+        <Tooltip key={index} size="sm" content={button.content} delay={0} closeDelay={0}>
           <IconButton
             icon={button.icon}
             isIconOnly
