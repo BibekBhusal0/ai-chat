@@ -91,7 +91,7 @@ export default function Sidebar({
         <motion.div layout transition={animationConfig}>
           <Button
             isIconOnly
-            className="overflow-hidden"
+            className="overflow-hidden groups"
             variant="light"
             onPress={() => {
               if (mobile) onClose();
@@ -100,7 +100,7 @@ export default function Sidebar({
           >
             <Icon
               icon={"lucide:chevrons-left"}
-              className={cn("transition-[transform]", showFullSidebar ? "rotate-0" : "rotate-180")}
+              className={cn("transition-[transform]", showFullSidebar ? "rotate-0  group-hover:-translate-x-[2px]" : "rotate-180 group-hover:translate-x-[2px]")}
               width={20}
             />
           </Button>
@@ -135,17 +135,22 @@ export default function Sidebar({
           </span>
         </Button>
         {showFullSidebar && (
-          <Tooltip content="Search chats (Cmd+K)">
-            <IconButton
-              icon="lucide:search"
-              iconSize={24}
+          <Tooltip placement='right' content="Search chats (Cmd+K)">
+            <Button
               isIconOnly
               variant="light"
+              className='group'
               onPress={() => {
                 if (mobile && onClose) onClose();
                 onCommandKOpen();
               }}
-            />
+            >
+              <Icon
+                width={24}
+                className='group-hover:scale-110 transition-all'
+                icon="lucide:search"
+              />
+            </Button>
           </Tooltip>
         )}
       </div>
