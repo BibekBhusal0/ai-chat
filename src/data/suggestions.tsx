@@ -48,6 +48,6 @@ Cmd/Ctrl + , → Open settings
 Alt/Option + N → Start a new chat
 Alt/Option + B → Toggle sidebar
 
-Since you are here, please make sure that you press each button and try each shortcut keys.
+Since you are here, please make sure that you try each shortcut keys and press each button (at leaset hover over them it might contain nice animations).
 `;
 }

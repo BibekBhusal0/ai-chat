@@ -186,6 +186,7 @@ interface AssistantMessageItemProps {
 function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) {
   const [isCopied, setIsCopied] = React.useState(false);
   const [isLiked, setIsLiked] = React.useState(false);
+  const [isCompleted, setIsCompleted] = React.useState(!isRecent);
   const [isDisliked, setIsDisliked] = React.useState(false);
   const formattedTime = format(parseISO(message.timestamp), "h:mm a");
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
@@ -254,6 +255,7 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
               repeat={false}
               onComplete={() => {
                 if (messagesEndRef.current) {
+                  setIsCompleted(true)
                   messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
                 }
               }}
@@ -263,7 +265,9 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
         ) : (
           <div className="whitespace-pre-wrap">{message.content}</div>
         )}
-        <MessageItemButtons buttons={assistantButtons} align="left" />
+        {isCompleted &&
+          <MessageItemButtons buttons={assistantButtons} align="left" />
+        }
       </div>
     </div>
   );
