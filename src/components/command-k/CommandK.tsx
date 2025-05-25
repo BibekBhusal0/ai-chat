@@ -47,7 +47,7 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
         }
       }}
     >
-      <div className="w-full max-w-2xl rounded-lg bg-content1 shadow-lg">
+      <div className="w-full max-w-2xl rounded-lg bg-content1 shadow-lg mx-6 md:mx-0">
         <Command
           className="command-k"
           onKeyDown={(e) => {
