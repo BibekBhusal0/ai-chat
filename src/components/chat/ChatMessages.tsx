@@ -255,7 +255,7 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
               repeat={false}
               onComplete={() => {
                 if (messagesEndRef.current) {
-                  setIsCompleted(true)
+                  setIsCompleted(true);
                   messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
                 }
               }}
@@ -265,9 +265,7 @@ function AssistantMessageItem({ message, isRecent }: AssistantMessageItemProps) 
         ) : (
           <div className="whitespace-pre-wrap">{message.content}</div>
         )}
-        {isCompleted &&
-          <MessageItemButtons buttons={assistantButtons} align="left" />
-        }
+        {isCompleted && <MessageItemButtons buttons={assistantButtons} align="left" />}
       </div>
     </div>
   );

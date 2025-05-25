@@ -36,4 +36,3 @@ export default function ChatMessageEmpty({ onSubmit }: ChatMessagesProps) {
     </div>
   );
 }
-
