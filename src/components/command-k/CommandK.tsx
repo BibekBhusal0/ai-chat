@@ -121,3 +121,4 @@ export default function CommandK({ open, onOpenChange }: CommandKProps) {
     </div>
   );
 }
+

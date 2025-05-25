@@ -26,7 +26,26 @@ export const suggestedCommands = [
   },
 ];
 
-export function getAnswer(question: string): string | null {
+export function getAnswer(question: string): string {
   const suggestion = suggestedCommands.find((s) => s.question === question);
-  return suggestion ? suggestion.answer : null;
+  return suggestion ? suggestion.answer : `As a large language model, I am stupid so, I do not know answer to the question. Honestly I don't even understand the question that might be stupid questin.
+
+Let me tell something I know. This is a AI chat app which is made with HeroUI. 
+Some of fetures of this app are: 
+- Great animations 
+- Command Palette for searching and starting new chat
+- Smooth animations 
+- Light and dark mode
+- Smart keyboard shortcuts 
+- Animated icons 
+
+
+Here are default shortcut keys which should try:
+Cmd/Ctrl + K → Open command palette
+Cmd/Ctrl + , → Open settings
+Alt/Option + N → Start a new chat
+Alt/Option + B → Toggle sidebar
+
+Since you are here, please make sure that you press each button and try each shortcut keys.
+`;
 }
