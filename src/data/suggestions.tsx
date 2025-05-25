@@ -28,7 +28,9 @@ export const suggestedCommands = [
 
 export function getAnswer(question: string): string {
   const suggestion = suggestedCommands.find((s) => s.question === question);
-  return suggestion ? suggestion.answer : `As a large language model, I am stupid so, I do not know answer to the question. Honestly I don't even understand the question that might be stupid questin.
+  return suggestion
+    ? suggestion.answer
+    : `As a large language model, I am stupid so, I do not know answer to the question. Honestly I don't even understand the question that might be stupid questin.
 
 Let me tell something I know. This is a AI chat app which is made with HeroUI. 
 Some of fetures of this app are: 
